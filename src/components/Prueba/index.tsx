@@ -8,7 +8,7 @@ import {getWalkers} from '../../redux/reducers/walker/actions'
 
 const Prueba =({navigation}: RouteStackParamList<'Prueba'>)=> {
     const dispatch = useDispatch();
-
+//
     return (
         <View>
             <Text>Hello World!</Text>
