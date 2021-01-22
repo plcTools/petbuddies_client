@@ -24,8 +24,6 @@ function UserFormScreen() {
 
     const handleChangeText = (name:string, value:string) => {
         setInput({ ...input, [name]: value });
-
-        console.log(value)
     };
 
     return (
