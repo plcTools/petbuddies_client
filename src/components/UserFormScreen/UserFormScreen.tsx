@@ -36,7 +36,7 @@ function UserFormScreen({navigation}: RouteStackParamList<'UserFormScreen'>) {
                 <Text style={styles.title}> Registro </Text>
             </View>
 
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <View>
                     <Text style={styles.label}>Nombre</Text>
                     <TextInput
@@ -91,7 +91,7 @@ function UserFormScreen({navigation}: RouteStackParamList<'UserFormScreen'>) {
                     </View>
                 </View>
 
-            </View>
+            </ScrollView>
         </View>
     );
 }
