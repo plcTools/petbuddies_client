@@ -10,6 +10,7 @@ const Prueba =({navigation}: RouteStackParamList<'Prueba'>)=> {
         <View>
             <Text>Hello World!</Text>
             <Icon name='star-o' type='font-awesome' onPress={() => navigation.navigate('WalkerCard')}/>
+            <Icon name='heart-o' type='font-awesome' onPress={() => navigation.navigate('UserFormScreen')}/>
         </View>
     )
 }
