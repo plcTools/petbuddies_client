@@ -2,9 +2,16 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Card, Avatar, Button, Icon } from 'react-native-elements';
 import { RouteStackParamList } from '../NavigationConfig/types'
+import {Walker} from '../../redux/reducers/walker/types'
+import {useSelector} from 'react-redux'
 
 
 const WalkerCard = ({ navigation }: RouteStackParamList<'WalkerCard'>) => {
+    interface RootState {
+        paseadores: {walkers: Walker[]}
+        
+    }
+    const walkers = useSelector((state: RootState) => state.paseadores.walkers)
     return (
         <View>
             <Card>
@@ -34,7 +41,7 @@ const WalkerCard = ({ navigation }: RouteStackParamList<'WalkerCard'>) => {
                                 title="+ info"
                                 style={styles.btn}
                                 titleStyle={styles.btnText}
-                                onPress={() => navigation.navigate('Prueba')}
+                                onPress={() => console.log(walkers[0].firstName)}
                             />
                         </View>
                     </View>
