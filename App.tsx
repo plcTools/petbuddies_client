@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { View, Text } from 'react-native';
 import {  Icon } from 'react-native-elements';
-import HomeScreen from './components/homeScreen';
+import HomeScreen from './src/components/homeScreen';
 
 
 function DetailsScreen() {
@@ -19,7 +19,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName='Home'>
         <Stack.Screen 
           name='Home' 
           component={HomeScreen} 
