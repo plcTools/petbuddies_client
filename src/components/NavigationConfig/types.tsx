@@ -5,6 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 export type RootStackParamList = {
     WalkerCard: undefined;
     Prueba: undefined;
+    UserPannel: undefined;
   };
 
 export type RouteStackParamList<T extends keyof RootStackParamList> = {

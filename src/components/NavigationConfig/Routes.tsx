@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack'
 import Prueba from '../Prueba';
 import WalkerCard from '../WalkerCard';
+import UserPannel from '../UserPannel';
 import { RootStackParamList } from './types';
 import {Icon} from 'react-native-elements'
 
@@ -38,6 +39,7 @@ export const Routes: React.FC= () => {
               }}>
                 <Stack.Screen name='Prueba' component={Prueba}/>
                 <Stack.Screen name='WalkerCard' component={WalkerCard}/>
+                <Stack.Screen name='UserPannel' component={UserPannel}/>
             </Stack.Navigator>
 
         </NavigationContainer>
