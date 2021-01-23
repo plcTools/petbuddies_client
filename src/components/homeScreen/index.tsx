@@ -1,10 +1,11 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 import { View, Text, FlatList, SafeAreaView } from 'react-native';
-import {  Icon, Avatar, Card } from 'react-native-elements';
+import {  Icon, Avatar, Card, Divider } from 'react-native-elements';
 import { NavigationScreenProp } from 'react-navigation';
 import { styles } from './styles';
 import {RouteStackParamList} from '../NavigationConfig/types'
+import { DrawerActions } from '@react-navigation/native';
 
 export interface HomeScreenProps {
   navigation: NavigationScreenProp<any,any>
@@ -76,63 +77,57 @@ const list = [
 const HomeScreen = ({navigation}: RouteStackParamList<'HomeScreen'>) => {
     return (
         <>
-            <View style={{alignItems:'center', flexDirection: 'row', justifyContent: 'space-around', flex: 1}}>
-                <View style={{alignItems: 'center'}}>
+            <View style={styles.viewIcons}>
+                <View style={styles.cardIcons}>
                     <Icon 
                         reverse
                         name='walking'
                         type='font-awesome-5'
+                        color= '#fc5185'
                         />
                     <Text>Walkers</Text>
                 </View>
-                <View style={{alignItems: 'center'}}>
+                <View style={styles.cardIcons}>
                     <Icon 
                         reverse
                         name='spa'
                         type='font-awesome-5'
+                        color= '#fc5185'
                         />
                     <Text>Spa & Hostel</Text>
                 </View>
             </View>
-            <View style={{flexDirection: 'row', justifyContent:'space-around', marginTop: 20, flex: 1}}>
+            <Divider />
+            <View style={styles.viewIcons}>
                 <Icon 
-                    name='star-half-alt'
+                    name='star'
                     type='font-awesome-5'
+                    color='#f8dc81'
                 />
                 <Icon 
                     name='heart'
                     type='font-awesome-5'
+                    color= 'red'
                 />
                 <Icon 
                     name='house-user'
                     type='font-awesome-5'
+                    color= '#00af91'
                 />
                 <Icon 
                     name='globe'
                     type='font-awesome-5'
+                    color='#51c2d5'
+                    onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
                 />
             </View>
+            <Divider />
             <View style={styles.container}>
-                {/* <ScrollView 
-                    contentContainerStyle={styles.scrollView} 
-                    showsVerticalScrollIndicator={false} 
-                    style={styles.scroll}
-                >
-                    {
-                        list.map((l, i) => (
-                            <ListItem key={i} bottomDivider containerStyle={styles.cards}>
-                                <Avatar source={{uri: l.avatar_url}} size='small' />
-                                <ListItem.Content >
-                                    <ListItem.Title style={{color: '#fff'}}>{l.name}</ListItem.Title>
-                                    <ListItem.Subtitle style={{color: '#fff'}}>{l.subtitle}</ListItem.Subtitle>
-                                </ListItem.Content>
-                            </ListItem>
-                        ))
-                    }
-                </ScrollView> */}
                 <SafeAreaView style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
                     <FlatList
                         data={list}
+                        keyExtractor={(item, i) => i.toString()}
+                        showsVerticalScrollIndicator={false}
                         renderItem={({ item }) => (
                             <Card containerStyle={styles.cards}>
                                 <Avatar source={{uri: item.avatar_url}} size='small' />
@@ -142,25 +137,6 @@ const HomeScreen = ({navigation}: RouteStackParamList<'HomeScreen'>) => {
                         )}
                     />
                 </SafeAreaView>
-            </View>
-            <View style={styles.footer}>
-                <Icon 
-                    reverse
-                    name='home'
-                    style={styles.icons}
-                    onPress={
-                        () => navigation.navigate('Drawer')
-                    }
-                    />
-                <Icon 
-                    reverse
-                    name='user-o'
-                    type= 'font-awesome'
-                    style={styles.icons}
-                    onPress={
-                        () => navigation.navigate('Drawer')
-                    }
-                    /> 
             </View>
         </>
     )

@@ -1,8 +1,8 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack'
-import { createDrawerNavigator } from '@react-navigation/drawer'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Prueba from '../Prueba';
 import WalkerCard from '../WalkerCard';
 import WalkerProfile from '../WalkerProfile';
@@ -29,14 +29,47 @@ import { DrawerActions } from '@react-navigation/native';
 export const Routes: React.FC = () => {
 
   const Stack = createStackNavigator<RootStackParamList>();
-  const Tab = createBottomTabNavigator();
+  const Tab = createBottomTabNavigator(); 
   const Drawer = createDrawerNavigator();
 
   const AppTab = () => {
     return (
-      <Tab.Navigator initialRouteName='HomeScreen'>
-        <Tab.Screen name='HomeScreen' component={HomeScreen} />
-        <Tab.Screen name='UsePannel' component={UserPannel} />
+      <Tab.Navigator 
+        initialRouteName='HomeScreen'
+        tabBarOptions={{
+          activeTintColor: '#fc5185',
+          inactiveTintColor: '#cccccc',
+          style: {
+            backgroundColor: '#364f6b'
+          },
+          showLabel: false
+        }}
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ color, size }) => {
+            const icons = {
+              Home: 'home',
+              Profile: 'user-o'
+            };
+
+            return (
+              <Icon 
+                name={icons[route.name]}
+                type= 'font-awesome'
+                color={color}
+                size={size}
+              />
+            );
+          },
+        })}
+      >
+        <Tab.Screen 
+          name='Home' 
+          component={HomeScreen}
+        />
+        <Tab.Screen 
+          name='Profile' 
+          component={UserPannel}
+        />
       </Tab.Navigator>
     )
   }
@@ -52,9 +85,9 @@ export const Routes: React.FC = () => {
       <Stack.Navigator
       initialRouteName='Tab'
       screenOptions={({navigation}) => ({
-        title: 'My home',
+        title: 'PetBuddies',
         headerStyle: {
-          backgroundColor: '#f4511e',
+          backgroundColor: '#364f6b',
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
@@ -62,23 +95,27 @@ export const Routes: React.FC = () => {
         },
         headerRight: () => (
           <Icon
-            name="home"
-            color='#fff'
+            reverse
+            name="message"
+            color='#364f6b'
             onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
           />)
       })}>
-      <Stack.Screen name='Tab' component={AppTab} />
-      <Stack.Screen name='HomeScreen' component={HomeScreen} />
-      <Stack.Screen name='Drawer' component={DrawerTab} />
-      <Stack.Screen name='UserFormScreen' component={UserFormScreen} />
-      <Stack.Screen name='WalkerCard' component={WalkerCard} />
-      <Stack.Screen name='Stack' component={StackNavigation} />
+        <Stack.Screen name='Tab' component={AppTab} />
+        <Stack.Screen name='HomeScreen' component={HomeScreen} />
+        <Stack.Screen name='Drawer' component={DrawerTab} />
+        <Stack.Screen name='UserFormScreen' component={UserFormScreen} />
+        <Stack.Screen name='WalkerCard' component={WalkerCard} />
+        <Stack.Screen name='Stack' component={StackNavigation} />
+        <DrawerTab />
       </Stack.Navigator>
     )
   }
   return (
-    <NavigationContainer>
-     <StackNavigation/>
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        <StackNavigation/>
+      </NavigationContainer>
+    </>
   )
 }
