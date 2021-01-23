@@ -41,11 +41,8 @@ const WalkerCard = ({ navigation }: RouteStackParamList<'WalkerCard'>) => {
                                 title="+ info"
                                 style={styles.btn}
                                 titleStyle={styles.btnText}
-<<<<<<< HEAD
                                 onPress={() => navigation.navigate('WalkerProfile')}
-=======
-                                onPress={() => console.log(walkers[0].firstName)}
->>>>>>> master
+
                             />
                         </View>
                     </View>
