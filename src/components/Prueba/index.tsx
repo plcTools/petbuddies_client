@@ -16,6 +16,7 @@ const Prueba =({navigation}: RouteStackParamList<'Prueba'>)=> {
             <Icon name='user-circle-o' type='font-awesome' onPress={() => navigation.navigate('UserPannel')}/>
             <Button title='press me' onPress={() => dispatch(getWalkers([{firstName: 'Manuel'}]))}></Button>
             <Icon name='heart-o' type='font-awesome' onPress={() => navigation.navigate('UserFormScreen')}/>
+            <Icon name='paw' type='font-awesome' onPress={() => navigation.navigate('LoginScreen')}/>
         </View>
     )
 }
