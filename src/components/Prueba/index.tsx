@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import {Icon } from 'react-native-elements'
-import {RouteStackParamList} from '../NavigationConfig/types'
+import {Icon } from 'react-native-elements';
+import {RouteStackParamList} from '../NavigationConfig/types';
 
 
 const Prueba =({navigation}: RouteStackParamList<'Prueba'>)=> {
@@ -10,6 +10,7 @@ const Prueba =({navigation}: RouteStackParamList<'Prueba'>)=> {
         <View>
             <Text>Hello World!</Text>
             <Icon name='star-o' type='font-awesome' onPress={() => navigation.navigate('WalkerCard')}/>
+            <Icon name='id-card' type='font-awesome' onPress={() => navigation.navigate('WalkerProfile')}/>
         </View>
     )
 }
