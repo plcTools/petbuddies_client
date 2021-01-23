@@ -5,6 +5,9 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Prueba from '../Prueba';
 import WalkerCard from '../WalkerCard';
+import UserPannel from '../UserPannel';
+import UserFormScreen from '../UserFormScreen/UserFormScreen';
+
 import { RootStackParamList } from './types';
 import { Icon } from 'react-native-elements'
 import HomeScreen from '../homeScreen';
@@ -64,7 +67,6 @@ export const Routes: React.FC = () => {
             onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
           />)
       })}>
-
       <Stack.Screen name='Home' component={DrawerTab} />
       </Stack.Navigator>
     )
