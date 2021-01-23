@@ -1,11 +1,10 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator, StackNavigationProp  } from '@react-navigation/stack';
-import { View, Text, ScrollView, FlatList, SafeAreaView } from 'react-native';
-import {  Icon, ListItem, Avatar, Card } from 'react-native-elements';
+import { View, Text, FlatList, SafeAreaView } from 'react-native';
+import {  Icon, Avatar, Card } from 'react-native-elements';
 import { NavigationScreenProp } from 'react-navigation';
 import { styles } from './styles';
+import {RouteStackParamList} from '../NavigationConfig/types'
 
 export interface HomeScreenProps {
   navigation: NavigationScreenProp<any,any>
@@ -74,8 +73,7 @@ const list = [
     //   },
 ];
 
-const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
-    console.log(list)
+const HomeScreen = ({navigation}: RouteStackParamList<'HomeScreen'>) => {
     return (
         <>
             <View style={{alignItems:'center', flexDirection: 'row', justifyContent: 'space-around', flex: 1}}>
@@ -151,7 +149,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                     name='home'
                     style={styles.icons}
                     onPress={
-                        () => navigation.navigate('Home')
+                        () => navigation.navigate('Prueba')
                     }
                     />
                 <Icon 
@@ -160,7 +158,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                     type= 'font-awesome'
                     style={styles.icons}
                     onPress={
-                        () => navigation.navigate('Profile')
+                        () => navigation.navigate('WalkerCard')
                     }
                     /> 
             </View>
