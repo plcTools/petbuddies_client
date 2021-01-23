@@ -149,7 +149,7 @@ const HomeScreen = ({navigation}: RouteStackParamList<'HomeScreen'>) => {
                     name='home'
                     style={styles.icons}
                     onPress={
-                        () => navigation.navigate('Prueba')
+                        () => navigation.navigate('Drawer')
                     }
                     />
                 <Icon 
@@ -158,7 +158,7 @@ const HomeScreen = ({navigation}: RouteStackParamList<'HomeScreen'>) => {
                     type= 'font-awesome'
                     style={styles.icons}
                     onPress={
-                        () => navigation.navigate('WalkerCard')
+                        () => navigation.navigate('Drawer')
                     }
                     /> 
             </View>

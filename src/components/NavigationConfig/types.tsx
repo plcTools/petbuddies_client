@@ -12,6 +12,8 @@ export type RootStackParamList = {
     HomeScreen: undefined;
     Home: undefined;
     Drawer: undefined;
+    Stack: undefined
+    Tab: undefined;
   };
 
 export type RouteStackParamList<T extends keyof RootStackParamList> = {
