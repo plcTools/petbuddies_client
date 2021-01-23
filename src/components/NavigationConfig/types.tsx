@@ -6,6 +6,7 @@ export type RootStackParamList = {
     WalkerCard: undefined;
     Prueba: undefined;
     UserPannel: undefined;
+    UserFormScreen:undefined;
   };
 
 export type RouteStackParamList<T extends keyof RootStackParamList> = {
