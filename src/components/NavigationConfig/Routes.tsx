@@ -33,17 +33,15 @@ export const Routes: React.FC = () => {
 
   const AppTab = () => {
     return (
-      <Tab.Navigator>
+      <Tab.Navigator initialRouteName='HomeScreen'>
         <Tab.Screen name='HomeScreen' component={HomeScreen} />
-        <Tab.Screen name='WalkerCard' component={WalkerCard} />
-        <Tab.Screen name='Prueba' component={Prueba}/>
+        <Tab.Screen name='UsePannel' component={UserPannel} />
       </Tab.Navigator>
     )
   }
   const DrawerTab = () => {
     return (
       <Drawer.Navigator>
-        <Drawer.Screen name='HomeScreen' component={HomeScreen} />
         <Drawer.Screen name='Prueba' component={Prueba}/>
       </Drawer.Navigator>
     )
@@ -51,6 +49,7 @@ export const Routes: React.FC = () => {
   const StackNavigation = () => {
     return (
       <Stack.Navigator
+      initialRouteName='Tab'
       screenOptions={({navigation}) => ({
         title: 'My home',
         headerStyle: {
@@ -67,7 +66,12 @@ export const Routes: React.FC = () => {
             onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
           />)
       })}>
-      <Stack.Screen name='Home' component={DrawerTab} />
+      <Stack.Screen name='Tab' component={AppTab} />
+      <Stack.Screen name='HomeScreen' component={HomeScreen} />
+      <Stack.Screen name='Drawer' component={DrawerTab} />
+      <Stack.Screen name='UserFormScreen' component={UserFormScreen} />
+      <Stack.Screen name='WalkerCard' component={WalkerCard} />
+      <Stack.Screen name='Stack' component={StackNavigation} />
       </Stack.Navigator>
     )
   }
