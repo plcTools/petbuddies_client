@@ -8,6 +8,7 @@ import WalkerCard from '../WalkerCard';
 import WalkerProfile from '../WalkerProfile';
 import UserPannel from '../UserPannel';
 import UserFormScreen from '../UserFormScreen/UserFormScreen';
+import LoginScreen from '../LoginScreen';
 
 import { RootStackParamList } from './types';
 import { Icon } from 'react-native-elements'
@@ -72,6 +73,8 @@ export const Routes: React.FC = () => {
       <Stack.Screen name='Drawer' component={DrawerTab} />
       <Stack.Screen name='UserFormScreen' component={UserFormScreen} />
       <Stack.Screen name='WalkerCard' component={WalkerCard} />
+      <Stack.Screen name='WalkerProfile' component={WalkerProfile} />
+      <Stack.Screen name='LoginScreen' component={LoginScreen} />
       <Stack.Screen name='Stack' component={StackNavigation} />
       </Stack.Navigator>
     )
