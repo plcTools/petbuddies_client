@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground, Image } from 'react-native';
+import {RouteStackParamList} from '../../NavigationConfig/types'
 
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}: RouteStackParamList<'LoginScreen'>) => {
 
   const [userData, setUserData] = useState({
     email:"",
@@ -32,10 +33,10 @@ const LoginScreen = () => {
         <TouchableOpacity>
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginBtn}>
+        <TouchableOpacity style={styles.loginBtn} onPress={()=> navigation.navigate('Tab')}>
           <Text style={styles.loginText}>LOGIN</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=> navigation.navigate('UserFormScreen')}>
           <Text style={styles.loginText}>Signup</Text>
         </TouchableOpacity>
         </View>

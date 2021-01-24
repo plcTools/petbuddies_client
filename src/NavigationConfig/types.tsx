@@ -1,12 +1,10 @@
-/* import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack'; */
 import { StackNavigationProp } from '@react-navigation/stack';
-import {DrawerNavigationProp} from '@react-navigation/drawer';
+import {RouteProp} from '@react-navigation/native'
 
 export type RootStackParamList = {
     WalkerCard: undefined;
     Prueba: undefined;
-    WalkerProfile: undefined;
+    WalkerProfile: {id: number};
     UserPannel: undefined;
     UserFormScreen:undefined;
     HomeScreen: undefined;
@@ -15,8 +13,10 @@ export type RootStackParamList = {
     Drawer: undefined;
     Stack: undefined
     Tab: undefined;
+    TabNavigation: undefined;
   };
 
 export type RouteStackParamList<T extends keyof RootStackParamList> = {
-  navigation:  DrawerNavigationProp<RootStackParamList, T>
+  navigation:  StackNavigationProp<RootStackParamList, T>;
+  route: RouteProp<RootStackParamList, T>
 }

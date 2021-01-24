@@ -8,13 +8,15 @@ import {
   Image,
   ScrollView
 } from 'react-native';
-import { RouteStackParamList } from '../NavigationConfig/types';
+import { RouteStackParamList } from '../../NavigationConfig/types';
 import { Icon } from 'react-native-elements';
 import { Rating } from 'react-native-ratings';
 
 
 
-const WalkerProfile = ({ navigation }: RouteStackParamList<'WalkerProfile'>) => {
+const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile'>) => {
+
+  console.log(route.params.id)
 
   const renderLabel = () => {
     
