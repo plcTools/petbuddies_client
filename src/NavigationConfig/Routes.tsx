@@ -9,6 +9,7 @@ import UserFormScreen from '../components/UserFormScreen/UserFormScreen';
 import LoginScreen from '../components/LoginScreen';
 import { RootStackParamList } from './types';
 import HomeScreen from '../components/homeScreen';
+import { Icon } from 'react-native-elements';
 
 
 /* 
@@ -30,9 +31,40 @@ export const Routes: React.FC = () => {
   const Tab = createBottomTabNavigator()
   const TabNavigation = () => {
     return (
-      <Tab.Navigator>
-        <Tab.Screen name='HomeScreen' component={HomeScreen} />
-        <Tab.Screen name='UserPannel' component={UserPannel} />
+      <Tab.Navigator 
+        initialRouteName='HomeScreen'
+        tabBarOptions={{
+          activeTintColor: '#fc5185',
+          inactiveTintColor: '#cccccc',
+          style: {
+            backgroundColor: '#364f6b'
+          },
+          showLabel: false
+        }}
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ color, size }) => {
+            type Icons = {
+              [key: string]: string;
+            }
+            
+            let icons: Icons;
+            icons = {Home: "home", Profile:"user-o"};
+            
+            if(route.name === 'Walkers') return null;
+
+            return (
+              <Icon 
+                name={`${icons[route.name]}`}
+                type= 'font-awesome'
+                color={color}
+                size={size}
+              />
+            );
+          },
+        })}
+      >
+        <Tab.Screen name='Home' component={HomeScreen} />
+        <Tab.Screen name='Profile' component={UserPannel} />
       </Tab.Navigator>
     )
   }
@@ -51,3 +83,25 @@ return (
     </NavigationContainer>
   ) 
 }
+
+
+// estilos del header
+{/* <Stack.Navigator
+      initialRouteName='Tab'
+      screenOptions={({navigation}) => ({
+        title: 'PetBuddies',
+        headerStyle: {
+          backgroundColor: '#364f6b',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        headerRight: () => (
+          <Icon
+            reverse
+            name="message"
+            color='#364f6b'
+            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+          />)
+      })}></Stack.Navigator> */}
