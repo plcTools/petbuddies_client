@@ -3,7 +3,7 @@ import {View, Text, Button} from 'react-native';
 import {Icon } from 'react-native-elements'
 import {RouteStackParamList} from '../../NavigationConfig/types'
 import {useDispatch} from 'react-redux';
-import {getWalkers} from '../../redux/reducers/walker/actions'
+import {getWalkers} from '../../redux/walker/actions'
 
 
 const Prueba =({navigation}: RouteStackParamList<'Prueba'>)=> {
@@ -12,7 +12,7 @@ const Prueba =({navigation}: RouteStackParamList<'Prueba'>)=> {
     return (
         <View>
             <Text>Hello World!</Text>
-            <Icon name='star-o' type='font-awesome' onPress={() => navigation.navigate('WalkerCard')}/>
+            <Icon name='star-o' type='font-awesome' onPress={() => console.log("hola")}/>
             <Icon name='user-circle-o' type='font-awesome' onPress={() => navigation.navigate('UserPannel')}/>
             <Button title='press me' onPress={() => dispatch(getWalkers([{firstName: 'Manuel'}]))}></Button>
             <Icon name='heart-o' type='font-awesome' onPress={() => navigation.navigate('UserFormScreen')}/>

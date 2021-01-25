@@ -11,12 +11,18 @@ import {
 import { RouteStackParamList } from '../../NavigationConfig/types';
 import { Icon } from 'react-native-elements';
 import { Rating } from 'react-native-ratings';
+import axios from 'axios';
 
 
 
 const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile'>) => {
 
   console.log(route.params.id)
+  const [state, setState] = React.useState()
+  React.useEffect(() => {
+    axios.get(`http://localhost:3001/walkers/${route.params.id}`)
+    .then((result) => setState(result.data))
+  },[])
 
   const renderLabel = () => {
     

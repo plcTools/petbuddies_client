@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import * as React from 'react';
+import React from 'react';
 import { View, Text, FlatList, SafeAreaView, VirtualizedList } from 'react-native';
 import {  Icon, Avatar, Card, Divider } from 'react-native-elements';
 import { NavigationScreenProp } from 'react-navigation';
@@ -8,14 +8,16 @@ import {RouteStackParamList} from '../../NavigationConfig/types';
 import WalkerCard from '../WalkerCard/index';
 import { useNavigation } from '@react-navigation/native';
 import { walkers } from '../WalkerCard/data';
+import axios from 'axios';
 
 interface Walker {
-    id: number;
+    _id: string;
     name: string;
+    lastname: string;
     avatar: string;
-    price: string;
+    fee: number;
     description: string;
-    workZone: string;
+    workZone: string[];
     countDogs: string;
     
 };
@@ -23,6 +25,11 @@ interface Walker {
 const HomeScreen = () => {
     const [ state, setState ] = React.useState<any | typeof walkers>(null);
     const navigation = useNavigation();
+
+    React.useEffect(() => {
+        axios.get(`http://localhost:3001/walkers`)
+        .then((result) => setState(result.data))
+    },[])
     return (
         <>
             <View style={styles.viewIcons}>
@@ -78,7 +85,7 @@ const HomeScreen = () => {
                     <SafeAreaView style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
                         <FlatList
                             data={state}
-                            keyExtractor={(item: Walker) => item.id.toString()}
+                            keyExtractor={(item: Walker) => item._id}
                             showsVerticalScrollIndicator={false}
                             renderItem={({ item }) => {
                                 return (<WalkerCard walker={item} />)
