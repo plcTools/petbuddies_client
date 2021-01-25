@@ -1,52 +1,70 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground, Image } from 'react-native';
-import {RouteStackParamList} from '../../NavigationConfig/types'
+import React, { useState } from 'react';
+import { Alert, Modal, StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground, Image } from 'react-native';
+import { RouteStackParamList } from '../../NavigationConfig/types'
+import ModalUserFormScreen from '../ModalUserFormScreen/ModalUserFormScreen'
 
-
-const LoginScreen = ({navigation}: RouteStackParamList<'LoginScreen'>) => {
+const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
 
   const [userData, setUserData] = useState({
-    email:"",
-    password:""
-  })  
+    email: "",
+    password: ""
+  })
 
-    return (
-      <View style={styles.container}>
-          <ImageBackground source={require('../../images/wallpaper.jpg')} style={styles.backgImage} >
-          <View style={styles.subcontainer}>
-        <Image source={require('../../images/logo.png')} style={styles.logo} />
-        <View style={styles.inputView} >
-          <TextInput  
-            style={styles.inputText}
-            placeholder="Email..." 
-            placeholderTextColor="#e3b587"
-            onChangeText={text => setUserData({...userData, email:text})}/>
+  const [modalVisible, setModalVisible] = useState(false);
+const modalStatusChange = () => {
+  setModalVisible(!modalVisible)
+}
+
+  return (
+    <View style={styles.container}>
+      <ImageBackground source={require('../../images/wallpaper.jpg')} style={styles.backgImage} >
+        <View style={styles.subcontainer}>
+          <Image source={require('../../images/logo.png')} style={styles.logo} />
+          <View style={styles.inputView} >
+            <TextInput
+              style={styles.inputText}
+              placeholder="Email..."
+              placeholderTextColor="#e3b587"
+              onChangeText={text => setUserData({ ...userData, email: text })} />
+          </View>
+          <View style={styles.inputView} >
+            <TextInput
+              secureTextEntry
+              style={styles.inputText}
+              placeholder="Password..."
+              placeholderTextColor="#e3b587"
+              onChangeText={text => setUserData({ ...userData, password: text })} />
+          </View>
+          <TouchableOpacity>
+            <Text style={styles.forgot}>Forgot Password?</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.loginBtn} onPress={() => navigation.navigate('Tab')}>
+            <Text style={styles.loginText}>LOGIN</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+            <Text style={styles.loginText}>Signup</Text>
+          </TouchableOpacity>
         </View>
-        <View style={styles.inputView} >
-          <TextInput  
-            secureTextEntry
-            style={styles.inputText}
-            placeholder="Password..." 
-            placeholderTextColor="#e3b587"
-            onChangeText={text => setUserData({...userData, password:text})}/>
+      </ImageBackground>
+      <View>
+        <View >
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+            }}>
+            <ModalUserFormScreen modalStatusChange={modalStatusChange}/>
+          </Modal>
         </View>
-        <TouchableOpacity>
-          <Text style={styles.forgot}>Forgot Password?</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.loginBtn} onPress={()=> navigation.navigate('Tab')}>
-          <Text style={styles.loginText}>LOGIN</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=> navigation.navigate('UserFormScreen')}>
-          <Text style={styles.loginText}>Signup</Text>
-        </TouchableOpacity>
-        </View>
-        </ImageBackground>
       </View>
-    );
-  }
+    </View>
+  );
+}
 
-  
-const styles = StyleSheet.create({  
+
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
@@ -61,41 +79,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  logo:{
+  logo: {
     width: 300,
     height: 300,
     marginBottom: 20,
     marginTop: -100,
   },
-  inputView:{
-    width:"80%",
-    backgroundColor:"#456672",
-    borderRadius:25,
-    height:50,
-    marginBottom:20,
-    justifyContent:"center",
-    padding:20
+  inputView: {
+    width: "80%",
+    backgroundColor: "#456672",
+    borderRadius: 25,
+    height: 50,
+    marginBottom: 20,
+    justifyContent: "center",
+    padding: 20
   },
-  inputText:{
-    height:50,
-    color:"white"
+  inputText: {
+    height: 50,
+    color: "white"
   },
-  forgot:{
-    color:"white",
-    fontSize:11
+  forgot: {
+    color: "white",
+    fontSize: 11
   },
-  loginBtn:{
-    width:"80%",
-    backgroundColor:"#c98c70",
-    borderRadius:25,
-    height:50,
-    alignItems:"center",
-    justifyContent:"center",
-    marginTop:40,
-    marginBottom:10
+  loginBtn: {
+    width: "80%",
+    backgroundColor: "#c98c70",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    marginBottom: 10
   },
-  loginText:{
-    color:"white"
+  loginText: {
+    color: "white"
   }
 });
 
