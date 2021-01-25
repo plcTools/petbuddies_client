@@ -1,79 +1,28 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { View, Text, FlatList, SafeAreaView } from 'react-native';
+import { View, Text, FlatList, SafeAreaView, VirtualizedList } from 'react-native';
 import {  Icon, Avatar, Card, Divider } from 'react-native-elements';
 import { NavigationScreenProp } from 'react-navigation';
 import { styles } from './styles';
-import {RouteStackParamList} from '../../NavigationConfig/types'
+import {RouteStackParamList} from '../../NavigationConfig/types';
+import WalkerCard from '../WalkerCard/index';
+import { useNavigation } from '@react-navigation/native';
+import { walkers } from '../WalkerCard/data';
 
-export interface HomeScreenProps {
-  navigation: NavigationScreenProp<any,any>
+interface Walker {
+    id: number;
+    name: string;
+    avatar: string;
+    price: string;
+    description: string;
+    workZone: string;
+    countDogs: string;
+    
 };
 
-const list = [
-    {
-      name: 'Amy Farha',
-      avatar_url: 'http://www.graficaszamart.com/imprenta/wp-content/uploads/2015/08/Foto-perfil.jpg',
-      subtitle: 'Vice President'
-    },
-    {
-      name: 'Chris Jackson',
-      avatar_url: 'http://www.graficaszamart.com/imprenta/wp-content/uploads/2015/08/Foto-perfil.jpg',
-      subtitle: 'Vice Chairman'
-    },
-    {
-        name: 'Chris Jackson',
-        avatar_url: 'http://www.graficaszamart.com/imprenta/wp-content/uploads/2015/08/Foto-perfil.jpg',
-        subtitle: 'Vice Chairman'
-      },
-      {
-        name: 'Chris Jackson',
-        avatar_url: 'http://www.graficaszamart.com/imprenta/wp-content/uploads/2015/08/Foto-perfil.jpg',
-        subtitle: 'Vice Chairman'
-      },
-      {
-        name: 'Chris Jackson',
-        avatar_url: 'http://www.graficaszamart.com/imprenta/wp-content/uploads/2015/08/Foto-perfil.jpg',
-        subtitle: 'Vice Chairman'
-      },
-      {
-        name: 'Chris Jackson',
-        avatar_url: 'http://www.graficaszamart.com/imprenta/wp-content/uploads/2015/08/Foto-perfil.jpg',
-        subtitle: 'Vice Chairman'
-      },
-      {
-        name: 'Chris Jackson',
-        avatar_url: 'http://www.graficaszamart.com/imprenta/wp-content/uploads/2015/08/Foto-perfil.jpg',
-        subtitle: 'Vice Chairman'
-      },
-      {
-        name: 'Chris Jackson',
-        avatar_url: 'http://www.graficaszamart.com/imprenta/wp-content/uploads/2015/08/Foto-perfil.jpg',
-        subtitle: 'Vice Chairman'
-      },
-    //   {
-    //     name: 'Chris Jackson',
-    //     avatar_url: 'http://www.graficaszamart.com/imprenta/wp-content/uploads/2015/08/Foto-perfil.jpg',
-    //     subtitle: 'Vice Chairman'
-    //   }, // more items
-    //   {
-    //     name: 'Chris Jackson',
-    //     avatar_url: 'http://www.graficaszamart.com/imprenta/wp-content/uploads/2015/08/Foto-perfil.jpg',
-    //     subtitle: 'Vice Chairman'
-    //   },
-    //   {
-    //     name: 'Chris Jackson',
-    //     avatar_url: 'http://www.graficaszamart.com/imprenta/wp-content/uploads/2015/08/Foto-perfil.jpg',
-    //     subtitle: 'Vice Chairman'
-    //   },
-    //   {
-    //     name: 'Chris Jackson',
-    //     avatar_url: 'http://www.graficaszamart.com/imprenta/wp-content/uploads/2015/08/Foto-perfil.jpg',
-    //     subtitle: 'Vice Chairman'
-    //   },
-];
-
-const HomeScreen = ({navigation}: RouteStackParamList<'HomeScreen'>) => {
+const HomeScreen = () => {
+    const [ state, setState ] = React.useState<any | typeof walkers>(null);
+    const navigation = useNavigation();
     return (
         <>
             <View style={styles.viewIcons}>
@@ -83,6 +32,7 @@ const HomeScreen = ({navigation}: RouteStackParamList<'HomeScreen'>) => {
                         name='walking'
                         type='font-awesome-5'
                         color= '#fc5185'
+                        onPress={() => setState(walkers)}
                         />
                     <Text>Walkers</Text>
                 </View>
@@ -122,20 +72,21 @@ const HomeScreen = ({navigation}: RouteStackParamList<'HomeScreen'>) => {
             </View>
             <Divider />
             <View style={styles.container}>
-                <SafeAreaView style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-                    <FlatList
-                        data={list}
-                        keyExtractor={(item, i) => i.toString()}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => (
-                            <Card containerStyle={styles.cards}>
-                                <Avatar source={{uri: item.avatar_url}} size='small' />
-                                    <Card.Title style={{color: '#fff'}}>{item.name}</Card.Title>
-                                    <Text style={{color: '#fff'}}>{item.subtitle}</Text>
-                            </Card>
-                        )}
-                    />
-                </SafeAreaView>
+                {
+                state ? (
+
+                    <SafeAreaView style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                        <FlatList
+                            data={state}
+                            keyExtractor={(item: Walker) => item.id.toString()}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={({ item }) => {
+                                return (<WalkerCard walker={item} />)
+                            }}
+                        />
+                    </SafeAreaView>
+                ) : null    
+                }
             </View>
         </>
     )

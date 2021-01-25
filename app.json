@@ -2,7 +2,8 @@
   "name": "client",
   "displayName": "client",
   "expo": {
-    "name": "client",
+    "name": "PetBuddies",
+    "icon": "./src/images/logo.png",
     "slug": "client",
     "version": "1.0.0",
     "assetBundlePatterns": [

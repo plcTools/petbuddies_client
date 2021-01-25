@@ -2,7 +2,17 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native'
 
 export type RootStackParamList = {
-    WalkerCard: undefined;
+    WalkerCard: {
+      walker: {
+          id: number;
+          name: string;
+          avatar: string;
+          price: string;
+          description: string;
+          workZone: string;
+          countDogs: string;
+      }
+    };
     Prueba: undefined;
     WalkerProfile: {id: number};
     UserPannel: undefined;
