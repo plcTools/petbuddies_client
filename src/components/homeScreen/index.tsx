@@ -4,7 +4,7 @@ import { View, Text, FlatList, SafeAreaView } from 'react-native';
 import {  Icon, Avatar, Card } from 'react-native-elements';
 import { NavigationScreenProp } from 'react-navigation';
 import { styles } from './styles';
-import {RouteStackParamList} from '../NavigationConfig/types'
+import {RouteStackParamList} from '../../NavigationConfig/types'
 
 export interface HomeScreenProps {
   navigation: NavigationScreenProp<any,any>
@@ -82,6 +82,7 @@ const HomeScreen = ({navigation}: RouteStackParamList<'HomeScreen'>) => {
                         reverse
                         name='walking'
                         type='font-awesome-5'
+                        onPress={() => navigation.navigate('WalkerCard')}
                         />
                     <Text>Walkers</Text>
                 </View>
@@ -143,7 +144,7 @@ const HomeScreen = ({navigation}: RouteStackParamList<'HomeScreen'>) => {
                     />
                 </SafeAreaView>
             </View>
-            <View style={styles.footer}>
+            {/* <View style={styles.footer}>
                 <Icon 
                     reverse
                     name='home'
@@ -161,7 +162,7 @@ const HomeScreen = ({navigation}: RouteStackParamList<'HomeScreen'>) => {
                         () => navigation.navigate('Drawer')
                     }
                     /> 
-            </View>
+            </View> */}
         </>
     )
 };

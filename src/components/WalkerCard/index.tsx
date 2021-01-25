@@ -1,29 +1,34 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { Card, Avatar, Button, Icon } from 'react-native-elements';
-import { RouteStackParamList } from '../NavigationConfig/types'
-import {Walker} from '../../redux/reducers/walker/types'
-import {useSelector} from 'react-redux'
-
+import { styles } from './styles';
+import { View, Text } from 'react-native';
+import { Card, Avatar, Icon } from 'react-native-elements';
+import { RouteStackParamList } from '../../NavigationConfig/types'
+/* import { Walker } from '../../redux/reducers/walker/types'
+import { useSelector } from 'react-redux' */
+import { walkers } from './data'
 
 const WalkerCard = ({ navigation }: RouteStackParamList<'WalkerCard'>) => {
-    interface RootState {
-        paseadores: {walkers: Walker[]}
-        
+    /* interface RootState {
+        paseadores: { walkers: Walker[] }
+
     }
-    const walkers = useSelector((state: RootState) => state.paseadores.walkers)
+    const walkers = useSelector((state: RootState) => state.paseadores.walkers) */
+
+    console.log(walkers)
     return (
         <View>
-            <Card>
+            {walkers ? walkers.map(walker => {
+                return(<Card>
                 <View style={styles.cardHeaderContainer}>
                     <View style={styles.cardHeaderMain}>
-                        <Text style={styles.headerTitle}>Manuel Bolla Agrelo</Text>
+                        <Text style={styles.headerTitle}>
+                            {walker.name}
+                        </Text>
                     </View>
-                    <Icon style={styles.rateStar} raised name='heart-o' type='font-awesome' size={13} color='black' />
-
+                    <Icon style={styles.rateStar} raised name='heart-o' type='font-awesome' size={13} color='black'
+                        onPress={() => navigation.navigate('WalkerProfile', {id: walker.id})}/>
                 </View>
                 <Card.Divider />
-
                 <View style={styles.cardContainer}>
                     <View>
                         <Avatar
@@ -31,77 +36,37 @@ const WalkerCard = ({ navigation }: RouteStackParamList<'WalkerCard'>) => {
                             size='large'
                             activeOpacity={0.7}
                             source={{
-                                uri: 'https://avatars.githubusercontent.com/u/70901898?s=460&u=a89f8bf6f3748b70deece72b25314881d3818d09&v=4',
+                                uri: `${walker.avatar}`,
                             }}
                             onPress={() => console.log("works")}
-                            title='Manuel Bolla Agrelo'
+                            title={walker.name}
                         />
                         <View style={styles.btnContainer}>
-                            <Button
-                                title="+ info"
-                                style={styles.btn}
-                                titleStyle={styles.btnText}
-                                onPress={() => navigation.navigate('WalkerProfile')}
-
-                            />
+                            <Text style={styles.text}>
+                                <Text style={styles.pricing}>
+                                    {walker.price}</Text><Text>/walk 
+                                    </Text>
+                                </Text>
                         </View>
                     </View>
                     <View>
                         <View style={styles.infoContainer}>
-                            <Text>Lives in: San isidro</Text>
-                            <Text>Works at: Olivos</Text>
-                            <Text>Usually walks 4 dogs per run</Text>
+                            <Text>{walker.description}</Text>
+                            <Text>I mainly work in {walker.workZone}</Text>
+                            <Text>I walk {walker.countDogs} dogs per run</Text>
                         </View>
                     </View>
                 </View>
                 <View style={styles.cardHeaderRate}>
-                    <Icon name='star-o' type='font-awesome' size={15} color='green' />
+                    <Icon name='star-o' type='font-awesome' size={20} color='green' underlayColor="red"/>
                     <Text>3.7</Text>
                 </View>
-            </Card>
+            </Card>)
+            })
+        : <Text>No walkers</Text>}   
         </View>
     )
 }
-const styles = StyleSheet.create({
-    cardHeaderContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between"
-    },
-    cardHeaderMain: {
-        flexDirection: "row",
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-    },
-    headerTitle: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginRight: 10,
-    },
-    cardHeaderRate: {
-        flexDirection: "row",
-        justifyContent: 'flex-end'
-    },
-    rateStar: {
-        marginRight: 10
-    },
-    cardContainer: {
-        flexDirection: "row",
-    },
-    infoContainer: {
-        width: 200,
-        marginLeft: 20,
-    },
-    btnContainer: {
-        justifyContent: "center",
-        alignItems: 'center'
-    },
-    btn: {
-        width: 50,
-        height: 30,
-    },
-    btnText: {
-        fontSize: 12
-    },
-});
+
 
 export default WalkerCard;

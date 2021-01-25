@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { RouteStackParamList } from '../NavigationConfig/types'
+import { RouteStackParamList } from '../../NavigationConfig/types'
 import stylesLandscape from './styles/stylesLandscape';
 import stylesPortrait from './styles/stylesPortrait';
 import {
