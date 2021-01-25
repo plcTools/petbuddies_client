@@ -6,12 +6,10 @@ import { RouteStackParamList } from '../NavigationConfig/types'
 import stylesLandscape from './styles/stylesLandscape';
 import stylesPortrait from './styles/stylesPortrait';
 import {
-    Button,
     View,
     Text,
     Alert,
     Modal,
-    TouchableHighlight,
     TextInput,
     StyleSheet,
     TextInputProps,
