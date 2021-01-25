@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {ListItem, Avatar, Card, Icon, Button, Divider } from 'react-native-elements'
-import {RouteStackParamList} from '../NavigationConfig/types'
+import {RouteStackParamList} from '../../NavigationConfig/types'
 
 
 const UserPannel =({navigation}: RouteStackParamList<'UserPannel'>)=> {

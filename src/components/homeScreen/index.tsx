@@ -4,8 +4,7 @@ import { View, Text, FlatList, SafeAreaView } from 'react-native';
 import {  Icon, Avatar, Card, Divider } from 'react-native-elements';
 import { NavigationScreenProp } from 'react-navigation';
 import { styles } from './styles';
-import {RouteStackParamList} from '../NavigationConfig/types'
-import { DrawerActions } from '@react-navigation/native';
+import {RouteStackParamList} from '../../NavigationConfig/types'
 
 export interface HomeScreenProps {
   navigation: NavigationScreenProp<any,any>
@@ -118,7 +117,7 @@ const HomeScreen = ({navigation}: RouteStackParamList<'HomeScreen'>) => {
                     name='globe'
                     type='font-awesome-5'
                     color='#51c2d5'
-                    onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+                    onPress={() => alert('all')}
                 />
             </View>
             <Divider />
@@ -141,5 +140,6 @@ const HomeScreen = ({navigation}: RouteStackParamList<'HomeScreen'>) => {
         </>
     )
 };
+
 
 export default HomeScreen;

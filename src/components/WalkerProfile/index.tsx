@@ -8,13 +8,15 @@ import {
   Image,
   ScrollView
 } from 'react-native';
-import { RouteStackParamList } from '../NavigationConfig/types';
+import { RouteStackParamList } from '../../NavigationConfig/types';
 import { Icon } from 'react-native-elements';
 import { Rating } from 'react-native-ratings';
 
 
 
-const WalkerProfile = ({ navigation }: RouteStackParamList<'WalkerProfile'>) => {
+const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile'>) => {
+
+  console.log(route.params.id)
 
   const renderLabel = () => {
     
@@ -110,25 +112,6 @@ const WalkerProfile = ({ navigation }: RouteStackParamList<'WalkerProfile'>) => 
           <Icon name='comments' type='font-awesome' reverse color='#456672' />
           <Text style={styles.messageText}>Envíale un mensaje</Text>
         </View>
-      {/* <View style={styles.profile}>
-        <Image
-          style={styles.profilePic}
-          source={{
-            uri: walker.picture
-          }}
-        />
-        <View style={styles.profileText}>
-          <Text style={styles.name}>{walker.name}</Text>
-          <Text style={styles.bio}>{walker.bio}</Text>
-        </View>
-      </View>
-      <Divider />
-      <View style={styles.rating}>
-        <Rating
-          readonly
-          startingValue={walker.rating}
-        />
-      </View> */}
     </View>
         </View>
       </ScrollView>
