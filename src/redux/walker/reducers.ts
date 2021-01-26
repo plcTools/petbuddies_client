@@ -1,11 +1,12 @@
 import { 
     WalkerActionsTypes,
     GET_WALKERS,
-    WalkerState
+    WalkerState,
+    Walker
 } from './types'
 
-const initialState = {
-    walkers: []
+const initialState:WalkerState = {
+    walkers: [] 
 }
 
 export function walkerReducer(state = initialState, action: WalkerActionsTypes): WalkerState {
