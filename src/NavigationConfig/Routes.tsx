@@ -76,7 +76,6 @@ return (
       <Navigator >
         <Screen name='LoginScreen' component={LoginScreen} options={{headerShown: false}}/>
         <Screen name='Tab' component={TabNavigation} options={{headerShown: false}} />
-        <Screen name='UserFormScreen' component={UserFormScreen} />
         <Screen name='WalkerCard' component={WalkerCard} />
         <Screen name='WalkerProfile' component={WalkerProfile} />
       </Navigator>
