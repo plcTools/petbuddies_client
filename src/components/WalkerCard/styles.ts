@@ -1,36 +1,50 @@
 import {  StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+    container: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+
+        elevation: 3,
+        borderRadius:5,
+        marginBottom: 10
+    },
     cardHeaderContainer: {
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        alignItems: 'center',
+        height: 40
     },
     cardHeaderMain: {
-        flexDirection: "row",
-        justifyContent: 'flex-start',
-        alignItems: 'center'
+        width: '80%'
     },
     headerTitle: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
-        marginRight: 10,
+        textAlign: 'left'
     },
     cardHeaderRate: {
         flexDirection: "row",
-        justifyContent: 'flex-end'
-    },
-    rateStar: {
-        marginRight: 10
+        justifyContent: 'flex-end',
+        alignItems: 'center'
     },
     cardContainer: {
         flexDirection: "row",
+        placeItems: "center"
     },
     text: {
         marginTop: 10
     },
     infoContainer: {
-        width: 200,
+        justifyContent: "space-between",
+        width: 190,
         marginLeft: 20,
+        height: '100%'
     },
     btnContainer: {
         justifyContent: "center",
