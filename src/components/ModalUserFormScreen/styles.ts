@@ -42,6 +42,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    width:'80%',
+    height:'100%'
   },
   input: {
     backgroundColor: 'rgba(110,110,110, 0.5)',
@@ -49,6 +51,7 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     height: 40,
+    width:'100%',
     color: 'white',
   },
   label: {
