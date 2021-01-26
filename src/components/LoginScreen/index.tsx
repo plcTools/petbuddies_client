@@ -49,11 +49,11 @@ const modalStatusChange = () => {
       <View>
         <View >
           <Modal
-            animationType="slide"
+            animationType="fade"
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
+              Alert.alert('se cierra el Modal.');
             }}>
             <ModalUserFormScreen modalStatusChange={modalStatusChange}/>
           </Modal>

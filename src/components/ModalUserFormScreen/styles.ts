@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     margin: 35,
-    backgroundColor: 'rgba(200, 129, 129, 0.93)',
+    backgroundColor: 'rgba(200, 129, 129, 0.80)',
     borderRadius: 20,
     padding: 20,
     shadowColor: '#000',
