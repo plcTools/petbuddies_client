@@ -13,7 +13,6 @@ import {
 
 /* puede recibir mode:initialRegister, mode:add o mode:update */
 function ModalUserFormScreen(props: any) {
-    const mode: String = props.mode
 
     const [input, setInput] = useState({
         email: '',
