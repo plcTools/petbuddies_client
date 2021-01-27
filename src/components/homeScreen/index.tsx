@@ -27,7 +27,7 @@ const HomeScreen = () => {
     const navigation = useNavigation();
 
     React.useEffect(() => {
-        axios.get(`http://localhost:3001/walkers`)
+        axios.get(`https://henry-petbuddies.herokuapp.com/walkers`)
         .then((result) => setState(result.data))
     },[])
     return (

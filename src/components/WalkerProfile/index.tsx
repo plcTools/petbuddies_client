@@ -20,7 +20,7 @@ const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile
   console.log(route.params.id)
   const [state, setState] = React.useState()
   React.useEffect(() => {
-    axios.get(`http://localhost:3001/walkers/${route.params.id}`)
+    axios.get(`https://henry-petbuddies.herokuapp.com/walkers/${route.params.id}`)
     .then((result) => setState(result.data))
   },[])
 
