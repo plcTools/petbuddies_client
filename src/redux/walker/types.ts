@@ -1,6 +1,8 @@
 export interface Walker {
-  firstName?: string;
-  lastName?: string;
+  _id: string;
+  name?: string;
+  description?: string;
+  lastname?: string;
   email?: string;
   password?: string;
   cellphone?: number;
@@ -10,8 +12,11 @@ export interface Walker {
   photo?: string;
   role?: string;
   CUIT?: string;
-  workZone?: string;
+  workZone: string[];
   workHours?: string;
+  fee?: number;
+  countDogs: number;
+  rating: number;
 }
 export interface WalkerState {
   walkers: Walker[]
