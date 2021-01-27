@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import WalkerCard from '../components/WalkerCard';
 import WalkerProfile from '../components/WalkerProfile';
 import UserPannel from '../components/UserPannel';
-import UserFormScreen from '../components/UserFormScreen/UserFormScreen';
+// import UserFormScreen from '../components/UserFormScreen/UserFormScreen';
 import LoginScreen from '../components/LoginScreen';
 import { RootStackParamList } from './types';
 import HomeScreen from '../components/homeScreen';

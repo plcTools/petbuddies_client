@@ -16,6 +16,7 @@ export interface Owner {
     workHours?: string;
     fee?: number;
     countDogs: number;
+    rating: number;
   }
   export interface OwnerState {
     userFavorites: Owner[]

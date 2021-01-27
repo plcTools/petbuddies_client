@@ -84,8 +84,8 @@ const WalkerCard: React.FC<Props> = ({ walker, userFavorites }) => {
                 </View>
             </TouchableOpacity>
             <View style={styles.cardHeaderRate}>
+                <Text style={{marginRight: 5}}>{walker.rating}</Text>
                 <Icon name='star-o' type='font-awesome' size={15} color='green' underlayColor="red" />
-                <Text>3.7</Text>
             </View>
         </Card>
     )

@@ -42,4 +42,5 @@ export type walker = {
   workHours?: string;
   fee?: number;
   countDogs?: number;
+  rating: number;
 }

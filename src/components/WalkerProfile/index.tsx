@@ -17,33 +17,32 @@ import axios from 'axios';
 
 const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile'>) => {
 
-  console.log(route.params.id)
-  const [state, setState] = React.useState()
+  const [state, setState] = React.useState<any>()
   React.useEffect(() => {
     axios.get(`http://localhost:3001/walkers/${route.params.id}`)
     .then((result) => setState(result.data))
   },[])
 
+  console.log(state)
   const renderLabel = () => {
     
     return (
       <View style={[styles.tabBar, styles.tabContainer]}>
         <View>
         <Animated.Text style={styles.tabLabelText}>
-          5
+          $ {state.fee}
         </Animated.Text>
         <Animated.Text style={styles.tabLabelNumber}>
-        Cuidados <br/>
-        exitosos
+        Por <br/>
+        Viaje
         </Animated.Text>
         </View>
         <View>
         <Animated.Text style={styles.tabLabelText}>
-          3
+        Horarios
         </Animated.Text>
         <Animated.Text style={styles.tabLabelNumber}>
-        Paseos <br/>
-        activos
+          {state.workHours}
         </Animated.Text>
         </View>
         <View>
@@ -55,7 +54,7 @@ const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile
         realizados
         </Animated.Text>
         </View>
-        <View>
+        {/* <View>
         <Animated.Text style={styles.tabLabelText}>
           100%
         </Animated.Text>
@@ -63,22 +62,12 @@ const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile
         Respuesta <br/>
         a mensajes
         </Animated.Text>
-        </View>
+        </View> */}
       </View>
     )
   }
 
-
-
-    const walker = {
-        name: 'Fred Fort',
-        picture: 'https://randomuser.me/api/portraits/men/3.jpg',
-        bio: 'Cuando no estoy paseando perros, estoy salvando vidas en el cuerpo de Bomberos Voluntarios.',
-        zonaCuidado: 'Palermo, Buenos Aires (Capital Federal, Argentina)',
-        zonaPaseo: 'Belgrano, Colegiales, Las Cañitas, Nuñez, Palermo, Buenos Aires (CABA, Argentina)',
-        ratingCount: 27,
-        rating: 3.5
-    }
+  if(!state) return <Icon name='spinner' reverse type='font-awesome-5'/>
 
   return (
     <ScrollView style={styles.scroll}>
@@ -88,31 +77,31 @@ const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile
         <View style={styles.userRow}>
           <Image
             style={styles.userImage}
-            source={{uri: walker.picture}}
+            source={{uri: state.photo}}
           />
           <View style={styles.userNameRow}>
-            <Text style={styles.userNameText}>{walker.name}</Text>
+            <Text style={styles.userNameText}>{state.name + ' ' + state.lastname}</Text>
           </View>
           <View style={styles.userBioRow}>
-            <Text style={styles.userBioText}>{walker.bio}</Text>
+            <Text style={styles.userBioText}>{state.description}</Text>
           </View>
         </View>
         <View style={styles.socialRow}>
           <Rating
           readonly
-          startingValue={walker.rating}
+          startingValue={state.rating}
           />
-          <Text style={styles.ratingText}>{walker.ratingCount} calificaciones</Text>
+          <Text style={styles.ratingText}>27 calificaciones</Text>
         </View>
       </View>
       {renderLabel()}
       <View style={styles.descriptionRow}>
             <Icon name='map-marker' type='font-awesome' size={25} color='#c98c70' />
-            <Text style={styles.userDescriptionText}>Cuida en {walker.zonaCuidado}</Text>
+            <Text style={styles.userDescriptionText}>Vive en {state.zona}</Text>
       </View>
       <View style={styles.descriptionRow}>
             <Icon name='paw' type='font-awesome' size={25} color='#c98c70' />
-            <Text style={styles.userDescriptionText}>Pasea en {walker.zonaPaseo}</Text>
+            <Text style={styles.userDescriptionText}>Pasea en {state.workZone.map((item: string) => `${item} `)}</Text>
       </View>
       <View style={styles.messageRow}>
           <Icon name='comments' type='font-awesome' reverse color='#456672' />

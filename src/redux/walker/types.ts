@@ -16,6 +16,7 @@ export interface Walker {
   workHours?: string;
   fee?: number;
   countDogs: number;
+  rating: number;
 }
 export interface WalkerState {
   walkers: Walker[]

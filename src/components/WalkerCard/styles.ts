@@ -35,7 +35,6 @@ export const styles = StyleSheet.create({
     },
     cardContainer: {
         flexDirection: "row",
-        placeItems: "center"
     },
     text: {
         marginTop: 10
