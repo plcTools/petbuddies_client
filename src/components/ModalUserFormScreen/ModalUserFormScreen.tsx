@@ -55,7 +55,7 @@ function ModalUserFormScreen(props: any) {
                 <View style={styles.modalView}>
 
                     <View style={styles.headContainer}>
-                        <Text style={styles.title}> Registro </Text>
+                        <Text style={styles.title}> Register </Text>
                     </View>
 
                     <View style={styles.container}>
@@ -73,7 +73,7 @@ function ModalUserFormScreen(props: any) {
                         </View>
 
                         <View>
-                            <Text style={styles.label}>Contraseña</Text>
+                            <Text style={styles.label}>Password</Text>
                             <TextInput
                                 style={[styles.input]}
                                 maxLength={50}
@@ -85,7 +85,7 @@ function ModalUserFormScreen(props: any) {
                         </View>
 
                         <View>
-                            <Text style={styles.label}>Repetir Constraseña</Text>
+                            <Text style={styles.label}>Confirm Password</Text>
                             <TextInput
                                 style={[styles.input]}
                                 maxLength={50}
@@ -105,7 +105,7 @@ function ModalUserFormScreen(props: any) {
                             <TouchableOpacity
                                 style={[styles.button]}
                                 onPress={() => onSubmit()}>
-                                <Text style={[styles.textButton]}>Guardar</Text>
+                                <Text style={[styles.textButton]}>Save</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
@@ -113,7 +113,7 @@ function ModalUserFormScreen(props: any) {
                                 onPress={() => {
                                     props.modalStatusChange()
                                 }}>
-                                <Text style={styles.textButton}>Cancelar</Text>
+                                <Text style={styles.textButton}>Cancel</Text>
                             </TouchableOpacity>
                         </View>
 

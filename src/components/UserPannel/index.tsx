@@ -12,61 +12,61 @@ const UserPannel =({navigation}: RouteStackParamList<'UserPannel'>)=> {
                 <Avatar /* onPress debería poder modificar la foto de perfil*/ 
                 rounded
                 size="large"
-                title='MM'
+                source={{uri: 'https://avatars2.githubusercontent.com/u/70122640?s=460&u=b6ee1cc045afec1cd97d12d10725552b4734138f&v=4'}}
                 overlayContainerStyle={{backgroundColor: 'orange'}}
                 onPress={() => alert("ir a editar perfil")}
                 />
                 <ListItem.Content>
                     <ListItem.Title>Macarena Montes de Oca</ListItem.Title>
-                    <ListItem.Subtitle>La Plata, Buenos Aires</ListItem.Subtitle>
+                    <ListItem.Subtitle>Miami, Florida</ListItem.Subtitle>
                 </ListItem.Content>
             </ListItem>
             <ListItem bottomDivider>
-                <Icon raised name='paw'type='fontisto' size={20}/>
+                <Icon raised name='paw'type='fontisto' size={10}/>
                 <ListItem.Content>
-                <ListItem.Title>Mis Mascotas</ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Chevron />
-            </ListItem>
-            <ListItem bottomDivider>
-                <Icon raised name='blind'type='font-awesome' size={20}/>
-                <ListItem.Content>
-                <ListItem.Title>Paseos</ListItem.Title>
+                <ListItem.Title>My Pets</ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
             <ListItem bottomDivider>
-                <Icon raised name='envelope-o'type='font-awesome' size={20}/>
+                <Icon raised name='blind'type='font-awesome' size={10}/>
                 <ListItem.Content>
-                <ListItem.Title>Mensajes</ListItem.Title>
+                <ListItem.Title>Walks</ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
             <ListItem bottomDivider>
-                <Icon raised name='heart' color = 'red' type='font-awesome' size={20}/>
+                <Icon raised name='envelope-o'type='font-awesome' size={10}/>
                 <ListItem.Content>
-                <ListItem.Title>Favoritos</ListItem.Title>
+                <ListItem.Title>Messages</ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
             <ListItem bottomDivider>
-                <Icon raised name='phone'type='font-awesome' size={20}/>
+                <Icon raised name='heart' color = 'red' type='font-awesome' size={10}/>
                 <ListItem.Content>
-                <ListItem.Title>Ayuda en línea</ListItem.Title>
+                <ListItem.Title>Favorites</ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
             <ListItem bottomDivider>
-                <Icon raised name='user-plus'type='font-awesome' size={20}/>
+                <Icon raised name='phone'type='font-awesome' size={10}/>
                 <ListItem.Content>
-                <ListItem.Title>Invitá a un amigo</ListItem.Title>
+                <ListItem.Title>Help</ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
             <ListItem bottomDivider>
-                <Icon raised name='sign-out'type='font-awesome' size={20}/>
+                <Icon raised name='user-plus'type='font-awesome' size={10}/>
                 <ListItem.Content>
-                <ListItem.Title>Cerrar sesión</ListItem.Title>
+                <ListItem.Title>Invite a friend</ListItem.Title>
+                </ListItem.Content>
+                <ListItem.Chevron />
+            </ListItem>
+            <ListItem bottomDivider>
+                <Icon raised name='sign-out'type='font-awesome' size={10}/>
+                <ListItem.Content>
+                <ListItem.Title>Logout</ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>

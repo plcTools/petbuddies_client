@@ -12,7 +12,8 @@ export const styles = StyleSheet.create({
 
         elevation: 3,
         borderRadius:5,
-        marginBottom: 10
+        marginBottom: 10,
+        height: 250,
     },
     cardHeaderContainer: {
         flexDirection: "row",
@@ -43,7 +44,7 @@ export const styles = StyleSheet.create({
         justifyContent: "space-between",
         width: 190,
         marginLeft: 20,
-        height: '100%'
+        height: 150
     },
     btnContainer: {
         justifyContent: "center",

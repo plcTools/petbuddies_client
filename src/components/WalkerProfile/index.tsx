@@ -19,11 +19,10 @@ const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile
 
   const [state, setState] = React.useState<any>()
   React.useEffect(() => {
-    axios.get(`http://localhost:3001/walkers/${route.params.id}`)
+    axios.get(`http://192.168.1.35:3001/walkers/${route.params.id}`)
     .then((result) => setState(result.data))
   },[])
 
-  console.log(state)
   const renderLabel = () => {
     
     return (
@@ -33,13 +32,12 @@ const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile
           $ {state.fee}
         </Animated.Text>
         <Animated.Text style={styles.tabLabelNumber}>
-        Por <br/>
-        Viaje
+        Per Walk
         </Animated.Text>
         </View>
         <View>
         <Animated.Text style={styles.tabLabelText}>
-        Horarios
+        Schedule
         </Animated.Text>
         <Animated.Text style={styles.tabLabelNumber}>
           {state.workHours}
@@ -47,11 +45,10 @@ const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile
         </View>
         <View>
         <Animated.Text style={styles.tabLabelText}>
-          255
+          {state.walks}
         </Animated.Text>
         <Animated.Text style={styles.tabLabelNumber}>
-        Paseos <br/>
-        realizados
+        Walks completed
         </Animated.Text>
         </View>
         {/* <View>
@@ -91,21 +88,21 @@ const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile
           readonly
           startingValue={state.rating}
           />
-          <Text style={styles.ratingText}>27 calificaciones</Text>
+          <Text style={styles.ratingText}>{state.reveiewsReceived} califications</Text>
         </View>
       </View>
       {renderLabel()}
       <View style={styles.descriptionRow}>
             <Icon name='map-marker' type='font-awesome' size={25} color='#c98c70' />
-            <Text style={styles.userDescriptionText}>Vive en {state.zona}</Text>
+            <Text style={styles.userDescriptionText}>lives in {state.zona}</Text>
       </View>
       <View style={styles.descriptionRow}>
             <Icon name='paw' type='font-awesome' size={25} color='#c98c70' />
-            <Text style={styles.userDescriptionText}>Pasea en {state.workZone.map((item: string) => `${item} `)}</Text>
+            <Text style={styles.userDescriptionText}>walks in {state.workZone.map((item: string) => `${item} `)}</Text>
       </View>
       <View style={styles.messageRow}>
-          <Icon name='comments' type='font-awesome' reverse color='#456672' />
-          <Text style={styles.messageText}>Envíale un mensaje</Text>
+          <Icon name='comments' type='font-awesome' reverse color='#456672' onPress={() => alert(`Ahora no puedo pasear :(`)} />
+          <Text style={styles.messageText}>Send message</Text>
         </View>
     </View>
         </View>
@@ -186,6 +183,7 @@ const styles = StyleSheet.create({
       fontSize: 13.5,
       textAlign: 'center',
       marginLeft: 5,
+      textTransform: 'capitalize'
     },
     ratingText: {
       color: 'white',

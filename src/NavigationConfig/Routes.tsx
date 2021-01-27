@@ -10,6 +10,7 @@ import LoginScreen from '../components/LoginScreen';
 import { RootStackParamList } from './types';
 import HomeScreen from '../components/homeScreen';
 import { Icon } from 'react-native-elements';
+import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
 
 
 /* 
@@ -25,6 +26,7 @@ import { Icon } from 'react-native-elements';
 */
 
 export const Routes: React.FC = () => {
+  let [ fonts ] = useFonts({ NunitoSans_400Regular });
 
   const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
 
@@ -69,7 +71,7 @@ export const Routes: React.FC = () => {
     )
   }
 /*   const Drawer = createDrawerNavigator() */
-
+if(!fonts) return <Icon name='spinner' reverse type='font-awesome-5'/>
 return (
   
     <NavigationContainer>
