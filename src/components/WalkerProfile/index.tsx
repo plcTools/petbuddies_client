@@ -19,7 +19,7 @@ const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile
 
   const [state, setState] = React.useState<any>()
   React.useEffect(() => {
-    axios.get(`http://192.168.1.35:3001/walkers/${route.params.id}`)
+    axios.get(`http://192.168.43.55:3001/walkers/${route.params.id}`)
     .then((result) => setState(result.data))
   },[])
 
@@ -98,7 +98,7 @@ const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile
       </View>
       <View style={styles.descriptionRow}>
             <Icon name='paw' type='font-awesome' size={25} color='#c98c70' />
-            <Text style={styles.userDescriptionText}>walks in {state.workZone.map((item: string) => `${item} `)}</Text>
+            <Text style={styles.userDescriptionText}>walks in {state.workZone?.map((item: string) => `${item} `)}</Text>
       </View>
       <View style={styles.messageRow}>
           <Icon name='comments' type='font-awesome' reverse color='#456672' onPress={() => alert(`Ahora no puedo pasear :(`)} />

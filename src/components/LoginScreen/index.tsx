@@ -2,18 +2,42 @@ import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { RouteStackParamList } from '../../NavigationConfig/types'
 import ModalUserFormScreen from '../ModalUserFormScreen/ModalUserFormScreen'
+import firebase from 'firebase';
+
+interface state {
+  [key: string]: any
+}
 
 const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
-
+  const [state, setState] = useState<state | null>(null);
   const [userData, setUserData] = useState({
     email: "",
     password: ""
   })
 
+  const login = async () => {
+    const { email, password } = userData;
+    if (email && password) {
+      try {
+        await firebase.auth().signInWithEmailAndPassword(email, password);
+        navigation.navigate('Tab');
+      } catch (error) {
+        console.log(error.message)
+        Alert.alert(error.message);
+      }
+    } else {
+      Alert.alert('Error', 'Check your email and password and try again.')
+    }
+  }  
+  
+  const handleLogin = async () => {
+    login()
+  }   
+
   const [modalVisible, setModalVisible] = useState(false);
-const modalStatusChange = () => {
+  const modalStatusChange = () => {
   setModalVisible(!modalVisible)
-}
+  }
 
   return (
     <View style={styles.container}>
@@ -38,7 +62,7 @@ const modalStatusChange = () => {
           <TouchableOpacity>
             <Text style={styles.forgot}>Forgot Password?</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.loginBtn} onPress={() => navigation.navigate('Tab')}>
+          <TouchableOpacity style={styles.loginBtn} onPress={() => handleLogin()}>
             <Text style={styles.loginText}>LOGIN</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>

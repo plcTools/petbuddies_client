@@ -10,8 +10,9 @@ import {
     Platform,
     Alert
 } from 'react-native';
+import firebase from 'firebase';
+import axios from 'axios';
 
-/* puede recibir mode:initialRegister, mode:add o mode:update */
 function ModalUserFormScreen(props: any) {
 
     const [input, setInput] = useState({
@@ -30,6 +31,21 @@ function ModalUserFormScreen(props: any) {
         /* si no coincide devuelve false */
     }
 
+    const signup = async () => {
+        const { email, password } = input;
+        if (email && password) {
+            try {
+                const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                if(user) {
+                    await axios.post('http://192.168.43.55:3001/owners', { email })
+                    return Alert.alert('Registro exitoso!');
+                }
+            } catch (error) {
+                Alert.alert(error.message);
+            }
+        }
+    }
+
     const onSubmit = () => {
         const emailValidate = input.email && validateEmail(input.email)
         const lenPass = input.password && input.password.length > 5
@@ -38,9 +54,8 @@ function ModalUserFormScreen(props: any) {
         if (!passValidate) { return Alert.alert('Las contraseñas no coinciden') };
         if (!lenPass) { return Alert.alert('La contraseña debe tener como minimo 6 caracteres') };
         if (input.email && input.password && input.repeatPassword && passValidate && emailValidate && lenPass) {
-            console.log(input);/* esto hay que pasarle a Redux o Axios */
+            signup();
             props.modalStatusChange()/* cambia el state para ocultar el modal */
-            return Alert.alert('Registro exitoso!');
         }
 
     };

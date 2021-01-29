@@ -38,7 +38,7 @@ const WalkerCard: React.FC<Props> = ({ walker, userFavorites }) => {
     })
 
     React.useEffect(() => {
-        userFavorites.map(u => {
+        userFavorites?.map(u => {
             if(u._id === walker._id) {
                 setChecked(true);
             };
@@ -66,11 +66,11 @@ const WalkerCard: React.FC<Props> = ({ walker, userFavorites }) => {
                     checked={checked}
                     onPress={async () => {
                         if (!checked) {
-                            const result = await axios.patch(`http://192.168.1.35:3001/owners/600ae1c984ce6400985f4f7a/favorites`, { walkerId: walker._id })
+                            const result = await axios.patch(`http://192.168.43.55:3001/owners/600ae1c984ce6400985f4f7a/favorites`, { walkerId: walker._id })
                             dispatch(getUserFavorites("600ae1c984ce6400985f4f7a"))
                             return setChecked(true)
                         } else {
-                            const result = await axios.delete(`http://192.168.1.35:3001/owners/600ae1c984ce6400985f4f7a/favorites/` + walker._id)
+                            const result = await axios.delete(`http://192.168.43.55:3001/owners/600ae1c984ce6400985f4f7a/favorites/` + walker._id)
                             dispatch(getUserFavorites("600ae1c984ce6400985f4f7a"))
                             return setChecked(false)
                         }
@@ -106,7 +106,7 @@ const WalkerCard: React.FC<Props> = ({ walker, userFavorites }) => {
                         <Divider/>
                         <View>
                         {
-                            walker.workZone.map((z, i) => (
+                            walker.workZone?.map((z, i) => (
                                 // <Text key={i} style={{textTransform: 'capitalize', fontWeight: 'bold', marginRight: 20}}>{z}</Text>
                                 <View key={i} style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginLeft: 10}}>
                                     <Icon 
