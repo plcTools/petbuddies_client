@@ -75,7 +75,6 @@ const HomeScreen = () => {
                 keyExtractor={(item: Walker) => item._id}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => {
-                    console.log(item)
                     return (<WalkerCard walker={item} userFavorites={userFavorites} />)
                 }}
             />
@@ -188,6 +187,7 @@ const HomeScreen = () => {
                         style={{
                             backgroundColor: '#f1f1f1',
                             margin: 15, 
+                            marginTop:100,
                             padding: 20,
                             marginBottom: 50,
                             borderRadius: 25, 
@@ -217,9 +217,12 @@ const HomeScreen = () => {
                         <Text
                             style={{
                                 fontWeight: 'bold',
-                                fontSize: 20
+                                fontSize: 20,
+                                marginBottom:10,
+                                width: 300,
+                                textAlign: 'center'
                             }}
-                        >Select your neighborhood:</Text>
+                        >Select your neighborhood</Text>
                         {
                             lista && lista.map((item, i) => (
                                 <TouchableOpacity 

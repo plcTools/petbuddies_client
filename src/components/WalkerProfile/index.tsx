@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     },
     messageRow: {
       flexDirection: 'row',
-      marginLeft: 40,
+      marginLeft: 0, //Tenia 40
       marginRight: 40,
     },
     tabBar: {
@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
       fontSize: 22.5,
       fontWeight: '600',
       textAlign: 'center',
+      width: 100 //Agregado
     },
     userBioRow: {
       marginLeft: 40,
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
     userDescriptionText: {
       color: 'gray',
       fontSize: 13.5,
-      textAlign: 'center',
+      // textAlign: 'center',
       marginLeft: 5,
       textTransform: 'capitalize'
     },
@@ -199,8 +200,9 @@ const styles = StyleSheet.create({
       color: '#456672',
       fontSize: 20,
       fontWeight: 'bold',
-      marginLeft: 14,
-      margin: 14,
+      marginLeft: 5, //Tenia 14
+      margin: 17, //Tenia 7
+      width: 140 // No estaba
     },
     userImage: {
       borderRadius: 60,

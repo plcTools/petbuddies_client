@@ -25,6 +25,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center'
     },
     cardIcons: {
+        marginTop: 30,
         alignItems: 'center'
     },
     icons: {
