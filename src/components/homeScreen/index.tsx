@@ -75,7 +75,6 @@ const HomeScreen = () => {
                 keyExtractor={(item: Walker) => item._id}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => {
-                    console.log(item)
                     return (<WalkerCard walker={item} userFavorites={userFavorites} />)
                 }}
             />
