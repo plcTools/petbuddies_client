@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
         marginTop: 10,
         width: '100%',
         flex: 1
-    },
+        },
     cards: {
         width: '92%',
         height: 200,
@@ -25,6 +25,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center'
     },
     cardIcons: {
+        marginTop: 30,
         alignItems: 'center'
     },
     icons: {

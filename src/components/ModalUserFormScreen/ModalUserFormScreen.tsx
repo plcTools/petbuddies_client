@@ -37,7 +37,7 @@ function ModalUserFormScreen(props: any) {
             try {
                 const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
                 if(user) {
-                    await axios.post('http://192.168.43.55:3001/owners', { email })
+                    await axios.post('/owners', { email })
                     return Alert.alert('Registro exitoso!');
                 }
             } catch (error) {

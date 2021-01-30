@@ -5,6 +5,6 @@ type DispatchType = (arg0: WalkerActionsTypes) => WalkerActionsTypes;
 
 
 export const getWalkers = ():any => async (dispatch:DispatchType) => {
-    const {data} = await axios.get(`http://192.168.43.55:3001/walkers`)
+    const {data} = await axios.get(`/walkers`)
     return dispatch({ type: GET_WALKERS, payload: data })
 }
