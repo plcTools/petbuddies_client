@@ -19,7 +19,7 @@ const WalkerProfile = ({ navigation, route }: RouteStackParamList<'WalkerProfile
 
   const [state, setState] = React.useState<any>()
   React.useEffect(() => {
-    axios.get(`http://192.168.43.55:3001/walkers/${route.params.id}`)
+    axios.get(`/walkers/${route.params.id}`)
     .then((result) => setState(result.data))
   },[])
 

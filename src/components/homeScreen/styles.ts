@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
         marginTop: 10,
         width: '100%',
         flex: 1
-    },
+        },
     cards: {
         width: '92%',
         height: 200,

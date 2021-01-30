@@ -66,11 +66,11 @@ const WalkerCard: React.FC<Props> = ({ walker, userFavorites }) => {
                     checked={checked}
                     onPress={async () => {
                         if (!checked) {
-                            const result = await axios.patch(`http://192.168.43.55:3001/owners/600ae1c984ce6400985f4f7a/favorites`, { walkerId: walker._id })
+                            const result = await axios.patch(`/owners/600ae1c984ce6400985f4f7a/favorites`, { walkerId: walker._id })
                             dispatch(getUserFavorites("600ae1c984ce6400985f4f7a"))
                             return setChecked(true)
                         } else {
-                            const result = await axios.delete(`http://192.168.43.55:3001/owners/600ae1c984ce6400985f4f7a/favorites/` + walker._id)
+                            const result = await axios.delete(`/owners/600ae1c984ce6400985f4f7a/favorites/` + walker._id)
                             dispatch(getUserFavorites("600ae1c984ce6400985f4f7a"))
                             return setChecked(false)
                         }
