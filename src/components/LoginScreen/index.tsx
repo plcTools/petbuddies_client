@@ -28,15 +28,15 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
     } else {
       Alert.alert('Error', 'Check your email and password and try again.')
     }
-  }  
-  
+  }
+
   const handleLogin = async () => {
     login()
-  }   
+  }
 
   const [modalVisible, setModalVisible] = useState(false);
   const modalStatusChange = () => {
-  setModalVisible(!modalVisible)
+    setModalVisible(!modalVisible)
   }
 
   return (
@@ -47,16 +47,16 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
           <View style={styles.inputView} >
             <TextInput
               style={styles.inputText}
-              placeholder="Email..."
-              placeholderTextColor="#e3b587"
+              placeholder="Email"
+              placeholderTextColor="#ffff"
               onChangeText={text => setUserData({ ...userData, email: text })} />
           </View>
           <View style={styles.inputView} >
             <TextInput
               secureTextEntry
               style={styles.inputText}
-              placeholder="Password..."
-              placeholderTextColor="#e3b587"
+              placeholder="Password"
+              placeholderTextColor="#ffff"
               onChangeText={text => setUserData({ ...userData, password: text })} />
           </View>
           <TouchableOpacity>
@@ -79,7 +79,7 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
             onRequestClose={() => {
               Alert.alert('se cierra el Modal.');
             }}>
-            <ModalUserFormScreen modalStatusChange={modalStatusChange}/>
+            <ModalUserFormScreen modalStatusChange={modalStatusChange} />
           </Modal>
         </View>
       </View>
