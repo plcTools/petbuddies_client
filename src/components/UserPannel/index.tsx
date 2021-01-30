@@ -8,7 +8,8 @@ const UserPannel =({navigation}: RouteStackParamList<'UserPannel'>)=> {
     
     return (
         <View>
-            <ListItem bottomDivider>
+            <ListItem bottomDivider style={{paddingTop: 40}}
+>
                 <Avatar /* onPress debería poder modificar la foto de perfil*/ 
                 rounded
                 size="large"

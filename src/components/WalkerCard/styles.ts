@@ -38,7 +38,8 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
     },
     text: {
-        marginTop: 10
+        marginTop: 10,
+        width: 90 //No estaba
     },
     infoContainer: {
         justifyContent: "space-between",
