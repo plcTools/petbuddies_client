@@ -8,6 +8,10 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "expo.googlesignin",
+      "googleServicesFile": "./android/app/google-services.json"
+    }
   }
 }

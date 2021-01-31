@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { RouteStackParamList } from '../../NavigationConfig/types'
 import ModalUserFormScreen from '../ModalUserFormScreen/ModalUserFormScreen'
 import firebase from 'firebase';
-
-
+import { useFonts } from '@expo-google-fonts/nunito-sans';
+import * as Google from "expo-google-app-auth";
+import axios from 'axios';
+import { ANDROID_CLIENT_ID } from "@env"
 interface state {
   [key: string]: any
 }
@@ -15,6 +17,27 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
     email: "",
     password: ""
   })
+  const signIn = async () => {
+    try {
+      const result = await Google.logInAsync({
+        androidClientId: ANDROID_CLIENT_ID,
+        scopes: ["profile", "email"]
+      })
+      if (result.type === "success") {
+       await axios.post('/owners', {
+          name: result.user.givenName,
+          lastname: result.user.familyName,
+          email: result.user.email,
+          photo: result.user.photoUrl
+        })
+        navigation.navigate('Tab');
+      } else {
+        console.log("cancelled")
+      }
+    } catch (e) {
+      console.log("error", e)
+    }
+  }
 
   const login = async () => {
     const { email, password } = userData;
@@ -66,6 +89,9 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.loginBtn} onPress={() => handleLogin()}>
             <Text style={styles.loginText}>LOGIN</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.loginBtn} onPress={() => signIn()}>
+            <Text style={styles.loginText}>SIGN-IN WITH GOOGLE</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
             <Text style={styles.loginText}>Signup</Text>
