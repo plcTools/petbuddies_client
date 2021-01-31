@@ -26,38 +26,39 @@ import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
 */
 
 export const Routes: React.FC = () => {
-  let [ fonts ] = useFonts({ NunitoSans_400Regular });
+  let [fonts] = useFonts({ NunitoSans_400Regular });
 
   const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
 
   const Tab = createBottomTabNavigator()
   const TabNavigation = () => {
     return (
-      <Tab.Navigator 
+      <Tab.Navigator
         initialRouteName='HomeScreen'
         tabBarOptions={{
-          activeTintColor: '#fc5185',
-          inactiveTintColor: '#cccccc',
+          inactiveTintColor: '#fdfafa',
+          activeTintColor: '#008891',
           style: {
-            backgroundColor: '#364f6b'
+            backgroundColor: '#c98c70'
           },
-          showLabel: false
+          showLabel: false,
+
         }}
         screenOptions={({ route }) => ({
           tabBarIcon: ({ color, size }) => {
             type Icons = {
               [key: string]: string;
             }
-            
+
             let icons: Icons;
-            icons = {Home: "home", Profile:"user-o"};
-            
-            if(route.name === 'Walkers') return null;
+            icons = { Home: "home", Profile: "user" };
+
+            if (route.name === 'Walkers') return null;
 
             return (
-              <Icon 
+              <Icon
                 name={`${icons[route.name]}`}
-                type= 'font-awesome'
+                type='font-awesome'
                 color={color}
                 size={size}
               />
@@ -70,19 +71,19 @@ export const Routes: React.FC = () => {
       </Tab.Navigator>
     )
   }
-/*   const Drawer = createDrawerNavigator() */
-if(!fonts) return <Icon name='spinner' reverse type='font-awesome-5'/>
-return (
-  
+  /*   const Drawer = createDrawerNavigator() */
+  if (!fonts) return <Icon name='spinner' reverse type='font-awesome-5' />
+  return (
+
     <NavigationContainer>
       <Navigator >
-        <Screen name='LoginScreen' component={LoginScreen} options={{headerShown: false}}/>
-        <Screen name='Tab' component={TabNavigation} options={{headerShown: false}} />
+        <Screen name='LoginScreen' component={LoginScreen} options={{ headerShown: false }} />
+        <Screen name='Tab' component={TabNavigation} options={{ headerShown: false }} />
         <Screen name='WalkerCard' component={WalkerCard} />
         <Screen name='WalkerProfile' component={WalkerProfile} />
       </Navigator>
     </NavigationContainer>
-  ) 
+  )
 }
 
 

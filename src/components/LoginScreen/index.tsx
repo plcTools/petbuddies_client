@@ -4,6 +4,7 @@ import { RouteStackParamList } from '../../NavigationConfig/types'
 import ModalUserFormScreen from '../ModalUserFormScreen/ModalUserFormScreen'
 import firebase from 'firebase';
 
+
 interface state {
   [key: string]: any
 }
@@ -20,6 +21,7 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
     if (email && password) {
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password);
+
         navigation.navigate('Tab');
       } catch (error) {
         console.log(error.message)
