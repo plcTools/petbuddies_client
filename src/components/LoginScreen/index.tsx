@@ -7,6 +7,7 @@ import { useFonts } from '@expo-google-fonts/nunito-sans';
 import * as Google from "expo-google-app-auth";
 import axios from 'axios';
 import { ANDROID_CLIENT_ID } from "@env"
+
 interface state {
   [key: string]: any
 }
@@ -38,6 +39,43 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
       console.log("error", e)
     }
   }
+
+  /* const signInWithGoogle = async () => {
+    console.log('hiciste click')
+    try {
+      const result = await Expo.Google.logInAsync({
+        behavior: 'web',
+        androidClientId: '901331707362-en3032377ik1c8fpj3noe9pajl47q2j6.apps.googleusercontent.com',
+    
+        scopes: ['profile', 'email'],
+      });
+  
+      if (result.type === 'success') {
+      
+        console.log(result)
+      } else {
+        console.log('hiciste click2')
+        return { cancelled: true };
+      }
+    } catch (e) {
+      console.log('hiciste click3')
+      return { error: true };
+    }
+  } */
+
+  const signInWithGoogle = async () => {
+    console.log('hiciste click')
+    try {
+      await GoogleSignIn.askForPlayServicesAsync();
+      const { type, user } = await GoogleSignIn.signInAsync();
+      
+      if (type === 'success') {
+        console.log(user)
+      }
+    } catch ({ message }) {
+      console.log('login: Error:' + message);
+    }
+  };
 
   const login = async () => {
     const { email, password } = userData;

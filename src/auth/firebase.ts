@@ -16,4 +16,5 @@ const firebaseConfig = {
     appId: FIREBASE_APP_ID
   };
 
-  firebase.initializeApp(firebaseConfig);
+
+!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
