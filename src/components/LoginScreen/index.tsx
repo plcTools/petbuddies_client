@@ -30,15 +30,15 @@ firebase.auth().onAuthStateChanged(function(user){
     } else {
       Alert.alert('Error', 'Check your email and password and try again.')
     }
-  }  
-  
+  }
+
   const handleLogin = async () => {
     login()
-  }   
+  }
 
   const [modalVisible, setModalVisible] = useState(false);
   const modalStatusChange = () => {
-  setModalVisible(!modalVisible)
+    setModalVisible(!modalVisible)
   }
 
   return (
@@ -59,8 +59,8 @@ firebase.auth().onAuthStateChanged(function(user){
             <TextInput
               secureTextEntry
               style={styles.inputText}
-              placeholder="Password..."
-              placeholderTextColor="#e3b587"
+              placeholder="Password"
+              placeholderTextColor="#ffff"
               onChangeText={text => setUserData({ ...userData, password: text })} />
           </View>
           <TouchableOpacity>
@@ -83,7 +83,7 @@ firebase.auth().onAuthStateChanged(function(user){
             onRequestClose={() => {
               Alert.alert('se cierra el Modal.');
             }}>
-            <ModalUserFormScreen modalStatusChange={modalStatusChange}/>
+            <ModalUserFormScreen modalStatusChange={modalStatusChange} />
           </Modal>
         </View>
       </View>
