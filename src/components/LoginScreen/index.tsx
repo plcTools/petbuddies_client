@@ -14,6 +14,8 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
     email: "",
     password: ""
   })
+firebase.auth().onAuthStateChanged(function(user){
+  if (user){navigation.navigate('Tab')}})
 
   const login = async () => {
     const { email, password } = userData;
@@ -47,6 +49,8 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
           <View style={styles.inputView} >
             <TextInput
               style={styles.inputText}
+              autoCorrect={false}
+              autoCapitalize={'none'}
               placeholder="Email..."
               placeholderTextColor="#e3b587"
               onChangeText={text => setUserData({ ...userData, email: text })} />
