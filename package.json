@@ -20,6 +20,8 @@
     "@types/react-redux": "^7.1.16",
     "axios": "^0.21.1",
     "expo": "~40.0.0",
+    "expo-google-app-auth": "^8.1.4",
+    "expo-google-sign-in": "^9.0.0",
     "expo-splash-screen": "~0.8.0",
     "expo-updates": "~0.4.0",
     "firebase": "^8.2.4",
