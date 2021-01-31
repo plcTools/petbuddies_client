@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { RouteStackParamList } from '../../NavigationConfig/types'
 import ModalUserFormScreen from '../ModalUserFormScreen/ModalUserFormScreen'
 import firebase from 'firebase';
-import * as GoogleSignIn from 'expo-google-sign-in';
-
-
+import { useFonts } from '@expo-google-fonts/nunito-sans';
+import * as Google from "expo-google-app-auth";
+import axios from 'axios';
+import { ANDROID_CLIENT_ID } from "@env"
 interface state {
   [key: string]: any
 }
@@ -16,43 +17,27 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
     email: "",
     password: ""
   })
-
-  /* const signInWithGoogle = async () => {
-    console.log('hiciste click')
+  const signIn = async () => {
     try {
-      const result = await Expo.Google.logInAsync({
-        behavior: 'web',
-        androidClientId: '901331707362-en3032377ik1c8fpj3noe9pajl47q2j6.apps.googleusercontent.com',
-    
-        scopes: ['profile', 'email'],
-      });
-  
-      if (result.type === 'success') {
-      
-        console.log(result)
+      const result = await Google.logInAsync({
+        androidClientId: ANDROID_CLIENT_ID,
+        scopes: ["profile", "email"]
+      })
+      if (result.type === "success") {
+       await axios.post('/owners', {
+          name: result.user.givenName,
+          lastname: result.user.familyName,
+          email: result.user.email,
+          photo: result.user.photoUrl
+        })
+        navigation.navigate('Tab');
       } else {
-        console.log('hiciste click2')
-        return { cancelled: true };
+        console.log("cancelled")
       }
     } catch (e) {
-      console.log('hiciste click3')
-      return { error: true };
+      console.log("error", e)
     }
-  } */
-
-  const signInWithGoogle = async () => {
-    console.log('hiciste click')
-    try {
-      await GoogleSignIn.askForPlayServicesAsync();
-      const { type, user } = await GoogleSignIn.signInAsync();
-      
-      if (type === 'success') {
-        console.log(user)
-      }
-    } catch ({ message }) {
-      console.log('login: Error:' + message);
-    }
-  };
+  }
 
   const login = async () => {
     const { email, password } = userData;
@@ -104,8 +89,8 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
           <TouchableOpacity style={styles.loginBtn} onPress={() => handleLogin()}>
             <Text style={styles.loginText}>LOGIN</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.loginBtn} onPress={() => signInWithGoogle()}>
-            <Text style={styles.loginText}>LOGIN WITH GOOGLE</Text>
+          <TouchableOpacity style={styles.loginBtn} onPress={() => signIn()}>
+            <Text style={styles.loginText}>SIGN-IN WITH GOOGLE</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
             <Text style={styles.loginText}>Signup</Text>
