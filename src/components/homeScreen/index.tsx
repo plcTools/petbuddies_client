@@ -10,6 +10,7 @@ import { useAppDispatch, RootState } from '../../redux/store';
 import { getWalkers } from '../../redux/walker/actions';
 import { getUserFavorites } from '../../redux/owner/actions';
 import { Walker } from '../../redux/walker/types';
+import { RouteStackParamList } from '../../NavigationConfig/types';
 import {
     useFonts,
     NunitoSans_400Regular,
@@ -27,7 +28,7 @@ interface ModalChecks {
 }
 
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }: RouteStackParamList<'BeautySpaScreen'>) => {
     const [state, setState] = React.useState<any | typeof walkers>(null);
     const [check, setCheck] = React.useState<boolean>(false);
     const [checked, setChecked] = React.useState<string | boolean>(false);
@@ -105,6 +106,17 @@ const HomeScreen = () => {
                             }
                         }} />
                     <Text>Walkers</Text>
+                </View>
+                <View style={styles.cardIcons}>
+                    <Icon
+                        reverse
+                        name='cut'
+                        type='font-awesome-5'
+                        color='#fc5185'
+                        onPress={() => {
+                            navigation.navigate ('BeautySpaScreen')
+                        }} />
+                    <Text>Hairdressers</Text>
                 </View>
                 {/* <View style={styles.cardIcons}>
                     <Icon

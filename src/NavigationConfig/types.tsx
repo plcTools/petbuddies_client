@@ -17,6 +17,7 @@ export type RootStackParamList = {
   Stack: undefined
   Tab: undefined;
   TabNavigation: undefined;
+  BeautySpaScreen: undefined;
 };
 
 export type RouteStackParamList<T extends keyof RootStackParamList> = {

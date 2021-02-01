@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import {styles} from './styles'
+import { styles } from './styles'
 
 import {
   View,
@@ -28,84 +28,86 @@ const DATA = [
   },
 ];
 
-const Item = ({ title }) => (
-  <View style={styles.itemList}>
-    <Text style={styles.textList}>{title}</Text>
-  </View>
-);
+function SpaCard(props: any) {
 
-function SpaCard() {
-  const renderItem = ({ item }) => <Item title={item.title} />;
+  const renderItem = (item: any) => {
+    return (
+      <View style={styles.itemList}>
+        <Text style={styles.textList}>{item.item.title}</Text>
+      </View>
+    )
+  };
 
   return (
-    <SafeAreaView /* screen */ style={styles.screen}>
-      <View /* containerAll */ style={styles.containerAll}>
-        <View /* headersContainer */ style={styles.headersContainer}>
-          <View /* left */>
-            <View /* titleContainer */>
-              <Text style={styles.textTitle}>Spa Perruno</Text>
-            </View /* titleContainer */>
-          </View /* left */>
-          <View /* right */>
-            <View /* buttonContainer */>
-              <TouchableOpacity style={styles.button}>
-                <Text style={styles.textButton}>Info</Text>
-              </TouchableOpacity>
-            </View /* Button Container */>
-          </View /* right */>
-        </View /* headersContainer */>
-        <View /* detailsConatiner */ style={styles.detailsContainer}>
-          <View /* left */>
-            <View /* photoContainer */>
-              <Image
-                style={styles.photo}
-                source={{
-                  uri:
-                    'https://images.unsplash.com/photo-1611173622933-91942d394b04?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-                }}></Image>
-            </View /* photoContainer */>
-          </View /* left */>
+      <SafeAreaView /* screen */ style={styles.screen}>
+        <View /* containerAll */ style={styles.containerAll}>
+          <View /* headersContainer */ style={styles.headersContainer}>
+            <View /* left */>
+              <View /* titleContainer */>
+                <Text style={styles.textTitle}>{props.peluqueria.name}</Text>
+              </View>
+            </View>
+            <View /* right */>
+              <View /* buttonContainer */>
+                <TouchableOpacity style={styles.button}>
+                  <Text style={styles.textButton}>Info</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <View /* detailsConatiner */ style={styles.detailsContainer}>
+            <View /* left */>
+              <View /* photoContainer */>
+                <Image
+                  style={styles.photo}
+                  source={{
+                    uri: props.peluqueria.photos,
+                  }}></Image>
+              </View>
+            </View>
 
-          <View /* Right */ style={{ width: '45%' }}>
-            <View /* servicesContainer */>
-              <View /* title */ style={styles.titleListContainer}>
-                <Text style={styles.textTitleList}>Services</Text>
-              </View /* title */>
-              <View /* list */>
-                <FlatList
-                  data={DATA}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item.id}
-                />
-              </View /* list */>
-            </View /* servicesContainer */>
-          </View /* Right */>
-        </View /* detailsContainer */>
-        <View
+            <View /* Right */ style={{ width: '45%' }}>
+              <View /* servicesContainer */>
+                <View /* title */ style={styles.titleListContainer}>
+                  <Text style={styles.textTitleList}>Services</Text>
+                </View>
+                <View /* list */>
+                  <FlatList
+                    data={props.peluqueria.services}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
           /* footerContainer */ style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-          }}>
-          <View /* left */>
-            <View /* timesInfo */ style={{ textAlign: 'center' }}>
-              <Text style={{ fontWeight: 'bold' }}>Schedule</Text>
-              <Text>Monday to Friday</Text>
-              <Text>8hs at 22hs</Text>
-            </View /* timesInfo */>
-            <View /* buttonContainer */></View /* Button Conatiner */>
-          </View /* left */>
-          <View /* right */ style={{ alignItems: 'center' }}>
-            <View /* Ubicacion */ style={{ textAlign: 'center' }}>
-              <Text style={{ fontWeight: 'bold' }}>Location</Text>
-              <Text>Urquiza Village</Text>
-            </View /* Ubicacion */>
-            <View /* reviews */>
-              <Icon name="paw" type="font-awesome" size={25} color="#c98c70" />
-            </View /* reviews */>
-          </View /* right */>
-        </View /* footerContainer */>
-      </View /* containerAll */>
-    </SafeAreaView /* screen */>
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+            }}>
+            <View /* left */>
+              <View /* timesInfo */ style={{ alignItems: 'center', marginTop:10 }}>
+                <Text style={{ fontWeight: 'bold' }}>Schedule</Text>
+                <Text>{props.peluqueria.openDays}</Text>
+                <Text>{props.peluqueria.workHours}</Text>
+              </View>
+              <View /* buttonContainer */></View>
+            </View>
+            <View /* right */ style={{ alignItems: 'center' }}>
+              <View /* Ubicacion */ style={{ alignItems: 'center' }}>
+                <Text style={{ fontWeight: 'bold' }}>Location</Text>
+                <Text>{props.peluqueria.location}</Text>
+              </View>
+              <View /* reviews */ style={{flexDirection:'row',justifyContent:'space-around',width:100, marginTop:10}}>
+                <Icon name="paw" type="font-awesome" size={25} color="#c98c70" />
+                <Icon name="paw" type="font-awesome" size={25} color="#c98c70" />
+                <Icon name="paw" type="font-awesome" size={25} color="#c98c70" />
+              </View>
+            </View>
+          </View>
+        </View>
+      </SafeAreaView>
   );
 }
 

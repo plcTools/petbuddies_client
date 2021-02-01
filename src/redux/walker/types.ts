@@ -18,6 +18,7 @@ export interface Walker {
   countDogs: number;
   rating: number;
 }
+
 export interface WalkerState {
   walkers: Walker[]
 }
@@ -29,4 +30,4 @@ interface GetWalkersAction {
   payload: Walker[]
 }
 
-export type WalkerActionsTypes = GetWalkersAction
+export type WalkerActionsTypes = GetWalkersAction;

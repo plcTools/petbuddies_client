@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   workZone: {
-    width: "90%",
+    width: "80%",
     flex: 1,
     flexDirection: "row",
     alignItems: "center",

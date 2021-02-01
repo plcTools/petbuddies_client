@@ -2,13 +2,17 @@ import { StyleSheet } from 'react-native';
 import {StatusBar} from 'react-native';
 
 export const styles = StyleSheet.create({
-    screen: {},
+    screen: {
+      marginTop: 5,
+      backgroundColor: "whitesmoke",
+      
+    },
     containerAll: {
       flex: 1,
       marginTop: StatusBar.currentHeight || 0,
          marginBottom: 10,
       shadowColor: "#000",
-      opacity: 0.9,
+      opacity: 10,
       shadowOffset: {
         width: 0,
         height: 10,
@@ -72,5 +76,8 @@ export const styles = StyleSheet.create({
       padding: '3%',
     },
     textList: {},
+    alignC: {
+      textAlign: 'center'
+    }
   });
 

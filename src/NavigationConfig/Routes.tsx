@@ -9,6 +9,7 @@ import UserPannel from '../components/UserPannel';
 import LoginScreen from '../components/LoginScreen';
 import { RootStackParamList } from './types';
 import HomeScreen from '../components/homeScreen';
+import BeatySpaScreen from '../components/BeautySpaScreen/BeautySpaScreen';
 import { Icon } from 'react-native-elements';
 import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
 
@@ -80,6 +81,7 @@ export const Routes: React.FC = () => {
         <Screen name='LoginScreen' component={LoginScreen} options={{ headerShown: false }} />
         <Screen name='Tab' component={TabNavigation} options={{ headerShown: false }} />
         <Screen name='WalkerCard' component={WalkerCard} />
+        <Screen name='BeautySpaScreen' component={BeatySpaScreen} options={{ headerShown: false }} />
         <Screen name='WalkerProfile' component={WalkerProfile} />
       </Navigator>
     </NavigationContainer>
