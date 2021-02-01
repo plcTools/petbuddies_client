@@ -8,6 +8,7 @@ export type RootStackParamList = {
   };
   Prueba: undefined;
   WalkerProfile: { id: number };
+  HotelProfile: { id: number };
   UserPannel: undefined;
   UserFormScreen: undefined;
   HomeScreen: undefined;
@@ -17,6 +18,9 @@ export type RootStackParamList = {
   Stack: undefined
   Tab: undefined;
   TabNavigation: undefined;
+  HotelCard: {
+    hotel: hotel
+  }
 };
 
 export type RouteStackParamList<T extends keyof RootStackParamList> = {
@@ -43,4 +47,23 @@ export type walker = {
   fee?: number;
   countDogs?: number;
   rating: number;
+}
+export type hotel = {
+  _id: string;
+  name: string;
+  photo?:string;
+  schedule?:string;
+  description?:string;
+  fee:number;
+  allowedPets?:string[];
+  foodInclude?:boolean;
+  requirement?:string;
+  zone:string;
+  celphone:string;
+  allowedNumber?:number;
+  checkIn?:number;
+  checkOut?:number;
+  email:string;
+  address:string;
+  extras?:string[]
 }

@@ -5,6 +5,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import WalkerCard from '../components/WalkerCard';
 import WalkerProfile from '../components/WalkerProfile';
 import UserPannel from '../components/UserPannel';
+import HotelScreen from '../components/Hotel';
+import HotelProfile from '../components/Hotel/HotelProfile';
+import HotelCard from '../components/Hotel/HotelCard';
 // import UserFormScreen from '../components/UserFormScreen/UserFormScreen';
 import LoginScreen from '../components/LoginScreen';
 import { RootStackParamList } from './types';
@@ -51,7 +54,7 @@ export const Routes: React.FC = () => {
             }
 
             let icons: Icons;
-            icons = { Home: "home", Profile: "user" };
+            icons = { Home: "home", Profile: "user", Hotel: 'hotel' };
 
             if (route.name === 'Walkers') return null;
 
@@ -68,6 +71,7 @@ export const Routes: React.FC = () => {
       >
         <Tab.Screen name='Home' component={HomeScreen} />
         <Tab.Screen name='Profile' component={UserPannel} />
+        <Tab.Screen name='Hotel' component={HotelScreen} />
       </Tab.Navigator>
     )
   }
@@ -81,6 +85,8 @@ export const Routes: React.FC = () => {
         <Screen name='Tab' component={TabNavigation} options={{ headerShown: false }} />
         <Screen name='WalkerCard' component={WalkerCard} />
         <Screen name='WalkerProfile' component={WalkerProfile} />
+        <Screen name='HotelCard' component={HotelCard} />
+        <Screen name='HotelProfile' component={HotelProfile} />
       </Navigator>
     </NavigationContainer>
   )
