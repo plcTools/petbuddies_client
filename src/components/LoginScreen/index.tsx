@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { RouteStackParamList } from '../../NavigationConfig/types'
 import ModalUserFormScreen from '../ModalUserFormScreen/ModalUserFormScreen'
 import firebase from 'firebase';
-import { useFonts } from '@expo-google-fonts/nunito-sans';
 import * as Google from "expo-google-app-auth";
 import axios from 'axios';
-import { ANDROID_CLIENT_ID } from "@env"
+import { ANDROID_CLIENT_ID } from '@env';
+import { storeData } from '../../AsyncStorage/index'
 
 interface state {
   [key: string]: any
@@ -20,13 +20,38 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
   })
 firebase.auth().onAuthStateChanged(function(user){
   if (user){navigation.navigate('Tab')}})
+  const signIn = async () => {
+    try {
+      const result = await Google.logInAsync({
+        androidClientId: ANDROID_CLIENT_ID,
+        scopes: ["profile", "email"]
+      })
+      if (result.type === "success") {
+        const id: string = await axios.post('/owners', {
+          name: result.user.givenName,
+          lastname: result.user.familyName,
+          email: result.user.email,
+          photo: result.user.photoUrl
+        })
+        storeData(id)
+
+        navigation.navigate('Tab');
+      } else {
+        console.log("cancelled")
+      }
+    } catch (e) {
+      console.log("error", e)
+    }
+  }
+
 
   const login = async () => {
     const { email, password } = userData;
     if (email && password) {
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password);
-
+        const id: { data: string } = await axios.get(`/owners/email/${email}`)
+        storeData(id.data);
         navigation.navigate('Tab');
       } catch (error) {
         console.log(error.message)
@@ -74,8 +99,12 @@ firebase.auth().onAuthStateChanged(function(user){
           <TouchableOpacity style={styles.loginBtn} onPress={() => handleLogin()}>
             <Text style={styles.loginText}>LOGIN</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.loginBtn} onPress={() => signIn()}>
-            <Text style={styles.loginText}>SIGN-IN WITH GOOGLE</Text>
+          <TouchableOpacity style={styles.loginGoogle} onPress={() => signIn()}>
+            <Image 
+              source={require('../../images/google.png')}
+              style={{width: 20, height: 20}}
+            />
+            <Text style={{color: '#393e46'}}>SIGN-IN WITH GOOGLE</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
             <Text style={styles.loginText}>Signup</Text>
@@ -145,12 +174,26 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
+    marginTop: 30,
     marginBottom: 10
   },
+  loginGoogle: {
+    width: "80%",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    backgroundColor: '#eeeeee',
+    borderRadius: 25,
+    padding: 10,
+    marginBottom: 20,
+  },
   loginText: {
-    color: "white"
+    color: "#eeeeee"
   }
 });
 
 export default LoginScreen;
+
+function store(id: string) {
+  throw new Error('Function not implemented.');
+}
