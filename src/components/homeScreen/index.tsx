@@ -4,7 +4,6 @@ import { View, Text, FlatList, SafeAreaView, Modal, TouchableOpacity, StyleSheet
 import { Icon, Divider, CheckBox } from 'react-native-elements';
 import { styles } from './styles';
 import WalkerCard from '../WalkerCard/index';
-import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { useAppDispatch, RootState } from '../../redux/store';
 import { getWalkers } from '../../redux/walker/actions';
@@ -19,13 +18,13 @@ import {
     NunitoSans_300Light_Italic,
     NunitoSans_300Light
 } from '@expo-google-fonts/nunito-sans';
+import { getData } from '../../AsyncStorage';
 
 
 const lista: string[] = ['palermo', 'caballito', 'almagro', 'belgrano', 'saavedra', 'puerto madero', 'recoleta', 'villa crespo', 'boedo', 'colegiales', 'barrio norte'].sort();
 interface ModalChecks {
     [key: string]: boolean;
 }
-
 
 const HomeScreen = () => {
     const [state, setState] = React.useState<any | typeof walkers>(null);
@@ -36,6 +35,7 @@ const HomeScreen = () => {
     /*  const navigation = useNavigation(); */
     const walkers = useSelector((state: RootState) => state.paseadores.walkers)
     const userFavorites = useSelector((state: RootState) => state.user.userFavorites)
+    const [id, setId] = React.useState<string>('');
     const dispatch = useAppDispatch();
     let [fonts] = useFonts({
         NunitoSans_400Regular,
@@ -46,14 +46,20 @@ const HomeScreen = () => {
         NunitoSans_300Light
     });
 
-    React.useEffect(() => {
+    const retrieveStorage = async () =>{
+       const idData = await getData();
+       setId(idData)
+    }
+    
+    React.useLayoutEffect(() => {
+        retrieveStorage(); 
         if (Object.keys(walkers).length > 0) {
             setState(walkers)
         } else {
-            dispatch(getUserFavorites("600ae1c984ce6400985f4f7a"))
+            dispatch(getUserFavorites(id))
             dispatch(getWalkers())
         }
-    }, [dispatch, walkers]);
+    }, [walkers, dispatch]);
 
     const handleInput = (name: string) => {
         setInput({

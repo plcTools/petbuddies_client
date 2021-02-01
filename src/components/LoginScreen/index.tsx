@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { Alert, Modal, StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { RouteStackParamList } from '../../NavigationConfig/types'
 import ModalUserFormScreen from '../ModalUserFormScreen/ModalUserFormScreen'
@@ -6,18 +6,26 @@ import firebase from 'firebase';
 import * as Google from "expo-google-app-auth";
 import axios from 'axios';
 import { ANDROID_CLIENT_ID } from '@env';
-import { storeData } from '../../AsyncStorage/index'
-
-interface state {
-  [key: string]: any
-}
+import { storeData, getData  } from '../../AsyncStorage/index'
 
 const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
-  const [state, setState] = useState<state | null>(null);
   const [userData, setUserData] = useState({
     email: "",
     password: ""
   })
+  const retrieveStorage = async () =>{
+    const id:string = await getData()
+     if(id){
+      navigation.navigate('Tab')
+    } else {
+      console.log('No hay user')
+    }
+  }
+
+  useLayoutEffect(() => {
+    retrieveStorage();
+  }, [])
+  
   const signIn = async () => {
     try {
       const result = await Google.logInAsync({

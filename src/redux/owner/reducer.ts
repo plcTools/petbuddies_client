@@ -3,12 +3,11 @@ import {
     GET_OWNER_FAVORITES,
     GET_OWNER,
     OwnerState,
-    Owner
 } from './types'
 
-const initialState:OwnerState = {
+const initialState:OwnerState  = {
     userFavorites: [],
-    owner: []
+    owner: {}
 }
 
 export function userReducer(state = initialState, action: OwnerActionsTypes): OwnerState {

@@ -19,8 +19,8 @@ export interface Owner {
     rating?: number;
   }
   export interface OwnerState {
-    userFavorites: Owner[]
-    owner: Owner[]
+    userFavorites: Owner[] | Owner
+    owner: Owner | Owner[]
   }
   
   export const GET_OWNER_FAVORITES:string = 'GET_OWNER_FAVORITES';
@@ -36,5 +36,5 @@ export interface Owner {
     payload: Owner
   }
   
-  export type OwnerActionsTypes = GetOwnerFavorites;
-  export type OwnerAction = GetOwner;
+  export type OwnerActionsTypes = GetOwnerFavorites | GetOwner;
+  // export type OwnerAction = GetOwner;
