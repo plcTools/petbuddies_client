@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "901331707362",
+    "project_id": "petbuddies-app",
+    "storage_bucket": "petbuddies-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901331707362:android:2c0f18a650a9f944d685bb",
+        "android_client_info": {
+          "package_name": "pet.buddies.grupo12"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "901331707362-rromprvpu6eh8c7tl8e6ooad597ih062.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6fVQh9F0EfF-OamT7mU_kUHuRztxTsb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "901331707362-rromprvpu6eh8c7tl8e6ooad597ih062.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -144,7 +144,7 @@ const HomeScreen = () => {
                     }}
                 />
                 <Icon
-                    name='house-user'
+                    name='map-marker-alt'
                     type='font-awesome-5'
                     // color='#00af91'
                     color={icon?.house ? '#008891' : 'grey'}

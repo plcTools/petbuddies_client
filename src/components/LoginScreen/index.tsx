@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { RouteStackParamList } from '../../NavigationConfig/types'
 import ModalUserFormScreen from '../ModalUserFormScreen/ModalUserFormScreen'
 import firebase from 'firebase';
+import { useFonts } from '@expo-google-fonts/nunito-sans';
+import * as Google from "expo-google-app-auth";
+import axios from 'axios';
+import { ANDROID_CLIENT_ID } from "@env"
 
 interface state {
   [key: string]: any
@@ -22,6 +26,7 @@ firebase.auth().onAuthStateChanged(function(user){
     if (email && password) {
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password);
+
         navigation.navigate('Tab');
       } catch (error) {
         console.log(error.message)
@@ -68,6 +73,9 @@ firebase.auth().onAuthStateChanged(function(user){
           </TouchableOpacity>
           <TouchableOpacity style={styles.loginBtn} onPress={() => handleLogin()}>
             <Text style={styles.loginText}>LOGIN</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.loginBtn} onPress={() => signIn()}>
+            <Text style={styles.loginText}>SIGN-IN WITH GOOGLE</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
             <Text style={styles.loginText}>Signup</Text>

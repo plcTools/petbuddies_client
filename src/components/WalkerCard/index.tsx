@@ -57,7 +57,7 @@ const WalkerCard: React.FC<Props> = ({ walker, userFavorites }): JSX.Element => 
                 <View style={styles.cardHeader} >
 
                     <Image
-                        style={{ height: 100, width: 100, borderRadius: 4, marginRight: 10, marginTop: 3 }}
+                        style={{ height: 100, width: 100, borderRadius: 4, marginRight: 10, marginTop: 3, marginBottom: 7 }}
                         source={{
                             uri: `${walker.photo}`,
                         }}
