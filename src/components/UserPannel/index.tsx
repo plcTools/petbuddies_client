@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import { getOwner } from '../../redux/owner/actions';
 import {View, StyleSheet} from 'react-native';
 import {ListItem, Avatar, Card, Icon, Button, Divider } from 'react-native-elements'
-import {RouteStackParamList} from '../../NavigationConfig/types'
+import {RouteStackParamList} from '../../NavigationConfig/types';
+import { getData } from '../../AsyncStorage/index';
+import { useAppDispatch, RootState } from '../../redux/store';
 
 
 const UserPannel =({navigation}: RouteStackParamList<'UserPannel'>)=> {
+
+    const retrieveStorage = async () =>{
+        const id = await getData()
+        dispatch(getOwner(id))
+    }
+    const dispatch = useDispatch()
+    const pepito = useSelector((state:RootState) => state.user.owner)
+    // const { name, lastname, photo, email } = owner[0]
+
+
+    useEffect(()=>{
+        retrieveStorage()
+    },[]);   
+    console.log('PEPITO', pepito)
     
     return (
         <View>
@@ -13,12 +31,12 @@ const UserPannel =({navigation}: RouteStackParamList<'UserPannel'>)=> {
                 <Avatar /* onPress debería poder modificar la foto de perfil*/ 
                 rounded
                 size="large"
-                source={{uri: 'https://avatars2.githubusercontent.com/u/70122640?s=460&u=b6ee1cc045afec1cd97d12d10725552b4734138f&v=4'}}
+                source={{uri: `${pepito?.photo}`}}
                 overlayContainerStyle={{backgroundColor: 'orange'}}
                 onPress={() => alert("ir a editar perfil")}
                 />
                 <ListItem.Content>
-                    <ListItem.Title>Macarena Montes de Oca</ListItem.Title>
+                    <ListItem.Title>{pepito?.name} {pepito?.lastname}</ListItem.Title>
                     <ListItem.Subtitle>Miami, Florida</ListItem.Subtitle>
                 </ListItem.Content>
             </ListItem>

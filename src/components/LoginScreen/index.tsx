@@ -25,15 +25,20 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
         scopes: ["profile", "email"]
       })
       if (result.type === "success") {
-        const id: string = await axios.post('/owners', {
+        const id: { data:string | any } = await axios.post('/owners', {
           name: result.user.givenName,
           lastname: result.user.familyName,
           email: result.user.email,
           photo: result.user.photoUrl
         })
-        storeData(id)
-
-        navigation.navigate('Tab');
+        if(id.data.name !== 'MongoError'){
+          storeData(id.data)
+          navigation.navigate('Tab');
+        } else {
+          const id = await axios.get(`/owners/email/${result.user.email}`)
+          await storeData(id.data);
+          navigation.navigate('Tab');
+        }
       } else {
         console.log("cancelled")
       }
@@ -48,8 +53,8 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
     if (email && password) {
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password);
-        const id: { data: string } = await axios.get(`/owners/email/${email}`)
-        storeData(id.data);
+        const id = await axios.get(`/owners/email/${email}`)
+        await storeData(id.data);
         navigation.navigate('Tab');
       } catch (error) {
         console.log(error.message)
