@@ -95,8 +95,12 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
           <TouchableOpacity style={styles.loginBtn} onPress={() => handleLogin()}>
             <Text style={styles.loginText}>LOGIN</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.loginBtn} onPress={() => signIn()}>
-            <Text style={styles.loginText}>SIGN-IN WITH GOOGLE</Text>
+          <TouchableOpacity style={styles.loginGoogle} onPress={() => signIn()}>
+            <Image 
+              source={require('../../images/google.png')}
+              style={{width: 20, height: 20}}
+            />
+            <Text style={{color: '#393e46'}}>SIGN-IN WITH GOOGLE</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
             <Text style={styles.loginText}>Signup</Text>
@@ -166,11 +170,21 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
+    marginTop: 30,
     marginBottom: 10
   },
+  loginGoogle: {
+    width: "80%",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    backgroundColor: '#eeeeee',
+    borderRadius: 25,
+    padding: 10,
+    marginBottom: 20,
+  },
   loginText: {
-    color: "#fff"
+    color: "#eeeeee"
   }
 });
 
