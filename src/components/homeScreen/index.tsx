@@ -21,7 +21,6 @@ import {
     NunitoSans_300Light
 } from '@expo-google-fonts/nunito-sans';
 
-
 const lista: string[] = ['palermo', 'caballito', 'almagro', 'belgrano', 'saavedra', 'puerto madero', 'recoleta', 'villa crespo', 'boedo', 'colegiales', 'barrio norte'].sort();
 interface ModalChecks {
     [key: string]: boolean;

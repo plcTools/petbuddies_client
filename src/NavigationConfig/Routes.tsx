@@ -12,7 +12,7 @@ import HomeScreen from '../components/homeScreen';
 import BeatySpaScreen from '../components/BeautySpaScreen/BeautySpaScreen';
 import { Icon } from 'react-native-elements';
 import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
-
+import BeautySpaScreen from '../components/BeautySpaScreen/BeautySpaScreen'
 
 /* 
     Para agregar una ruta tenemos que hacer lo siguiente:
@@ -83,6 +83,7 @@ export const Routes: React.FC = () => {
         <Screen name='WalkerCard' component={WalkerCard} />
         <Screen name='BeautySpaScreen' component={BeatySpaScreen} options={{ headerShown: false }} />
         <Screen name='WalkerProfile' component={WalkerProfile} />
+        <Screen name='BeautySpaScreen' component={BeautySpaScreen} />
       </Navigator>
     </NavigationContainer>
   )
