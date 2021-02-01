@@ -11,7 +11,7 @@ import { RootStackParamList } from './types';
 import HomeScreen from '../components/homeScreen';
 import { Icon } from 'react-native-elements';
 import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
-
+import BeautySpaScreen from '../components/BeautySpaScreen/BeautySpaScreen'
 
 /* 
     Para agregar una ruta tenemos que hacer lo siguiente:
@@ -81,6 +81,7 @@ export const Routes: React.FC = () => {
         <Screen name='Tab' component={TabNavigation} options={{ headerShown: false }} />
         <Screen name='WalkerCard' component={WalkerCard} />
         <Screen name='WalkerProfile' component={WalkerProfile} />
+        <Screen name='BeautySpaScreen' component={BeautySpaScreen} />
       </Navigator>
     </NavigationContainer>
   )

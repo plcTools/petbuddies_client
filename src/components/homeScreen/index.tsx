@@ -19,7 +19,7 @@ import {
     NunitoSans_300Light_Italic,
     NunitoSans_300Light
 } from '@expo-google-fonts/nunito-sans';
-
+import { RouteStackParamList } from '../../NavigationConfig/types'
 
 const lista: string[] = ['palermo', 'caballito', 'almagro', 'belgrano', 'saavedra', 'puerto madero', 'recoleta', 'villa crespo', 'boedo', 'colegiales', 'barrio norte'].sort();
 interface ModalChecks {
@@ -27,7 +27,7 @@ interface ModalChecks {
 }
 
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }: RouteStackParamList<'BeautySpaScreen'>) => {
     const [state, setState] = React.useState<any | typeof walkers>(null);
     const [check, setCheck] = React.useState<boolean>(false);
     const [checked, setChecked] = React.useState<string | boolean>(false);
@@ -105,6 +105,17 @@ const HomeScreen = () => {
                             }
                         }} />
                     <Text>Walkers</Text>
+                </View>
+                <View style={styles.cardIcons}>
+                    <Icon
+                        reverse
+                        name='cut'
+                        type='font-awesome-5'
+                        color='#fc5185'
+                        onPress={() => {
+                            navigation.navigate('BeautySpaScreen')
+                        }} />
+                    <Text>Beauty</Text>
                 </View>
                 {/* <View style={styles.cardIcons}>
                     <Icon
