@@ -83,7 +83,6 @@ export const Routes: React.FC = () => {
         <Screen name='WalkerCard' component={WalkerCard} />
         <Screen name='BeautySpaScreen' component={BeatySpaScreen} options={{ headerShown: false }} />
         <Screen name='WalkerProfile' component={WalkerProfile} />
-        <Screen name='BeautySpaScreen' component={BeautySpaScreen} />
       </Navigator>
     </NavigationContainer>
   )

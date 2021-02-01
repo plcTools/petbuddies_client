@@ -2,7 +2,8 @@ export interface Peluqueria {
     _id: string;
     name: string;
     photo?: string[];
-    schedule?: string;
+    workDays?: string;
+    workHours?: string;
     services?: string[];
     reviews?: number;
     phone?: number;
@@ -11,7 +12,7 @@ export interface Peluqueria {
     address?: string;
 }
 
-export interface PeluqueriasState {
+export interface HairdressersState {
     peluquerias: Peluqueria[]
 }
 

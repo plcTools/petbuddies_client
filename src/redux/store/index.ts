@@ -5,7 +5,8 @@ import { hairdresserReducer } from '../Hairdressers/reducer';
 import { useDispatch } from 'react-redux';
 import thunk from 'redux-thunk';
 
-const rootReducer = combineReducers({paseadores: walkerReducer, user: userReducer, hairdressers: hairdresserReducer })
+const rootReducer = combineReducers({paseadores: walkerReducer, user: userReducer, peluqueros: hairdresserReducer })
+
 const composeEnhancer = compose;
 
 export const store = createStore(rootReducer, composeEnhancer(applyMiddleware(thunk)));

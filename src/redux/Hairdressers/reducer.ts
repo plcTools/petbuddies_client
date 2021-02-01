@@ -1,7 +1,7 @@
-import { GET_HAIRDRESSERS, HairdessersActionsTypes } from './types'
+import { GET_HAIRDRESSERS, HairdessersActionsTypes, HairdressersState } from './types'
 
-const initialState = {
-    hairdressers: []
+const initialState:HairdressersState = {
+    peluquerias: []
 }
 
 export function hairdresserReducer(state = initialState, action: HairdessersActionsTypes) {
@@ -9,7 +9,7 @@ export function hairdresserReducer(state = initialState, action: HairdessersActi
         case GET_HAIRDRESSERS:
             return {
                 ...state,
-                hairdressers: action.payload
+                peluquerias: action.payload
             }
 
         default:

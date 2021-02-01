@@ -38,6 +38,8 @@ function SpaCard(props: any) {
     )
   };
 
+  console.log ('Fotos: ', props.peluqueria.photos)
+
   return (
       <SafeAreaView /* screen */ style={styles.screen}>
         <View /* containerAll */ style={styles.containerAll}>
@@ -61,7 +63,7 @@ function SpaCard(props: any) {
                 <Image
                   style={styles.photo}
                   source={{
-                    uri: props.peluqueria.photos,
+                    uri: props.peluqueria.photo [0],
                   }}></Image>
               </View>
             </View>
@@ -89,7 +91,7 @@ function SpaCard(props: any) {
             <View /* left */>
               <View /* timesInfo */ style={{ alignItems: 'center', marginTop:10 }}>
                 <Text style={{ fontWeight: 'bold' }}>Schedule</Text>
-                <Text>{props.peluqueria.openDays}</Text>
+                <Text>{props.peluqueria.workDays}</Text>
                 <Text>{props.peluqueria.workHours}</Text>
               </View>
               <View /* buttonContainer */></View>
@@ -97,7 +99,7 @@ function SpaCard(props: any) {
             <View /* right */ style={{ alignItems: 'center' }}>
               <View /* Ubicacion */ style={{ alignItems: 'center' }}>
                 <Text style={{ fontWeight: 'bold' }}>Location</Text>
-                <Text>{props.peluqueria.location}</Text>
+                <Text>{props.peluqueria.address}</Text>
               </View>
               <View /* reviews */ style={{flexDirection:'row',justifyContent:'space-around',width:100, marginTop:10}}>
                 <Icon name="paw" type="font-awesome" size={25} color="#c98c70" />
