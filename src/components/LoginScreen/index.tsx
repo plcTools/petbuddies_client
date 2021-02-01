@@ -16,7 +16,7 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
   const retrieveStorage = async () =>{
     const id:string = await getData()
      if(id){
-      navigation.navigate('Tab')
+      navigation.navigate('SelectRol')
     } else {
       console.log('No hay user')
     }
@@ -41,7 +41,7 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
         })
         if(id.data.name !== 'MongoError'){
           storeData(id.data)
-          navigation.navigate('Tab');
+          navigation.navigate('SelectRol');
         } else {
           const id = await axios.get(`/owners/email/${result.user.email}`)
           await storeData(id.data);
