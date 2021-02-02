@@ -5,6 +5,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import WalkerCard from '../components/WalkerCard';
 import WalkerProfile from '../components/WalkerProfile';
 import UserPannel from '../components/UserPannel';
+import HotelScreen from '../components/Hotel';
+import HotelProfile from '../components/Hotel/HotelProfile';
+import HotelCard from '../components/Hotel/HotelCard';
 // import UserFormScreen from '../components/UserFormScreen/UserFormScreen';
 import LoginScreen from '../components/LoginScreen';
 import { RootStackParamList } from './types';
@@ -13,6 +16,7 @@ import BeatySpaScreen from '../components/BeautySpaScreen/BeautySpaScreen';
 import { Icon } from 'react-native-elements';
 import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
 import BeautySpaScreen from '../components/BeautySpaScreen/BeautySpaScreen'
+import SelectRol from '../components/SelectRol';
 
 /* 
     Para agregar una ruta tenemos que hacer lo siguiente:
@@ -52,14 +56,14 @@ export const Routes: React.FC = () => {
             }
 
             let icons: Icons;
-            icons = { Home: "home", Profile: "user" };
+            icons = { Home: "walking", Hotel: 'bed' };
 
             if (route.name === 'Walkers') return null;
 
             return (
               <Icon
                 name={`${icons[route.name]}`}
-                type='font-awesome'
+                type='font-awesome-5'
                 color={color}
                 size={size}
               />
@@ -68,7 +72,8 @@ export const Routes: React.FC = () => {
         })}
       >
         <Tab.Screen name='Home' component={HomeScreen} />
-        <Tab.Screen name='Profile' component={UserPannel} />
+        {/* <Tab.Screen name='Profile' component={UserPannel} /> */}
+        <Tab.Screen name='Hotel' component={HotelScreen} />
       </Tab.Navigator>
     )
   }
@@ -77,12 +82,33 @@ export const Routes: React.FC = () => {
   return (
 
     <NavigationContainer>
-      <Navigator >
+      <Navigator screenOptions={({ navigation }) => ({
+        title: 'PetBuddies',
+        headerStyle: {
+          backgroundColor: '#c98c70',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        headerRight: () => (
+          <Icon
+            reverse
+            name="user"
+            type='font-awesome'
+            color='#c98c70'
+            onPress={() => navigation.navigate("Profile")}
+          />)
+      })}>
         <Screen name='LoginScreen' component={LoginScreen} options={{ headerShown: false }} />
-        <Screen name='Tab' component={TabNavigation} options={{ headerShown: false }} />
+        <Screen name='SelectRol' component={SelectRol} options={{ headerShown: false }} />
+        <Screen name='Tab' component={TabNavigation} options={() => ({headerLeft: null})} />
         <Screen name='WalkerCard' component={WalkerCard} />
         <Screen name='BeautySpaScreen' component={BeatySpaScreen} options={{ headerShown: false }} />
         <Screen name='WalkerProfile' component={WalkerProfile} />
+        <Screen name='HotelCard' component={HotelCard} />
+        <Screen name='HotelProfile' component={HotelProfile} />
+        <Screen name='Profile' component={UserPannel} />
       </Navigator>
     </NavigationContainer>
   )

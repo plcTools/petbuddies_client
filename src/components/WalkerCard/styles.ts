@@ -21,6 +21,7 @@ export const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 17,
     fontWeight: "bold",
+    textTransform: 'capitalize'
   },
   fav: {
     position: "absolute",
@@ -63,7 +64,9 @@ export const styles = StyleSheet.create({
     flex: 0,
     flexBasis: 4,
   },
-  text: {},
+  text: {
+    width: 85
+  },
   infoContainer: {
     maxWidth: "84%",
     marginTop: 4,
