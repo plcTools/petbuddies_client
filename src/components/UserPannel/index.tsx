@@ -1,11 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import { getOwner } from '../../redux/owner/actions';
 import {View, StyleSheet} from 'react-native';
-import {ListItem, Avatar, Card, Icon, Button, Divider } from 'react-native-elements'
-import {RouteStackParamList} from '../../NavigationConfig/types'
+import {ListItem, Avatar,  Icon   } from 'react-native-elements'
+import {RouteStackParamList} from '../../NavigationConfig/types';
+import { getData } from '../../AsyncStorage/index';
+import {  RootState } from '../../redux/store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const UserPannel =({navigation}: RouteStackParamList<'UserPannel'>)=> {
-    
+
+    const retrieveStorage = async () =>{
+        const id = await getData()
+        dispatch(getOwner(id))
+    }
+    const dispatch = useDispatch()
+    const user = useSelector((state:RootState) => state.user.owner)
+    // const { name, lastname, photo, email } = owner[0]
+
+    useEffect(()=>{
+        retrieveStorage();
+    },[]);   
+
+   const logout = async ( ) =>{
+        try {
+          await AsyncStorage.removeItem('@id')
+          navigation.navigate('LoginScreen')
+        } catch(e) {
+            console.log(e)
+        }
+    }
+
     return (
         <View>
             <ListItem bottomDivider style={{paddingTop: 40}}
@@ -13,12 +39,12 @@ const UserPannel =({navigation}: RouteStackParamList<'UserPannel'>)=> {
                 <Avatar /* onPress debería poder modificar la foto de perfil*/ 
                 rounded
                 size="large"
-                source={{uri: 'https://avatars2.githubusercontent.com/u/70122640?s=460&u=b6ee1cc045afec1cd97d12d10725552b4734138f&v=4'}}
+                source={{uri: `${user?.photo}`}}
                 overlayContainerStyle={{backgroundColor: 'orange'}}
                 onPress={() => alert("ir a editar perfil")}
                 />
                 <ListItem.Content>
-                    <ListItem.Title>Macarena Montes de Oca</ListItem.Title>
+                    <ListItem.Title>{user?.name} {user?.lastname}</ListItem.Title>
                     <ListItem.Subtitle>Miami, Florida</ListItem.Subtitle>
                 </ListItem.Content>
             </ListItem>
@@ -67,7 +93,7 @@ const UserPannel =({navigation}: RouteStackParamList<'UserPannel'>)=> {
             <ListItem bottomDivider>
                 <Icon raised name='sign-out'type='font-awesome' size={10}/>
                 <ListItem.Content>
-                <ListItem.Title>Logout</ListItem.Title>
+                <ListItem.Title onPress={()=> logout()}>Logout</ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>

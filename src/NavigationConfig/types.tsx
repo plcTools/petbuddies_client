@@ -12,6 +12,7 @@ export type RootStackParamList = {
   UserFormScreen: undefined;
   HomeScreen: undefined;
   LoginScreen: undefined;
+  SelectRol: undefined;
   Home: undefined;
   Drawer: undefined;
   Stack: undefined
