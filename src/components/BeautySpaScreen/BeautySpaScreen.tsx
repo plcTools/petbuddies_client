@@ -22,7 +22,7 @@ function BeautySpaScreen() {
 
     return (
         <ScrollView>
-            <View style={{backgroundColor:'grey'}}>
+            <View>
               {peluquerias.map (peluqueria => <SpaCard peluqueria={peluqueria} />)}  
             </View>
             
