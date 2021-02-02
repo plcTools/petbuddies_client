@@ -14,6 +14,7 @@ import { RootStackParamList } from './types';
 import HomeScreen from '../components/homeScreen';
 import { Icon } from 'react-native-elements';
 import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
+import SelectRol from '../components/SelectRol';
 
 
 /* 
@@ -82,6 +83,7 @@ export const Routes: React.FC = () => {
     <NavigationContainer>
       <Navigator >
         <Screen name='LoginScreen' component={LoginScreen} options={{ headerShown: false }} />
+        <Screen name='SelectRol' component={SelectRol} options={{ headerShown: false }} />
         <Screen name='Tab' component={TabNavigation} options={{ headerShown: false }} />
         <Screen name='WalkerCard' component={WalkerCard} />
         <Screen name='WalkerProfile' component={WalkerProfile} />

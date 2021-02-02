@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { Alert, Modal, StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { RouteStackParamList } from '../../NavigationConfig/types'
 import ModalUserFormScreen from '../ModalUserFormScreen/ModalUserFormScreen'
@@ -6,18 +6,22 @@ import firebase from 'firebase';
 import * as Google from "expo-google-app-auth";
 import axios from 'axios';
 import { ANDROID_CLIENT_ID } from '@env';
-import { storeData } from '../../AsyncStorage/index'
-
-interface state {
-  [key: string]: any
-}
+import { storeData, getData  } from '../../AsyncStorage/index'
 
 const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
-  const [state, setState] = useState<state | null>(null);
   const [userData, setUserData] = useState({
     email: "",
     password: ""
   })
+  const retrieveStorage = async () =>{
+    const id:string = await getData()
+     if(id) navigation.navigate('SelectRol')
+  }
+
+  useLayoutEffect(() => {
+    retrieveStorage();
+  }, [])
+  
   const signIn = async () => {
     try {
       const result = await Google.logInAsync({
@@ -25,15 +29,20 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
         scopes: ["profile", "email"]
       })
       if (result.type === "success") {
-        const id: string = await axios.post('/owners', {
+        const id: { data:string | any } = await axios.post('/owners', {
           name: result.user.givenName,
           lastname: result.user.familyName,
           email: result.user.email,
           photo: result.user.photoUrl
         })
-        storeData(id)
-
-        navigation.navigate('Tab');
+        if(id.data.name !== 'MongoError'){
+          storeData(id.data)
+          navigation.navigate('SelectRol');
+        } else {
+          const id = await axios.get(`/owners/email/${result.user.email}`)
+          await storeData(id.data);
+          navigation.navigate('Tab');
+        }
       } else {
         console.log("cancelled")
       }
@@ -48,8 +57,8 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
     if (email && password) {
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password);
-        const id: { data: string } = await axios.get(`/owners/email/${email}`)
-        storeData(id.data);
+        const id = await axios.get(`/owners/email/${email}`)
+        await storeData(id.data);
         navigation.navigate('Tab');
       } catch (error) {
         console.log(error.message)
