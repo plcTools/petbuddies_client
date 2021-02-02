@@ -9,6 +9,7 @@ import {
   Text,
   FlatList,
   SafeAreaView,
+  Alert
 
 } from 'react-native';
 import { Icon } from 'react-native-elements';
@@ -43,23 +44,34 @@ function SpaCard(props: any) {
 
   return (
     <SafeAreaView /* screen */ style={styles.screen}>
+
       <View /* containerAll */ style={styles.containerAll}>
+
         <View /* headersContainer */ style={styles.headersContainer}>
+
           <View /* left */>
+
             <View /* titleContainer */>
               <Text style={styles.textTitle}>{props.peluqueria.name}</Text>
             </View>
           </View>
-          <View /* right */>
+
+          <View /* rightHeaders */>
+
             <View /* buttonContainer */>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity style={styles.button} onPress={()=>Alert.alert('hola')}>
                 <Text style={styles.textButton}>Info</Text>
               </TouchableOpacity>
             </View>
+
           </View>
+
         </View>
+
         <View /* detailsConatiner */ style={styles.detailsContainer}>
-          <View /* left */>
+
+          <View /* leftDetails */>
+
             <View /* photoContainer */>
               <Image
                 style={styles.photo}
@@ -67,9 +79,11 @@ function SpaCard(props: any) {
                   uri: props.peluqueria.photo[0],
                 }}></Image>
             </View>
+
           </View>
 
-          <View /* Right */ style={{ width: '45%' }}>
+          <View /* RightDetails */ style={{ width: '45%' }}>
+
             <View /* servicesContainer */>
               <View /* title */ style={styles.titleListContainer}>
                 <Text style={styles.textTitleList}>Services</Text>
@@ -85,19 +99,23 @@ function SpaCard(props: any) {
 
             </View>
           </View>
+
         </View>
         
         <View /* footerContainer */ style={styles.footerContainer}>
-          <View /* left */>
+
+          <View /* leftFooter */>
+
             <View /* timesInfo */ style={{ alignItems: 'center', marginTop: 10 }}>
               <Text style={{ fontWeight: 'bold' }}>Schedule</Text>
               <Text>{props.peluqueria.workDays}</Text>
               <Text>{props.peluqueria.workHours}</Text>
             </View>
 
-            <View /* buttonContainer */></View>
           </View>
-          <View /* right */ style={{ alignItems: 'center', marginTop: 10 }}>
+
+          <View /* rightFooter */ style={{ alignItems: 'center', marginTop: 10 }}>
+
             <View /* Ubicacion */ style={{ alignItems: 'center' }}>
               <Text style={{ fontWeight: 'bold' }}>Location</Text>
               <Text>{props.peluqueria.localidad}</Text>
@@ -108,9 +126,13 @@ function SpaCard(props: any) {
               <Icon name="paw" type="font-awesome" size={25} color="#c98c70" />
               <Icon name="paw" type="font-awesome" size={25} color="#c98c70" />
             </View>
+
           </View>
+
         </View>
+
       </View>
+      
     </SafeAreaView>
   );
 }
