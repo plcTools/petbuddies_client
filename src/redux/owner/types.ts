@@ -1,3 +1,4 @@
+import {Hotel} from '../hotels/types'
 export interface Owner {
   _id?: string;
   name?: string;
@@ -19,13 +20,21 @@ export interface Owner {
   countDogs?: number;
   rating?: number;
 }
+
   export interface OwnerState {
     userFavorites: Owner[] | Owner
     owner: Owner | Owner[]
+    userFavHotels: Hotel[] | Hotel
   }
   
   export const GET_OWNER_FAVORITES:string = 'GET_OWNER_FAVORITES';
   export const GET_OWNER:string = 'GET_OWNER'
+  export const GET_OWNER_FAV_HOTELS: string = "GET_OWNER_FAV_HOTELS";
+
+  interface GetOwnerFavHotels {
+    type: typeof GET_OWNER_FAV_HOTELS;
+    payload: Hotel[];
+  }
   
   interface GetOwnerFavorites {
     type: typeof GET_OWNER_FAVORITES;
@@ -37,5 +46,5 @@ export interface Owner {
     payload: Owner
   }
   
-  export type OwnerActionsTypes = GetOwnerFavorites | GetOwner;
+  export type OwnerActionsTypes = GetOwnerFavorites | GetOwner | GetOwnerFavHotels ;
   // export type OwnerAction = GetOwner;

@@ -1,20 +1,20 @@
 export interface Hotel {
-  _id: string;
-  name: string;
+  _id?: string;
+  name?: string;
   photo?:string;
   schedule?:string;
   description?:string;
-  fee:number;
+  fee?:number;
   allowedPets?:string[];
   foodInclude?:boolean;
   requirement?:string;
-  zone:string;
-  celphone:string;
+  zone?:string;
+  celphone?:string;
   allowedNumber?:number;
   checkIn?:number;
   checkOut?:number;
-  email:string;
-  address:string;
+  email?:string;
+  address?:string;
   reviewsReceived?:number;
   rating?:number;
   petsLoved?:number;
@@ -31,4 +31,4 @@ interface GetHotels {
   payload: Hotel[];
 }
 
-export type HotelActionsTypes = GetHotels;
+export type HotelActionsTypes = GetHotels ;

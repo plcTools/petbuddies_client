@@ -77,7 +77,7 @@ const HotelProfile = ({
         <ImageBackground
           source={require("../../../images/wallpaper.jpg")}
           style={{ flex: 1, justifyContent: "center" }}
-          blurRadius={10}
+          blurRadius={5}
         >
           <View style={styles.cardContainer}>
             <View style={styles.headerContainer}>

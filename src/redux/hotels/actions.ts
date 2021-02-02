@@ -11,3 +11,4 @@ export const getHotels = (): any => async (
   } = await axios.get(`/hotels`);
   return dispatch({ type: GET_HOTELS, payload: hotels });
 };
+

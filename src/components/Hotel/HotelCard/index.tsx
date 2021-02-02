@@ -16,6 +16,8 @@ import {
 } from "@expo-google-fonts/nunito-sans";
 
 import { useAppDispatch, RootState } from "../../../redux/store";
+import { getOwnerFavHotels } from '../../../redux/owner/actions'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 interface Props {
   hotel: hotel,
   /* userFavorites: walker[] */
@@ -23,6 +25,7 @@ interface Props {
 const HotelCard: React.FC<Props> = ({ hotel /*,  userFavorites */ }): JSX.Element => {
   const [checked, setChecked] = React.useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const id:string = AsyncStorage.getItem("@id");
 
   const navigation = useNavigation();
   let [fonts] = useFonts({
@@ -122,22 +125,23 @@ const HotelCard: React.FC<Props> = ({ hotel /*,  userFavorites */ }): JSX.Elemen
             />
           }
           checked={checked}
-         /*  onPress={async () => {
+          onPress={async () => {
             if (!checked) {
+            
               const result = await axios.patch(
-                `/owners/600ae1c984ce6400985f4f7a/favorites`,
-                { walkerId: hotel._id }
+                `/owners/${id}/favoritesHotels`,
+                { hotelId: hotel._id }
               );
-              dispatch(getUserFavorites("600ae1c984ce6400985f4f7a"));
+              dispatch(getOwnerFavHotels(id));
               return setChecked(true);
             } else {
               const result = await axios.delete(
-                `/owners/600ae1c984ce6400985f4f7a/favorites/` + hotel._id
+                `/owners/${id}/favoritesHotels/` + hotel._id
               );
-              dispatch(getUserFavorites("600ae1c984ce6400985f4f7a"));
+              dispatch(getOwnerFavHotels(id));
               return setChecked(false);
             }
-          }} */
+          }} 
         />
       </View>
     </Card>

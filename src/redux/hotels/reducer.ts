@@ -16,8 +16,10 @@ export function hotelReducer(
   switch (action.type) {
     case GET_HOTELS:
       return {
+        ...state,
         hotels: action.payload,
       };
+    
     default:
       return state;
   }
