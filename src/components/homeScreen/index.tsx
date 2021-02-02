@@ -69,7 +69,8 @@ const HomeScreen = ({ navigation }: RouteStackParamList<'BeautySpaScreen'>) => {
     };
 
     const renderComponent = (arr: any) => {
-        return (<SafeAreaView style={{ width: '100%', display: 'flex', justifyContent: 'center', flex: 1 }}>
+        return (
+        <SafeAreaView style={{ width: '100%', display: 'flex', justifyContent: 'center', flex: 1 }}>
             <FlatList
                 data={arr}
                 keyExtractor={(item: Walker) => item._id}

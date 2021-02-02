@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import {
     View,
     Text,
-    ScrollView
+    ScrollView,
+    SafeAreaView
 } from 'react-native';
 import SpaCard from './SpaCard/spaCard';
 import { RouteStackParamList } from '../../NavigationConfig/types';
@@ -13,20 +14,19 @@ import { getHairdressers } from '../../redux/Hairdressers/actions';
 
 function BeautySpaScreen() {
     /* hay que hacer un .map */
-    const dispatch = useAppDispatch ();
+    const dispatch = useAppDispatch();
     const peluquerias = useSelector((state: RootState) => state.peluqueros.peluquerias);
 
-    useEffect (() => {
-        dispatch (getHairdressers ())
+    useEffect(() => {
+        dispatch(getHairdressers())
     }, [])
 
     return (
-        <ScrollView>
-            <View>
-              {peluquerias.map (peluqueria => <SpaCard peluqueria={peluqueria} />)}  
-            </View>
-            
-        </ScrollView>
+        <SafeAreaView style={{ flex: 1, width: '100%', justifyContent: 'center', padding:5 }}>
+            <ScrollView>
+                {peluquerias.map(peluqueria => <SpaCard id={peluqueria._id} peluqueria={peluqueria} />)}
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
