@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { styles } from './styles'
-
+import DetailsSpaCard from './../DetailsSpaCard/DeatailSpaCard'
 import {
   View,
   Image,
@@ -9,7 +9,8 @@ import {
   Text,
   FlatList,
   SafeAreaView,
-  Alert
+  Alert,
+  Modal
 
 } from 'react-native';
 import { Icon } from 'react-native-elements';
@@ -29,17 +30,22 @@ const DATA = [
   },
 ];
 
+
+
 function SpaCard(props: any) {
 
   const renderItem = (item: any) => {
-    console.log(item)
     return (
       <View style={styles.itemList}>
         <Text style={styles.textList}>{item.item}</Text>
       </View>
     )
   };
-
+  /* muestra o cierra el modal */
+  const [modalVisible, setModalVisible] = useState(false);
+  const modalStatusChange = () => {
+    setModalVisible(!modalVisible)
+  }
 
   return (
     <View /* containerAll */ style={styles.containerAll}>
@@ -56,7 +62,7 @@ function SpaCard(props: any) {
         <View /* rightHeaders */>
 
           <View /* buttonContainer */>
-            <TouchableOpacity style={styles.button} onPress={() => Alert.alert('hola')}>
+            <TouchableOpacity style={styles.button} onPress={() => setModalVisible(!modalVisible)}>
               <Text style={styles.textButton}>Info</Text>
             </TouchableOpacity>
           </View>
@@ -69,7 +75,7 @@ function SpaCard(props: any) {
 
         <View /* leftDetails */>
 
-          <View style={{height:'100%',width:'100%'}}/* photoContainer */>
+          <View style={{ height: '100%', width: '100%' }}/* photoContainer */>
             <Image
               style={styles.photo}
               source={{
@@ -128,7 +134,15 @@ function SpaCard(props: any) {
         </View>
 
       </View>
-
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('se cierra el Modal.');
+        }}>
+        <DetailsSpaCard modalStatusChange={modalStatusChange} data={['hola']} />
+      </Modal>
     </View>
 
 
