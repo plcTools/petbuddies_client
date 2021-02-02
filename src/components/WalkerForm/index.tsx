@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, TextInput } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getData } from "../../AsyncStorage";
 import { RouteStackParamList } from "../../NavigationConfig/types";
 import { getOwner } from "../../redux/owner/actions";
@@ -27,19 +27,18 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
   const handleChange = (name: string, value: string) => {
     setData({ ...data, [name]: value });
   };
-  console.log(data);
+
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.owner);
 
   const dataStore = async () => {
     const idData = await getData();
     setId(idData);
+    dispatch(getOwner(idData));
   };
 
   useEffect(() => {
     dataStore();
-    return () => {
-      dataStore();
-    };
   }, []);
 
   const handleSubmit = () => {
@@ -54,6 +53,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
       <View>
         <Text>Name</Text>
         <TextInput
+          defaultValue={user?.name}
           onChangeText={(value) => handleChange("name", value)}
           style={styles.input}
           maxLength={50}
@@ -64,6 +64,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
       <View>
         <Text>Lastname</Text>
         <TextInput
+          defaultValue={user?.lastname}
           onChangeText={(value) => handleChange("lastname", value)}
           style={styles.input}
           maxLength={50}
@@ -73,6 +74,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
       <View>
         <Text>Description</Text>
         <TextInput
+          defaultValue={user?.description || ""}
           onChangeText={(value) => handleChange("description", value)}
           style={styles.input}
           maxLength={50}
@@ -82,6 +84,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
       <View>
         <Text>Cellphone</Text>
         <TextInput
+          defaultValue={String(user?.cellphone)}
           onChangeText={(value) => handleChange("cellphone", value)}
           style={styles.input}
           maxLength={50}
@@ -93,6 +96,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
       <View>
         <Text>DNI</Text>
         <TextInput
+          defaultValue={String(user?.dni)}
           onChangeText={(value) => handleChange("dni", value)}
           style={styles.input}
           maxLength={50}
@@ -103,6 +107,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
       <View>
         <Text>City</Text>
         <TextInput
+          defaultValue={user?.zona}
           onChangeText={(value) => handleChange("zona", value)}
           style={styles.input}
           maxLength={50}
@@ -113,6 +118,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
       <View>
         <Text>Fee</Text>
         <TextInput
+          defaultValue={String(user?.fee) || ""}
           onChangeText={(value) => handleChange("fee", value)}
           style={styles.input}
           maxLength={50}
@@ -123,6 +129,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
       <View>
         <Text>Work Zone</Text>
         <TextInput
+          defaultValue={String(user?.workZone)}
           onChangeText={(value) => {
             let result = value.toLowerCase().trim().split(", ");
             return setData({ ...data, workZone: result });
@@ -137,6 +144,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
       <View>
         <Text>Work hours</Text>
         <TextInput
+          defaultValue={String(user?.workHours) || ""}
           style={styles.input}
           onChangeText={(value) => handleChange("workHours", value)}
           maxLength={50}
@@ -176,5 +184,6 @@ const styles = StyleSheet.create({
     borderBottomColor: "#456672",
     borderBottomWidth: 2,
     marginBottom: 10,
+    textTransform: "capitalize",
   },
 });

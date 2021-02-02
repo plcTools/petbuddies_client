@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getOwner } from "../../redux/owner/actions";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Linking, Share } from "react-native";
 import { ListItem, Avatar, Icon } from "react-native-elements";
 import { RouteStackParamList } from "../../NavigationConfig/types";
 import { getData } from "../../AsyncStorage/index";
-import { RootState } from "../../redux/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { getWalkers } from "../../redux/walker/actions";
@@ -34,6 +32,26 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
     }
   };
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          "Hey there! I'm using PetBuddies, a fast, simple and secure app, perfect for finding pet walkers and everything related to your pet! Download it here https://petbuddies.com/dl/",
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return (
     <View>
       <ListItem bottomDivider style={{ paddingTop: 40 }}>
@@ -53,56 +71,46 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
       </ListItem>
 
       <ListItem bottomDivider onPress={() => navigation.navigate("WalkerForm")}>
-        <Icon raised name="user-cog" type="font-awesome-5" size={10} />
+        <Icon raised name="user-cog" type="font-awesome-5" size={20} />
         <ListItem.Content>
           <ListItem.Title>Edit Account</ListItem.Title>
         </ListItem.Content>
         <ListItem.Chevron />
       </ListItem>
-      <ListItem bottomDivider>
+      {/* <ListItem bottomDivider>
         <Icon raised name="blind" type="font-awesome" size={10} />
         <ListItem.Content>
           <ListItem.Title>Walks</ListItem.Title>
         </ListItem.Content>
         <ListItem.Chevron />
-      </ListItem>
-      <ListItem bottomDivider>
-        <Icon raised name="envelope-o" type="font-awesome" size={10} />
+      </ListItem> */}
+
+      <ListItem
+        bottomDivider
+        onPress={() => Linking.openURL("mailto:petBuddies@support.com")}
+      >
+        <Icon raised name="envelope" type="font-awesome" size={20} />
         <ListItem.Content>
-          <ListItem.Title>Messages</ListItem.Title>
+          <ListItem.Title>Support</ListItem.Title>
         </ListItem.Content>
         <ListItem.Chevron />
       </ListItem>
-      <ListItem bottomDivider>
-        <Icon raised name="heart" color="red" type="font-awesome" size={10} />
-        <ListItem.Content>
-          <ListItem.Title>Favorites</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
-      <ListItem bottomDivider>
-        <Icon raised name="phone" type="font-awesome" size={10} />
-        <ListItem.Content>
-          <ListItem.Title>Help</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
-      <ListItem bottomDivider>
-        <Icon raised name="user-plus" type="font-awesome" size={10} />
+      <ListItem bottomDivider onPress={onShare}>
+        <Icon raised name="user-plus" type="font-awesome" size={20} />
         <ListItem.Content>
           <ListItem.Title>Invite a friend</ListItem.Title>
         </ListItem.Content>
         <ListItem.Chevron />
       </ListItem>
       <ListItem bottomDivider>
-        <Icon raised name="cog" type="font-awesome" size={10} />
+        <Icon raised name="cog" type="font-awesome" size={20} />
         <ListItem.Content>
           <ListItem.Title>Settings</ListItem.Title>
         </ListItem.Content>
         <ListItem.Chevron />
       </ListItem>
       <ListItem bottomDivider>
-        <Icon raised name="sign-out" type="font-awesome" size={10} />
+        <Icon raised name="sign-out" type="font-awesome" size={20} />
         <ListItem.Content>
           <ListItem.Title onPress={() => logout()}>Logout</ListItem.Title>
         </ListItem.Content>
