@@ -2,9 +2,7 @@ import { StyleSheet } from 'react-native';
 import { StatusBar } from 'react-native';
 
 export const styles = StyleSheet.create({
-  screen: {
 
-  },
   containerAll: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
@@ -16,8 +14,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 1,
     elevation: 3,
     borderRadius: 0.5,
-    position: "relative",
-    padding: 1
+    padding: 0
   },
   headersContainer: {
     flex: 1,
@@ -38,7 +35,6 @@ export const styles = StyleSheet.create({
     height: 40,
     width: 90,
     elevation: 5,
-    marginTop:'5%'
   },
   textButton: {
     textAlign: 'center',
@@ -66,6 +62,7 @@ export const styles = StyleSheet.create({
   textTitleList: {
     fontSize: 16,
     fontWeight: 'bold',
+    overflow: 'hidden'
   },
   itemList: {
     padding: '2%',

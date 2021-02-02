@@ -22,7 +22,7 @@ function BeautySpaScreen() {
     }, [])
 
     return (
-        <SafeAreaView style={{ flex: 1, width: '100%', justifyContent: 'center', padding:5 }}>
+        <SafeAreaView style={{ flex: 1, width: '100%', justifyContent: 'center', padding:8 }}>
             <ScrollView>
                 {peluquerias.map(peluqueria => <SpaCard id={peluqueria._id} peluqueria={peluqueria} />)}
             </ScrollView>
