@@ -2,9 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, TextInput } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getData } from "../../AsyncStorage";
 import { RouteStackParamList } from "../../NavigationConfig/types";
+import { getOwner } from "../../redux/owner/actions";
+import { getWalkers } from "../../redux/walker/actions";
 
 interface State {
   name?: string;
@@ -15,14 +17,18 @@ interface State {
   fee?: number;
   workZone?: string[];
   workHours?: string;
+  zona?: string;
 }
 
 const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
   const [data, setData] = useState<State>();
   const [id, setId] = useState<string>("");
+
   const handleChange = (name: string, value: string) => {
     setData({ ...data, [name]: value });
   };
+  console.log(data);
+  const dispatch = useDispatch();
 
   const dataStore = async () => {
     const idData = await getData();
@@ -39,6 +45,8 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
   const handleSubmit = () => {
     axios.put(`/walkers/${id}`, data);
     navigation.navigate("Tab");
+    dispatch(getOwner(id));
+    return dispatch(getWalkers());
   };
 
   return (
@@ -92,6 +100,15 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
           keyboardType="number-pad"
         />
       </View>
+      <View>
+        <Text>City</Text>
+        <TextInput
+          onChangeText={(value) => handleChange("zona", value)}
+          style={styles.input}
+          maxLength={50}
+          autoCapitalize="none"
+        />
+      </View>
 
       <View>
         <Text>Fee</Text>
@@ -106,8 +123,12 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
       <View>
         <Text>Work Zone</Text>
         <TextInput
-          onChangeText={(value) => handleChange("workZone", value)}
+          onChangeText={(value) => {
+            let result = value.toLowerCase().trim().split(", ");
+            return setData({ ...data, workZone: result });
+          }}
           style={styles.input}
+          placeholder="E.g Caballito-Palermo "
           maxLength={50}
           autoCapitalize="none"
         />
