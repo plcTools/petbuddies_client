@@ -7,17 +7,15 @@ import {
   SafeAreaView,
   Modal,
   TouchableOpacity,
-  StyleSheet,
-  ImageBackground,
 } from "react-native";
-import { Icon, Divider, CheckBox } from "react-native-elements";
+import { Icon, Divider } from "react-native-elements";
 import { styles } from "../homeScreen/styles";
 import HotelCard from "./HotelCard/index";
-import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { useAppDispatch, RootState } from "../../redux/store";
+import { getData  } from '../../AsyncStorage/index';
 import { getHotels } from "../../redux/hotels/actions"; 
-// import { getUserFavorites } from "../../redux/owner/actions";
+import { getOwnerFavHotels } from "../../redux/owner/actions";
  import { Hotel } from "../../redux/hotels/types";
 import {
   useFonts,
@@ -51,13 +49,19 @@ const HotelScreen = () => {
   const [check, setCheck] = React.useState<boolean>(false);
   const [checked, setChecked] = React.useState<string | boolean>(false);
   const [input, setInput] = React.useState<ModalChecks>({});
-  const [icon, setIcon] = React.useState<ModalChecks>({});
-  /*  const navigation = useNavigation(); */
+  const [icon, setIcon] = React.useState<ModalChecks>({hotels: true});
 
   const hotels = useSelector((state: RootState) => state.hotels.hotels);
-  // const userFavorites = useSelector(
-  //   (state: RootState) => state.user.userFavorites
-  // );
+  const [ id, setId ] = React.useState<string>('');
+
+  const retrieveStorage = async () =>{
+    const user:string = await getData()
+    setId(user)
+  }
+
+  const userFavHotels = useSelector(
+    (state: RootState) => state.user.userFavHotels
+  );
   const dispatch = useAppDispatch();
   let [fonts] = useFonts({
     NunitoSans_400Regular,
@@ -69,8 +73,12 @@ const HotelScreen = () => {
   });
 
   React.useEffect(() => {
-   dispatch(getHotels())
-   setState(hotels)
+    retrieveStorage();
+    if(Object.keys(hotels).length === 0) {
+      dispatch(getHotels())
+    }
+    dispatch(getOwnerFavHotels(id))
+    setState(hotels)
   }, [dispatch, hotels]);
   
   const handleInput = (name: string) => {
@@ -101,7 +109,7 @@ const HotelScreen = () => {
           keyExtractor={(item: Hotel) => item._id}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => {
-            return <HotelCard hotel={item} />;
+            return <HotelCard hotel={item} userFavHotels={userFavHotels}/>;
           }}
         />
       </SafeAreaView>
@@ -113,42 +121,34 @@ const HotelScreen = () => {
   return (
     <>
       {/* <ImageBackground source={require('../../images/wallpaper.jpg')} style={StyleSheet.absoluteFillObject} blurRadius={10} /> */}
-      <View style={styles.viewIcons}>
+      {/* <View style={styles.viewIcons}>
         <View style={styles.cardIcons}>
-          <Icon
-            reverse
-            name="hotel"
-            type="font-awesome"
-            color="#fc5185"
-            onPress={() => {
-              {
-                if (Object.keys(hotels).length === 0) {
-                  dispatch(getHotels());
-                  setChecked(false);
-                } else {
-                  setState(hotels);
-                  setChecked(false);
-                  setIcon({});
-                }
-              }
-            }}
-          />
-          <Text>Hotels</Text>
+          <Text>header</Text>
         </View>
-      </View>
-      <Divider />
+      </View> */}
+      <View><Divider /></View>
       <View style={styles.viewIcons}>
+      <Icon
+        name='hotel'
+        type='font-awesome'
+        color={icon?.hotels ? "#fc5185" : "grey"}
+        onPress={() => {
+          setState(hotels);
+          setChecked(false);
+          handleIcon("hotels");
+        }}
+        />
         <Icon
           name="star"
           type="font-awesome"
           // color='#f8dc81'
           color={icon?.star ? "#f8dc81" : "grey"}
           onPress={() => {
-            // handleIcon("star");
-            // setState(() => {
-            //   let newState = [...hotels];
-            // //   return newState.sort((a, b) => b.rating - a.rating);
-            // });
+            handleIcon("star");
+            setState(() => {
+              let newState = [...hotels];
+              return newState.sort((a, b) => b.rating - a.rating);
+            });
             setChecked(false);
           }}
         />
@@ -157,7 +157,7 @@ const HotelScreen = () => {
           type="font-awesome"
           color={icon?.heart ? "#ef4f4f" : "grey"}
           onPress={() => {
-            // setState(userFavorites);
+            setState(userFavHotels);
             setChecked(false);
             handleIcon("heart");
           }}
@@ -173,6 +173,7 @@ const HotelScreen = () => {
             handleIcon("house");
           }}
         />
+        
       </View>
       <Divider />
       {checked ? (
@@ -294,7 +295,7 @@ const HotelScreen = () => {
                     setCheck(!check);
                     setChecked(prop);
                     return setState(
-                      hotels.filter((h) => h.zone.includes(prop))
+                      hotels.filter((h) => h.zone.toLowerCase() === prop.toLowerCase())
                     );
                   }
                 }

@@ -13,8 +13,9 @@ export const getUserFavorites = (id:string):any => async (dispatch:DispatchType)
 export const getOwnerFavHotels = (id: string): any => async (
   dispatch: DispatchType
 ) => {
-  const { data: {ownerFavHotels} } = await axios.get(`/hotels/${id}/favorites`);
-  return dispatch({ type: GET_OWNER_FAV_HOTELS, payload: ownerFavHotels });
+  const { data: {favoritesHotels} } = await axios.get(`/hotels/${id}/favorites`);
+
+  return dispatch({ type: GET_OWNER_FAV_HOTELS, payload: favoritesHotels });
 };
 
 export const getOwner = (id:string):any => async (dispatch: DispatchType) => {

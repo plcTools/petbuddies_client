@@ -13,18 +13,18 @@ export interface Owner {
   photo?: string;
   role?: string;
   CUIT?: string;
-  workZone?: string[];
+  workZone: string[];
   workHours?: string;
   fee?: number;
   reveiewsReceived?: number;
   countDogs?: number;
-  rating?: number;
+  rating: number;
 }
 
   export interface OwnerState {
-    userFavorites: Owner[] | Owner
-    owner: Owner | Owner[]
-    userFavHotels: Hotel[] | Hotel
+    userFavorites: Owner[]
+    owner:  Owner[]
+    userFavHotels: Hotel[] 
   }
   
   export const GET_OWNER_FAVORITES:string = 'GET_OWNER_FAVORITES';

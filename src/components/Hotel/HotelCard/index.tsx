@@ -16,16 +16,31 @@ import {
 } from "@expo-google-fonts/nunito-sans";
 
 import { useAppDispatch, RootState } from "../../../redux/store";
-import { getOwnerFavHotels } from '../../../redux/owner/actions'
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getOwnerFavHotels } from '../../../redux/owner/actions';
+import { getData  } from '../../../AsyncStorage/index';
+
 interface Props {
   hotel: hotel,
-  /* userFavorites: walker[] */
+  userFavHotels: hotel[]
 }
-const HotelCard: React.FC<Props> = ({ hotel /*,  userFavorites */ }): JSX.Element => {
+const HotelCard: React.FC<Props> = ({ hotel ,  userFavHotels }): JSX.Element => {
   const [checked, setChecked] = React.useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const id:string = AsyncStorage.getItem("@id");
+  const [ id, setId ] = React.useState<string>('');
+
+  const retrieveStorage = async () =>{
+    const user:string = await getData()
+    setId(user)
+  }
+
+  React.useEffect(() => {
+    retrieveStorage()
+    userFavHotels?.map(u => {
+      if (u._id === hotel._id) {
+          setChecked(true);
+      };
+  });
+  }, [userFavHotels]);
 
   const navigation = useNavigation();
   let [fonts] = useFonts({

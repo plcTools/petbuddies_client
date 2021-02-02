@@ -24,7 +24,7 @@ interface Props {
 
 const WalkerCard: React.FC<Props> = ({ walker, userFavorites }): JSX.Element => {
     const [checked, setChecked] = React.useState<boolean>(false);
-    const [ id, setId ] = useState();
+    const [ id, setId ] = useState<string>('');
     const dispatch = useAppDispatch();
 
     const navigation = useNavigation();

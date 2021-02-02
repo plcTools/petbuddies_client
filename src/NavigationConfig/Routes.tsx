@@ -55,14 +55,14 @@ export const Routes: React.FC = () => {
             }
 
             let icons: Icons;
-            icons = { Home: "home", Profile: "user", Hotel: 'hotel' };
+            icons = { Home: "walking", Hotel: 'bed' };
 
             if (route.name === 'Walkers') return null;
 
             return (
               <Icon
                 name={`${icons[route.name]}`}
-                type='font-awesome'
+                type='font-awesome-5'
                 color={color}
                 size={size}
               />
@@ -71,7 +71,7 @@ export const Routes: React.FC = () => {
         })}
       >
         <Tab.Screen name='Home' component={HomeScreen} />
-        <Tab.Screen name='Profile' component={UserPannel} />
+        {/* <Tab.Screen name='Profile' component={UserPannel} /> */}
         <Tab.Screen name='Hotel' component={HotelScreen} />
       </Tab.Navigator>
     )
@@ -81,14 +81,32 @@ export const Routes: React.FC = () => {
   return (
 
     <NavigationContainer>
-      <Navigator >
+      <Navigator screenOptions={({ navigation }) => ({
+        title: 'PetBuddies',
+        headerStyle: {
+          backgroundColor: '#c98c70',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        headerRight: () => (
+          <Icon
+            reverse
+            name="user"
+            type='font-awesome'
+            color='#c98c70'
+            onPress={() => navigation.navigate("Profile")}
+          />)
+      })}>
         <Screen name='LoginScreen' component={LoginScreen} options={{ headerShown: false }} />
         <Screen name='SelectRol' component={SelectRol} options={{ headerShown: false }} />
-        <Screen name='Tab' component={TabNavigation} options={{ headerShown: false }} />
+        <Screen name='Tab' component={TabNavigation} options={() => ({headerLeft: null})} />
         <Screen name='WalkerCard' component={WalkerCard} />
         <Screen name='WalkerProfile' component={WalkerProfile} />
         <Screen name='HotelCard' component={HotelCard} />
         <Screen name='HotelProfile' component={HotelProfile} />
+        <Screen name='Profile' component={UserPannel} />
       </Navigator>
     </NavigationContainer>
   )

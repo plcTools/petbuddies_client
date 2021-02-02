@@ -22,6 +22,7 @@ export type RootStackParamList = {
   HotelCard: {
     hotel: hotel
   }
+  Profile: undefined ;
 };
 
 export type RouteStackParamList<T extends keyof RootStackParamList> = {

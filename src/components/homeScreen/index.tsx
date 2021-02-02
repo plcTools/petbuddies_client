@@ -31,7 +31,7 @@ const HomeScreen = () => {
     const [check, setCheck] = React.useState<boolean>(false);
     const [checked, setChecked] = React.useState<string | boolean>(false);
     const [input, setInput] = React.useState<ModalChecks>({});
-    const [icon, setIcon] = React.useState<ModalChecks>({});
+    const [icon, setIcon] = React.useState<ModalChecks>({ walkers: true });
     /*  const navigation = useNavigation(); */
     const walkers = useSelector((state: RootState) => state.paseadores.walkers)
     const userFavorites = useSelector((state: RootState) => state.user.userFavorites)
@@ -46,13 +46,13 @@ const HomeScreen = () => {
         NunitoSans_300Light
     });
 
-    const retrieveStorage = async () =>{
-       const idData = await getData();
-       setId(idData)
+    const retrieveStorage = async () => {
+        const idData = await getData();
+        setId(idData)
     }
-    
+
     React.useLayoutEffect(() => {
-        retrieveStorage(); 
+        retrieveStorage();
         dispatch(getUserFavorites(id))
         if (Object.keys(walkers).length > 0) {
             setState(walkers)
@@ -90,41 +90,18 @@ const HomeScreen = () => {
     if (!fonts) return <Icon name='spinner' reverse type='font-awesome-5' />
     return (
         <>
-            {/* <ImageBackground source={require('../../images/wallpaper.jpg')} style={StyleSheet.absoluteFillObject} blurRadius={10} /> */}
-            <View style={styles.viewIcons}>
-                <View style={styles.cardIcons}>
-                    <Icon
-                        reverse
-                        name='walking'
-                        type='font-awesome-5'
-                        color='#fc5185'
-                        onPress={() => {
-                            {
-                                if (Object.keys(walkers).length === 0) {
-                                    dispatch(getWalkers())
-                                    setChecked(false)
-                                } else {
-                                    setState(walkers)
-                                    setChecked(false)
-                                    setIcon({})
-                                }
-
-                            }
-                        }} />
-                    <Text>Walkers</Text>
-                </View>
-                {/* <View style={styles.cardIcons}>
-                    <Icon
-                        reverse
-                        name='spa'
-                        type='font-awesome-5'
-                        color='#fc5185'
-                    />
-                    <Text>Spa & Hostel</Text>
-                </View> */}
-            </View>
             <Divider />
             <View style={styles.viewIcons}>
+                <Icon
+                    name='walking'
+                    type='font-awesome-5'
+                    color={icon?.walkers ? "#fc5185" : "grey"}
+                    onPress={() => {
+                        setState(walkers);
+                        setChecked(false);
+                        handleIcon("walkers");
+                    }}
+                />
                 <Icon
                     name='star'
                     type='font-awesome'
