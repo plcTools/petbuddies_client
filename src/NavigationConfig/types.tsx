@@ -18,6 +18,7 @@ export type RootStackParamList = {
   Stack: undefined
   Tab: undefined;
   TabNavigation: undefined;
+  WalkerForm: undefined;
 };
 
 export type RouteStackParamList<T extends keyof RootStackParamList> = {

@@ -10,7 +10,7 @@ export interface SelectRolProps {
  
 const SelectRol = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
 
-    const [ state, setState ] = useState()
+    const [ state, setState ] = useState<string>()
     const retrieveStorage = async () =>{
         const id:string = await getData()
         setState(id) 
@@ -22,8 +22,15 @@ const SelectRol = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
 
     const walkerSubmit = async() => {
         await axios.put(`/owners/${state}`, { role: 'Walker' })
+        navigation.navigate('WalkerForm')
+    };
+
+       const ownerSubmit = async() => {
+        await axios.put(`/owners/${state}`, { role: 'Owner' })
         navigation.navigate('Tab')
     };
+
+
 
     const serviceSubmit = async() => {
         // await axios.post(`/owners/${state}`, { role: 'Service' })
@@ -44,7 +51,7 @@ const SelectRol = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
                 color='blue'
                 size={40}
                 style={styles.icon}
-                onPress={() => navigation.navigate('Tab')} />
+                onPress={ownerSubmit} />
         </View>  
         <View style={styles.buttons}>
           <Text style={styles.text}>Walker</Text>

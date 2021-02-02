@@ -1,18 +1,21 @@
-import React from 'react'
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import WalkerCard from '../components/WalkerCard';
-import WalkerProfile from '../components/WalkerProfile';
-import UserPannel from '../components/UserPannel';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import WalkerCard from "../components/WalkerCard";
+import WalkerProfile from "../components/WalkerProfile";
+import UserPannel from "../components/UserPannel";
 // import UserFormScreen from '../components/UserFormScreen/UserFormScreen';
-import LoginScreen from '../components/LoginScreen';
-import { RootStackParamList } from './types';
-import HomeScreen from '../components/homeScreen';
-import { Icon } from 'react-native-elements';
-import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
-import SelectRol from '../components/SelectRol';
-
+import LoginScreen from "../components/LoginScreen";
+import { RootStackParamList } from "./types";
+import HomeScreen from "../components/homeScreen";
+import { Icon } from "react-native-elements";
+import {
+  useFonts,
+  NunitoSans_400Regular,
+} from "@expo-google-fonts/nunito-sans";
+import SelectRol from "../components/SelectRol";
+import WalkerForm from "../components/WalkerForm";
 
 /* 
     Para agregar una ruta tenemos que hacer lo siguiente:
@@ -31,35 +34,34 @@ export const Routes: React.FC = () => {
 
   const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
 
-  const Tab = createBottomTabNavigator()
+  const Tab = createBottomTabNavigator();
   const TabNavigation = () => {
     return (
       <Tab.Navigator
-        initialRouteName='HomeScreen'
+        initialRouteName="HomeScreen"
         tabBarOptions={{
-          inactiveTintColor: '#fdfafa',
-          activeTintColor: '#008891',
+          inactiveTintColor: "#fdfafa",
+          activeTintColor: "#008891",
           style: {
-            backgroundColor: '#c98c70'
+            backgroundColor: "#c98c70",
           },
           showLabel: false,
-
         }}
         screenOptions={({ route }) => ({
           tabBarIcon: ({ color, size }) => {
             type Icons = {
               [key: string]: string;
-            }
+            };
 
             let icons: Icons;
             icons = { Home: "home", Profile: "user" };
 
-            if (route.name === 'Walkers') return null;
+            if (route.name === "Walkers") return null;
 
             return (
               <Icon
                 name={`${icons[route.name]}`}
-                type='font-awesome'
+                type="font-awesome"
                 color={color}
                 size={size}
               />
@@ -67,30 +69,46 @@ export const Routes: React.FC = () => {
           },
         })}
       >
-        <Tab.Screen name='Home' component={HomeScreen} />
-        <Tab.Screen name='Profile' component={UserPannel} />
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Profile" component={UserPannel} />
       </Tab.Navigator>
-    )
-  }
+    );
+  };
   /*   const Drawer = createDrawerNavigator() */
-  if (!fonts) return <Icon name='spinner' reverse type='font-awesome-5' />
+  if (!fonts) return <Icon name="spinner" reverse type="font-awesome-5" />;
   return (
-
     <NavigationContainer>
-      <Navigator >
-        <Screen name='LoginScreen' component={LoginScreen} options={{ headerShown: false }} />
-        <Screen name='SelectRol' component={SelectRol} options={{ headerShown: false }} />
-        <Screen name='Tab' component={TabNavigation} options={{ headerShown: false }} />
-        <Screen name='WalkerCard' component={WalkerCard} />
-        <Screen name='WalkerProfile' component={WalkerProfile} />
+      <Navigator>
+        <Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Screen
+          name="SelectRol"
+          component={SelectRol}
+          options={{ headerShown: false }}
+        />
+        <Screen
+          name="WalkerForm"
+          component={WalkerForm}
+          options={{ headerShown: true }}
+        />
+        <Screen
+          name="Tab"
+          component={TabNavigation}
+          options={{ headerShown: false }}
+        />
+        <Screen name="WalkerCard" component={WalkerCard} />
+        <Screen name="WalkerProfile" component={WalkerProfile} />
       </Navigator>
     </NavigationContainer>
-  )
-}
-
+  );
+};
 
 // estilos del header
-{/* <Stack.Navigator
+{
+  /* <Stack.Navigator
       initialRouteName='Tab'
       screenOptions={({navigation}) => ({
         title: 'PetBuddies',
@@ -108,4 +126,5 @@ export const Routes: React.FC = () => {
             color='#364f6b'
             onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
           />)
-      })}></Stack.Navigator> */}
+      })}></Stack.Navigator> */
+}

@@ -45,13 +45,14 @@ const UserPannel =({navigation}: RouteStackParamList<'UserPannel'>)=> {
                 />
                 <ListItem.Content>
                     <ListItem.Title>{user?.name} {user?.lastname}</ListItem.Title>
-                    <ListItem.Subtitle>Miami, Florida</ListItem.Subtitle>
+                    <ListItem.Subtitle>{user?.zona} </ListItem.Subtitle>
                 </ListItem.Content>
             </ListItem>
-            <ListItem bottomDivider>
-                <Icon raised name='paw'type='fontisto' size={10}/>
+            
+            <ListItem bottomDivider >
+                <Icon raised name='user-cog'type='font-awesome-5' size={10}/>
                 <ListItem.Content>
-                <ListItem.Title>My Pets</ListItem.Title>
+                <ListItem.Title>Account</ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
@@ -87,6 +88,13 @@ const UserPannel =({navigation}: RouteStackParamList<'UserPannel'>)=> {
                 <Icon raised name='user-plus'type='font-awesome' size={10}/>
                 <ListItem.Content>
                 <ListItem.Title>Invite a friend</ListItem.Title>
+                </ListItem.Content>
+                <ListItem.Chevron />
+            </ListItem>  
+             <ListItem bottomDivider>
+                <Icon raised name='cog'type='font-awesome' size={10}/>
+                <ListItem.Content>
+                <ListItem.Title>Settings</ListItem.Title>
                 </ListItem.Content>
                 <ListItem.Chevron />
             </ListItem>
