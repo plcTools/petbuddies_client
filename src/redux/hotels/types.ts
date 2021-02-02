@@ -15,6 +15,9 @@ export interface Hotel {
   checkOut?:number;
   email:string;
   address:string;
+  reviewsReceived?:number;
+  rating?:number;
+  petsLoved?:number;
   extras?:string[]
 }
 export interface HotelState {

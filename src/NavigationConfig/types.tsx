@@ -43,12 +43,13 @@ export type walker = {
   photo?: string;
   role?: string;
   CUIT?: string;
-  workZone: string[]
+  workZone: string[];
   workHours?: string;
+  reveiewsReceived?:number;
   fee?: number;
   countDogs?: number;
   rating: number;
-}
+};
 export type hotel = {
   _id: string;
   name: string;
@@ -66,5 +67,8 @@ export type hotel = {
   checkOut?:number;
   email:string;
   address:string;
+  rating?:number;
+  reviewsReceived?:number;
+  petsLoved?:number;
   extras?:string[]
 }

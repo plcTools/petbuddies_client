@@ -1,23 +1,24 @@
 export interface Owner {
-    _id?: string;
-    name?: string;
-    description?: string;
-    lastname?: string;
-    email?: string;
-    password?: string;
-    cellphone?: number;
-    adress?: string;
-    zona?: string;
-    dni?: number;
-    photo?: string;
-    role?: string;
-    CUIT?: string;
-    workZone?: string[];
-    workHours?: string;
-    fee?: number;
-    countDogs?: number;
-    rating?: number;
-  }
+  _id?: string;
+  name?: string;
+  description?: string;
+  lastname?: string;
+  email?: string;
+  password?: string;
+  cellphone?: number;
+  adress?: string;
+  zona?: string;
+  dni?: number;
+  photo?: string;
+  role?: string;
+  CUIT?: string;
+  workZone?: string[];
+  workHours?: string;
+  fee?: number;
+  reveiewsReceived?: number;
+  countDogs?: number;
+  rating?: number;
+}
   export interface OwnerState {
     userFavorites: Owner[] | Owner
     owner: Owner | Owner[]

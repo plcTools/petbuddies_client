@@ -88,7 +88,7 @@ const HotelCard: React.FC<Props> = ({ hotel /*,  userFavorites */ }): JSX.Elemen
 
           <View style={styles.cardHeaderRate}>
             <Text style={{ marginRight: 5, fontSize: 15 }}>
-              {/* {hotel.rating} */} 5
+              { hotel.rating } 
             </Text>
             <Icon
               name="star-o"

@@ -7,13 +7,20 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  FlatList,
+  Dimensions,
+  ImageBackground,
+  Linking,
+  TouchableOpacity
 } from "react-native";
 import { RouteStackParamList } from "../../../NavigationConfig/types";
-import { Icon } from "react-native-elements";
+import { Icon, Divider } from "react-native-elements";
 import { Rating } from "react-native-ratings";
-// import Carousel from "react-native-snap-carousel";
 import axios from "axios";
-
+import { NunitoSans_900Black } from "@expo-google-fonts/nunito-sans";
+const { width, height } = Dimensions.get('screen')
+const imageW = width * 0.9;
+const imageH = imageW * 1.7;
 
 const HotelProfile = ({
   navigation,
@@ -43,7 +50,7 @@ const HotelProfile = ({
         </View>
         <View>
           <Animated.Text style={styles.tabLabelText}>
-            350
+            {state.petsLoved? state.petsLoved: '?'}
           </Animated.Text>
           <Animated.Text style={styles.tabLabelNumber}>
             Loved pets
@@ -61,100 +68,173 @@ const HotelProfile = ({
       </View>
     );
   };
-//   const carouselItems= [
-//     {
-//       title: "Item 1",
-//       text: "Text 1",
-//     },
-//     {
-//       title: "Item 2",
-//       text: "Text 2",
-//     },
-//     {
-//       title: "Item 3",
-//       text: "Text 3",
-//     },
-//     {
-//       title: "Item 4",
-//       text: "Text 4",
-//     },
-//     {
-//       title: "Item 5",
-//       text: "Text 5"
-//     }
-//   ];
 
   if (!state) return <Icon name="spinner" reverse type="font-awesome-5" />;
 
   return (
     <ScrollView style={styles.scroll}>
       <View style={styles.container}>
-        <View style={styles.cardContainer}>
-          <View style={styles.headerContainer}>
-            <View style={styles.userRow}>
-              <Image style={styles.userImage} source={{ uri: state.photo }} />
-              <View style={styles.userNameRow}>
-                <Text style={styles.userNameText}>{state.name}</Text>
+        <ImageBackground
+          source={require("../../../images/wallpaper.jpg")}
+          style={{ flex: 1, justifyContent: "center" }}
+          blurRadius={10}
+        >
+          <View style={styles.cardContainer}>
+            <View style={styles.headerContainer}>
+              <View style={styles.userRow}>
+                <Image style={styles.userImage} source={{ uri: state.photo }} />
+                <View style={styles.userNameRow}>
+                  <Text style={styles.userNameText}>{state.name}</Text>
+                </View>
+                <View style={styles.userBioRow}>
+                  <Text style={styles.userBioText}>{state.description}</Text>
+                </View>
               </View>
-              <View style={styles.userBioRow}>
-                <Text style={styles.userBioText}>{state.description}</Text>
+              <View style={styles.socialRow}>
+                <Rating
+                  readonly
+                  type="custom"
+                  startingValue={state.rating}
+                  imageSize={30}
+                />
+                <Text style={styles.ratingText}>{state.reviewsReceived} califications</Text>
               </View>
             </View>
-            <View style={styles.socialRow}>
-              <Rating readonly startingValue={5} />
-              <Text style={styles.ratingText}>{5} califications</Text>
+            {renderLabel()}
+            <View style={styles.descriptionRow}>
+              <Icon
+                name="map-marker"
+                reverse
+                type="font-awesome"
+                size={25}
+                color="#6a2c70"
+              />
+              <Text style={styles.userDescriptionText}>
+                {state.address + ", " + state.zone}
+              </Text>
             </View>
+            <View style={styles.descriptionRow}>
+              <Icon
+                name="paw"
+                reverse
+                type="font-awesome"
+                size={25}
+                color="#6a2c70"
+              />
+              {state.allowedPets?.length > 0 &&
+                state.allowedPets.map((item: string, index: number) => (
+                  <Text style={styles.userDescriptionText} key={index}>
+                    {item}
+                  </Text>
+                ))}
+            </View>
+            {state.foodInclude && (
+              <View style={styles.descriptionRow}>
+                <Icon
+                  name="utensils"
+                  reverse
+                  type="font-awesome-5"
+                  size={25}
+                  color="#6a2c70"
+                />
+                <Text style={styles.userDescriptionText}>Comida incluida</Text>
+              </View>
+            )}
+            {state.requirement?.length > 0 && (
+              <View style={styles.descriptionRow}>
+                <Icon
+                  name="clipboard-list"
+                  reverse
+                  type="font-awesome-5"
+                  size={25}
+                  color="#6a2c70"
+                />
+                <Text style={{color: '#fff', marginLeft: 15, fontSize: 15}}>
+                  Requisitos: {state.requirement}
+                </Text>
+              </View>
+            )}
+
+            {state.extras?.length > 0 && (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  width: "80%",
+                  marginTop: 15,
+                }}
+              >
+                <Text style={{ fontSize: 20, color: "#fff" }}>
+                  Este hotel ademas cuenta con:
+                </Text>
+                {state.extras?.map((item: string, index: number) => {
+                  return (
+                    <View style={styles.descriptionRow} key={index}>
+                      <Icon
+                        reverse
+                        name="plus"
+                        size={13}
+                        type="font-awesome-5"
+                        color="#6a2c70"
+                      />
+                      <Text style={styles.userDescriptionText}>{item}</Text>
+                    </View>
+                  );
+                })}
+              </View>
+            )}
+
+            <Divider />
+            <View style={{ maxHeight: 350 }}>
+              <FlatList
+                data={state.adsPics}
+                keyExtractor={(_, index) => index.toString()}
+                horizontal
+                pagingEnabled
+                renderItem={({ item }) => (
+                  <View
+                    style={{
+                      width,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      shadowColor: "#fff",
+                      shadowOffset: {
+                        width: 0,
+                        height: 12,
+                      },
+                      shadowOpacity: 0.58,
+                      shadowRadius: 16.0,
+
+                      elevation: 24,
+                    }}
+                  >
+                    <Image
+                      source={{ uri: item }}
+                      style={{
+                        width: imageW,
+                        height: imageH,
+                        resizeMode: "contain",
+                        borderRadius: 16,
+                      }}
+                    />
+                  </View>
+                )}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.messageRow}
+              onPress={() => Linking.openURL(`tel:${state.phone}`)}
+            >
+              <Icon
+                name="comments"
+                type="font-awesome"
+                reverse
+                color="#456672"
+              />
+              <Text style={styles.messageText}>Send message</Text>
+            </TouchableOpacity>
           </View>
-          {renderLabel()}
-          <View style={styles.descriptionRow}>
-            <Icon
-              name="map-marker"
-              type="font-awesome"
-              size={25}
-              color="#c98c70"
-            />
-            <Text style={styles.userDescriptionText}>
-              {state.address + ", " + state.zone}
-            </Text>
-          </View>
-          <View style={styles.descriptionRow}>
-            <Icon name="paw" type="font-awesome" size={25} color="#c98c70" />
-            <Text style={styles.userDescriptionText}>{state.zone}</Text>
-          </View>
-          {/* <View>
-            <Carousel
-              sliderWidth={300}
-              itemWidth={300}
-              ref={(c) => {
-                this.carousel = c;
-              }}
-              layout={"default"}
-              data={carouselItems}
-              renderItem={(item: any) =>{ return  (
-          <View style={{
-              backgroundColor:'floralwhite',
-              borderRadius: 5,
-              height: 250,
-              padding: 50,
-              marginLeft: 25,
-              marginRight: 25, }}>
-            <Text style={{fontSize: 30}}>{item.title}</Text>
-            <Text>{item.text}</Text>
-          </View>
-          )}}
-            />
-          </View> */}
-          <View style={styles.messageRow}>
-            <Icon
-              name="comments"
-              type="font-awesome"
-              reverse
-              color="#456672"
-              onPress={() => alert(`Ahora no puedo pasear :(`)}
-            />
-            <Text style={styles.messageText}>Send message</Text>
-          </View>
-        </View>
+        </ImageBackground>
       </View>
     </ScrollView>
   );
@@ -162,14 +242,20 @@ const HotelProfile = ({
 
 const styles = StyleSheet.create({
   cardContainer: {
+    alignItems: "center",
     flex: 1,
   },
   container: {
+    alignItems: "center",
     flex: 1,
   },
   headerContainer: {
     alignItems: "center",
-    backgroundColor: "#FFF",
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    padding: 15,
+    borderRadius: 15,
+    width: '90%',
     marginBottom: 10,
     marginTop: 30,
   },
@@ -184,15 +270,25 @@ const styles = StyleSheet.create({
   },
   socialRow: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
+    alignItems:'center',
+    backgroundColor: '#fff',
+    width: '100%',
+    padding: 5,
+    borderRadius: 15
   },
   messageRow: {
     flexDirection: "row",
-    marginLeft: 0, //Tenia 40
-    marginRight: 40,
+    width: '90%',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   tabBar: {
-    backgroundColor: "#EEE",
+    padding:10,
+    borderWidth:1,
+    backgroundColor: "rgba(0, 0, 0, 0.05)",
+    borderColor: '#000',
+    borderRadius:5,
   },
   tabContainer: {
     flex: 1,
@@ -202,12 +298,13 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
   },
   tabLabelNumber: {
-    color: "gray",
-    fontSize: 12.5,
+    color: "#fff",
+    fontSize: 15,
     textAlign: "center",
+    padding: 10
   },
   tabLabelText: {
-    color: "black",
+    color: "#fff",
     fontSize: 22.5,
     fontWeight: "600",
     textAlign: "center",
@@ -216,25 +313,24 @@ const styles = StyleSheet.create({
   userBioRow: {
     marginLeft: 40,
     marginRight: 40,
-    backgroundColor: 'blue'
   },
   descriptionRow: {
-    marginLeft: 20,
-    marginRight: 40,
-    marginBottom: 20,
+    width: '80%',
+    marginBottom: 10,
     marginTop: 20,
     flexDirection: "row",
+    alignItems: 'center'
   },
   userBioText: {
-    color: "gray",
-    fontSize: 13.5,
+    color: "#000",
+    fontSize: 16,
     textAlign: "center",
   },
   userDescriptionText: {
-    color: "gray",
-    fontSize: 13.5,
+    color: "#fff",
+    fontSize: 15,
     // textAlign: 'center',
-    marginLeft: 5,
+    marginLeft: 15,
     textTransform: "capitalize",
   },
   ratingText: {
@@ -248,7 +344,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   messageText: {
-    color: "#456672",
+    color: "#fff",
     fontSize: 20,
     fontWeight: "bold",
     marginLeft: 5, //Tenia 14
