@@ -1,47 +1,72 @@
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
+import axios from 'axios';
+import { getData  } from '../../AsyncStorage/index';
+import { RouteStackParamList } from '../../NavigationConfig/types';
+
 export interface SelectRolProps {
    }
  
-const SelectRol: React.FC<SelectRolProps> = () => {
+const SelectRol = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
+
+    const [ state, setState ] = useState()
+    const retrieveStorage = async () =>{
+        const id:string = await getData()
+        setState(id) 
+      };
+    
+    useLayoutEffect(() => {
+        retrieveStorage();
+    }, []);
+
+    const walkerSubmit = async() => {
+        await axios.put(`/owners/${state}`, { role: 'Walker' })
+        navigation.navigate('Tab')
+    };
+
+    const serviceSubmit = async() => {
+        // await axios.post(`/owners/${state}`, { role: 'Service' })
+        //Falta agregar funcionalidad
+        navigation.navigate('Tab')
+    };
+
   return (
     <View>
       <Text style={styles.title}>Select your Role</Text>
       <View style={styles.container}>
          <View style={styles.buttons}> 
-              <Text>Owner</Text>
+              <Text style={styles.text}>Owner</Text>
               <Icon
-          reverse 
-         name='user'
-         type='font-awesome-5'
-         color='#fc5185'
-         size={40}
-         style={styles.icon}
-         onPress={() => console.log('hello')} />
-
+                reverse 
+                name='user'
+                type='font-awesome-5'
+                color='blue'
+                size={40}
+                style={styles.icon}
+                onPress={() => navigation.navigate('Tab')} />
         </View>  
         <View style={styles.buttons}>
-          <Text>Walker</Text>
-         <Icon
-         reverse
-         name='walking'
-         type='font-awesome-5'
-         color='#fc5185'
-         style={styles.icon}
-         size={40}
-         onPress={() => console.log('hello')} />
+          <Text style={styles.text}>Walker</Text>
+            <Icon
+                reverse
+                name='walking'
+                type='font-awesome-5'
+                color='#fc5185'
+                style={styles.icon}
+                size={40}
+                onPress={walkerSubmit} />
         </View>
         <View style={styles.buttons}>
-          <Text>Service</Text>
+          <Text style={styles.text}>Service</Text>
             <Icon
-          reverse
-         name='clinic-medical'
-         type='font-awesome-5'
-         color='#fc5185'
-         style={styles.icon}
-         size={40}
-         onPress={() => console.log('hello')} />
+                reverse
+                name='clinic-medical'
+                type='font-awesome-5'
+                color='#008891'
+                style={styles.icon}
+                size={40}
+                onPress={serviceSubmit} />
         </View>
         </View>
     </View>
@@ -55,21 +80,28 @@ const styles = StyleSheet.create({
     padding:10,
     justifyContent:'center',
     marginHorizontal:45,
-    marginTop:-20,
+    marginTop:-20
   },
   icon:{
-    backgroundColor: 'grey',
+    backgroundColor: 'black',
   },
   buttons:{
-    flex:1,
-  justifyContent:'center',
+    // flex:1,
+    justifyContent:'center',
     alignItems:'center',
     marginTop:150,
-    backgroundColor: 'grey',
+    height:20,
+    width: 300
   },
   title: {
       marginTop: 100,
       textAlign: 'center',
       fontSize: 30 
+  },
+  text: {
+      fontSize: 15,
+      fontWeight: 'bold',
+      width: 60,
+      textAlign: 'center',
   }
 })

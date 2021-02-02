@@ -28,10 +28,9 @@ const UserPannel =({navigation}: RouteStackParamList<'UserPannel'>)=> {
           await AsyncStorage.removeItem('@id')
           navigation.navigate('LoginScreen')
         } catch(e) {
-          // remove error
+            console.log(e)
         }
-        console.log('Done.')
-        }
+    }
 
     return (
         <View>

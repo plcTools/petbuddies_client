@@ -15,11 +15,7 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
   })
   const retrieveStorage = async () =>{
     const id:string = await getData()
-     if(id){
-      navigation.navigate('SelectRol')
-    } else {
-      console.log('No hay user')
-    }
+     if(id) navigation.navigate('SelectRol')
   }
 
   useLayoutEffect(() => {

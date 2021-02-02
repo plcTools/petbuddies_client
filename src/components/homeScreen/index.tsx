@@ -53,13 +53,14 @@ const HomeScreen = () => {
     
     React.useLayoutEffect(() => {
         retrieveStorage(); 
+        dispatch(getUserFavorites(id))
         if (Object.keys(walkers).length > 0) {
             setState(walkers)
         } else {
             dispatch(getUserFavorites(id))
             dispatch(getWalkers())
         }
-    }, [walkers, dispatch]);
+    }, [dispatch, walkers]);
 
     const handleInput = (name: string) => {
         setInput({
@@ -127,7 +128,6 @@ const HomeScreen = () => {
                 <Icon
                     name='star'
                     type='font-awesome'
-                    // color='#f8dc81'
                     color={icon?.star ? '#f8dc81' : 'grey'}
                     onPress={() => {
                         handleIcon('star')
@@ -172,7 +172,7 @@ const HomeScreen = () => {
                 checked ? (
                     <>
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
-                            <Text style={{ fontFamily: 'NunitoSans_600SemiBold', textTransform: 'capitalize', fontSize: 18 }}>walkers por {checked}</Text>
+                            <Text style={{ fontFamily: 'NunitoSans_600SemiBold', textTransform: 'capitalize', fontSize: 18 }}>Walkers in {checked}</Text>
                         </View>
                         <Divider />
                     </>
@@ -181,7 +181,6 @@ const HomeScreen = () => {
             <View style={styles.container}>
                 {
                     renderComponent(state)
-
                 }
             </View>
             <View>
