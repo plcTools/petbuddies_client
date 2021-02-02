@@ -33,7 +33,7 @@ function DetailsSpaCard(props: any) {
                         onPress={() => {
                             props.modalStatusChange()
                         }}>
-                        <Text style={styles.textButton}>Close</Text>
+                        <Text style={styles.textButton}>X</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -64,7 +64,7 @@ function DetailsSpaCard(props: any) {
                 </View>
 
                 <View /* mapContainer*/ style={styles.mapContainer}>
-                    <MapView style={{ width: 200, height: 200 }} />
+                    <MapView style={{ width: '80%', height: '80%' }} />
                 </View>
 
             </View>

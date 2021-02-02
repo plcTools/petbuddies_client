@@ -15,22 +15,6 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 
-const DATA = [
-  {
-    id: '3',
-    title: 'Hair Cut',
-  },
-  {
-    id: '2',
-    title: 'Nails Cut',
-  },
-  {
-    id: '1',
-    title: 'Bubble bath',
-  },
-];
-
-
 
 function SpaCard(props: any) {
 
@@ -41,6 +25,7 @@ function SpaCard(props: any) {
       </View>
     )
   };
+  
   /* muestra o cierra el modal */
   const [modalVisible, setModalVisible] = useState(false);
   const modalStatusChange = () => {
