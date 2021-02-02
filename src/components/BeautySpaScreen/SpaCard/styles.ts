@@ -42,6 +42,7 @@ export const styles = StyleSheet.create({
     height: 40,
     width: 90,
     elevation: 5,
+    marginTop:'5%'
   },
   textButton: {
     textAlign: 'center',
