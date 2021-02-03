@@ -1,9 +1,10 @@
-import { StyleSheet } from 'react-native';
-import { StatusBar } from 'react-native';
+import { StyleSheet } from "react-native";
+import { StatusBar } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    marginBottom: 10,
+    marginBottom: 20,
+    marginTop: 0,
     shadowColor: "#000",
     opacity: 0.9,
     shadowOffset: {
@@ -33,10 +34,10 @@ export const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 17,
     fontWeight: "bold",
-    textTransform: 'capitalize'
+    textTransform: "capitalize",
   },
   text: {
-    width: 85
+    width: 85,
   },
   icon: {
     flex: 0,
@@ -61,6 +62,5 @@ export const styles = StyleSheet.create({
     position: "absolute",
     right: -30,
     top: -30,
-  }
+  },
 });
-

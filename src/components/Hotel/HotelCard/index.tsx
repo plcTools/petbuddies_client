@@ -1,6 +1,6 @@
 import React from "react";
 import { styles } from "../../WalkerCard/styles";
-import {hotel} from '../../../NavigationConfig/types'
+import { hotel } from "../../../NavigationConfig/types";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Card, Image, Icon, CheckBox, Divider } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
@@ -16,30 +16,30 @@ import {
 } from "@expo-google-fonts/nunito-sans";
 
 import { useAppDispatch, RootState } from "../../../redux/store";
-import { getOwnerFavHotels } from '../../../redux/owner/actions';
-import { getData  } from '../../../AsyncStorage/index';
+import { getOwnerFavHotels } from "../../../redux/owner/actions";
+import { getData } from "../../../AsyncStorage/index";
 
 interface Props {
-  hotel: hotel,
-  userFavHotels: hotel[]
+  hotel: hotel;
+  userFavHotels: hotel[];
 }
-const HotelCard: React.FC<Props> = ({ hotel ,  userFavHotels }): JSX.Element => {
+const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
   const [checked, setChecked] = React.useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const [ id, setId ] = React.useState<string>('');
+  const [id, setId] = React.useState<string>("");
 
-  const retrieveStorage = async () =>{
-    const user:string = await getData()
-    setId(user)
-  }
+  const retrieveStorage = async () => {
+    const user: string = await getData();
+    setId(user);
+  };
 
   React.useEffect(() => {
-    retrieveStorage()
-    userFavHotels?.map(u => {
+    retrieveStorage();
+    userFavHotels?.map((u) => {
       if (u._id === hotel._id) {
-          setChecked(true);
-      };
-  });
+        setChecked(true);
+      }
+    });
   }, [userFavHotels]);
 
   const navigation = useNavigation();
@@ -76,13 +76,13 @@ const HotelCard: React.FC<Props> = ({ hotel ,  userFavHotels }): JSX.Element => 
           />
 
           <View style={styles.headerContainer}>
-            <Text style={styles.headerTitle}>
-              {`${hotel.name}`}
-            </Text>
+            <Text style={styles.headerTitle}>{`${hotel.name}`}</Text>
 
             <Text style={styles.text}>
               <Text style={styles.pricing}>${hotel.fee}</Text>
-              <Text style={{ fontFamily: "NunitoSans_400Regular" }}>/night</Text>
+              <Text style={{ fontFamily: "NunitoSans_400Regular" }}>
+                /night
+              </Text>
             </Text>
           </View>
         </View>
@@ -100,14 +100,20 @@ const HotelCard: React.FC<Props> = ({ hotel ,  userFavHotels }): JSX.Element => 
               size={20}
               color="#fc5185"
             />
-            
-               <Text style={{textTransform: 'capitalize', fontWeight: 'bold', marginRight: 20, width: 90}}>{hotel.zone}</Text>
+
+            <Text
+              style={{
+                textTransform: "capitalize",
+                marginLeft: 6,
+                fontFamily: "NunitoSans_600SemiBold",
+              }}
+            >
+              {hotel.zone}
+            </Text>
           </View>
 
           <View style={styles.cardHeaderRate}>
-            <Text style={{ marginRight: 5, fontSize: 15 }}>
-              { hotel.rating } 
-            </Text>
+            <Text style={{ marginRight: 5, fontSize: 15 }}>{hotel.rating}</Text>
             <Icon
               name="star-o"
               type="font-awesome"
@@ -142,7 +148,6 @@ const HotelCard: React.FC<Props> = ({ hotel ,  userFavHotels }): JSX.Element => 
           checked={checked}
           onPress={async () => {
             if (!checked) {
-            
               const result = await axios.patch(
                 `/owners/${id}/favoritesHotels`,
                 { hotelId: hotel._id }
@@ -156,7 +161,7 @@ const HotelCard: React.FC<Props> = ({ hotel ,  userFavHotels }): JSX.Element => 
               dispatch(getOwnerFavHotels(id));
               return setChecked(false);
             }
-          }} 
+          }}
         />
       </View>
     </Card>
@@ -164,5 +169,3 @@ const HotelCard: React.FC<Props> = ({ hotel ,  userFavHotels }): JSX.Element => 
 };
 
 export default HotelCard;
-
-

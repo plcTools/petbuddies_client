@@ -24,10 +24,10 @@ import {
   NunitoSans_300Light,
 } from "@expo-google-fonts/nunito-sans";
 import { useSelector } from "react-redux";
-import { RootState, useAppDispatch } from '../../../redux/store';
-import { getData } from '../../../AsyncStorage/index';
+import { RootState, useAppDispatch } from "../../../redux/store";
+import { getData } from "../../../AsyncStorage/index";
 import { getOwnerFavGroomers } from "../../../redux/owner/actions";
-import axios from 'axios';
+import axios from "axios";
 
 function SpaCard(props: any) {
   // const renderItem = (item: any) => {
@@ -47,7 +47,7 @@ function SpaCard(props: any) {
   // }, [])
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [checked, setChecked] = useState (false);
+  const [checked, setChecked] = useState(false);
 
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
@@ -55,9 +55,9 @@ function SpaCard(props: any) {
 
   const userFavGroomers = useSelector((state: RootState) => state.user);
 
-  useEffect (() => {
-    console.log (userFavGroomers, 'fav groomer!!!');
-  }, [])
+  useEffect(() => {
+    console.log(userFavGroomers, "fav groomer!!!");
+  }, []);
 
   const navigation = useNavigation();
   let [fonts] = useFonts({
@@ -69,7 +69,7 @@ function SpaCard(props: any) {
     NunitoSans_300Light,
   });
 
-  const dispatch = useAppDispatch ();
+  const dispatch = useAppDispatch();
 
   if (!fonts) return <Icon name="spinner" reverse type="font-awesome-5" />;
 
@@ -96,7 +96,9 @@ function SpaCard(props: any) {
         </View>
         <View>
           <Card.Divider />
-          <Text style={{ fontFamily: "NunitoSans_600SemiBold", fontSize: 20 }}>{props.peluqueria.description}</Text>
+          <Text style={{ fontFamily: "NunitoSans_600SemiBold", fontSize: 20 }}>
+            {props.peluqueria.description}
+          </Text>
           <View style={styles.workZone}>
             <Icon
               style={styles.icon}
@@ -105,11 +107,21 @@ function SpaCard(props: any) {
               size={20}
               color="#fc5185"
             />
-            <Text style={{ textTransform: 'capitalize', fontWeight: 'bold', marginRight: 20 }}>{props.peluqueria.localidad}</Text>
+            <Text
+              style={{
+                textTransform: "capitalize",
+                marginLeft: 6,
+                fontFamily: "NunitoSans_600SemiBold",
+              }}
+            >
+              {props.peluqueria.localidad}
+            </Text>
           </View>
         </View>
         <View style={styles.cardHeaderRate}>
-          <Text style={{ marginRight: 5, fontSize: 15 }}>{props.peluqueria.reviews}</Text>
+          <Text style={{ marginRight: 5, fontSize: 15 }}>
+            {props.peluqueria.reviews}
+          </Text>
           <Icon
             name="star-o"
             type="font-awesome"
@@ -138,19 +150,25 @@ function SpaCard(props: any) {
               size={12}
               color={"red"}
             />
-          } 
+          }
           checked={checked}
           onPress={async () => {
             if (!checked) {
-              const result = await axios.post(`/groomer/${props.userId}/favourites`, { groomer: props.peluqueria });
+              const result = await axios.post(
+                `/groomer/${props.userId}/favourites`,
+                { groomer: props.peluqueria }
+              );
               dispatch(getOwnerFavGroomers(props.userId));
               return setChecked(true);
             } else {
-              const result = await axios.delete(`/groomer/${props.userId}/favourites/${props.id}`);
+              const result = await axios.delete(
+                `/groomer/${props.userId}/favourites/${props.id}`
+              );
               dispatch(getOwnerFavGroomers(props.userId));
               return setChecked(false);
             }
-          }} />
+          }}
+        />
       </View>
     </Card>
   );
