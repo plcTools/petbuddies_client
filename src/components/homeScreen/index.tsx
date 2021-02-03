@@ -11,15 +11,15 @@ import { getUserFavorites } from '../../redux/owner/actions';
 import { Walker } from '../../redux/walker/types';
 import { RouteStackParamList } from '../../NavigationConfig/types';
 import {
-    useFonts,
-    NunitoSans_400Regular,
-    NunitoSans_900Black_Italic,
-    NunitoSans_600SemiBold_Italic,
-    NunitoSans_600SemiBold,
-    NunitoSans_300Light_Italic,
-    NunitoSans_300Light
-} from '@expo-google-fonts/nunito-sans';
-import { getData } from '../../AsyncStorage';
+  useFonts,
+  NunitoSans_400Regular,
+  NunitoSans_900Black_Italic,
+  NunitoSans_600SemiBold_Italic,
+  NunitoSans_600SemiBold,
+  NunitoSans_300Light_Italic,
+  NunitoSans_300Light,
+} from "@expo-google-fonts/nunito-sans";
+import { getData } from "../../AsyncStorage";
 
 const lista: string[] = ['palermo', 'caballito', 'almagro', 'belgrano', 'saavedra', 'puerto madero', 'recoleta', 'villa crespo', 'boedo', 'colegiales', 'barrio norte'].sort();
 interface ModalChecks {
@@ -58,23 +58,23 @@ const HomeScreen = () => {
         if (Object.keys(walkers).length > 0) {
             setState(walkers)
         } else {
-            dispatch(getUserFavorites(id))
+            // dispatch(getUserFavorites(id))
             dispatch(getWalkers())
         }
     }, [dispatch, walkers]);
 
-    const handleInput = (name: string) => {
-        setInput({
-            // ...input,
-            [name]: input[name] ? false : true
-        })
-    };
+  const handleInput = (name: string) => {
+    setInput({
+      // ...input,
+      [name]: input[name] ? false : true,
+    });
+  };
 
-    const handleIcon = (name: string) => {
-        setIcon({
-            [name]: true
-        })
-    };
+  const handleIcon = (name: string) => {
+    setIcon({
+      [name]: true,
+    });
+  };
 
     const renderComponent = (arr: any) => {
         return (
@@ -145,125 +145,140 @@ const HomeScreen = () => {
                     color='#51c2d5'
                     onPress={() => alert('all')}
                 /> */}
-            </View>
-            <Divider />
-            {
-                checked ? (
-                    <>
-                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
-                            <Text style={{ fontFamily: 'NunitoSans_600SemiBold', textTransform: 'capitalize', fontSize: 18 }}>Walkers in {checked}</Text>
-                        </View>
-                        <Divider />
-                    </>
-                ) : null
-            }
-            <View style={styles.container}>
-                {
-                    renderComponent(state)
-                }
-            </View>
-            <View>
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={check}
-                >
-                    <View
-                        style={{
-                            backgroundColor: '#f1f1f1',
-                            margin: 15,
-                            marginTop: 100,
-                            padding: 20,
-                            marginBottom: 50,
-                            borderRadius: 25,
-                            alignItems: 'center',
-                            shadowColor: "#000",
-                            shadowOffset: {
-                                width: 0,
-                                height: 2
-                            },
-                            shadowOpacity: 0.25,
-                            shadowRadius: 3.84,
-                            elevation: 5
-                        }}
-                    >
-                        <View style={{ width: '100%', alignItems: 'flex-end' }}>
-                            <Icon
-                                name='times'
-                                type='font-awesome-5'
-                                onPress={() => {
-                                    setCheck(false)
-                                    setIcon({})
-                                }}
-                                color='red'
-                                size={15}
-                            />
-                        </View>
-                        <Text
-                            style={{
-                                fontWeight: 'bold',
-                                fontSize: 20,
-                                marginBottom: 10,
-                                width: 300,
-                                textAlign: 'center'
-                            }}
-                        >Select your neighborhood</Text>
-                        {
-                            lista && lista.map((item, i) => (
-                                <TouchableOpacity
-                                    key={i}
-                                    style={{
-                                        width: '100%',
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        borderRadius: 10,
-                                        marginBottom: 5,
-                                        marginTop: 5,
-                                        padding: 7,
-                                        backgroundColor: '#fff',
-                                        shadowColor: "#000",
-                                        shadowOffset: {
-                                            width: 0,
-                                            height: 2
-                                        },
-                                        shadowOpacity: 0.25,
-                                        shadowRadius: 5,
-                                        elevation: 3
-                                    }}
-                                    onPress={() => handleInput(item)}
-                                >
-                                    <Text style={{ marginLeft: 10, textTransform: 'capitalize' }}>{item}</Text>
-                                    <Icon
-                                        name={input[item] ? 'check' : 'plus'}
-                                        type='font-awesome-5'
-                                        size={13}
-                                        color={input[item] ? 'green' : 'gray'}
-                                    />
-                                </TouchableOpacity>
-                            ))
-                        }
-
-                        <TouchableOpacity
-                            style={{ marginTop: 10, backgroundColor: '#ccc', borderRadius: 8, padding: 5, width: '70%' }}
-                            onPress={() => {
-                                for (const prop in input) {
-                                    if (input[prop]) {
-                                        setCheck(!check)
-                                        setChecked(prop)
-                                        return setState(walkers.filter((w) => w.workZone.includes(prop)))
-                                    }
-                                }
-                            }}
-                        >
-                            <Text style={{ textAlign: 'center' }}>Select</Text>
-                        </TouchableOpacity>
-                    </View>
-                </Modal>
-            </View>
+      </View>
+      <Divider />
+      {checked ? (
+        <>
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              justifyContent: "center",
+              marginTop: 10,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "NunitoSans_600SemiBold",
+                textTransform: "capitalize",
+                fontSize: 18,
+              }}
+            >
+              Walkers in {checked}
+            </Text>
+          </View>
+          <Divider />
         </>
-    )
-};
+      ) : null}
+      <View style={styles.container}>{renderComponent(state)}</View>
+      <View>
+        <Modal animationType="slide" transparent={true} visible={check}>
+          <View
+            style={{
+              backgroundColor: "#f1f1f1",
+              margin: 15,
+              marginTop: 100,
+              padding: 20,
+              marginBottom: 50,
+              borderRadius: 25,
+              alignItems: "center",
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+            }}
+          >
+            <View style={{ width: "100%", alignItems: "flex-end" }}>
+              <Icon
+                name="times"
+                type="font-awesome-5"
+                onPress={() => {
+                  setCheck(false);
+                  setIcon({});
+                }}
+                color="red"
+                size={15}
+              />
+            </View>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 20,
+                marginBottom: 10,
+                width: 300,
+                textAlign: "center",
+              }}
+            >
+              Select your neighborhood
+            </Text>
+            {lista &&
+              lista.map((item, i) => (
+                <TouchableOpacity
+                  key={i}
+                  style={{
+                    width: "100%",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    borderRadius: 10,
+                    marginBottom: 5,
+                    marginTop: 5,
+                    padding: 7,
+                    backgroundColor: "#fff",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 5,
+                    elevation: 3,
+                  }}
+                  onPress={() => handleInput(item)}
+                >
+                  <Text style={{ marginLeft: 10, textTransform: "capitalize" }}>
+                    {item}
+                  </Text>
+                  <Icon
+                    name={input[item] ? "check" : "plus"}
+                    type="font-awesome-5"
+                    size={13}
+                    color={input[item] ? "green" : "gray"}
+                  />
+                </TouchableOpacity>
+              ))}
 
+            <TouchableOpacity
+              style={{
+                marginTop: 10,
+                backgroundColor: "#ccc",
+                borderRadius: 8,
+                padding: 5,
+                width: "70%",
+              }}
+              onPress={() => {
+                for (const prop in input) {
+                  if (input[prop]) {
+                    setCheck(!check);
+                    setChecked(prop);
+                    return setState(
+                      walkers.filter((w) => w.workZone.includes(prop))
+                    );
+                  }
+                }
+              }}
+            >
+              <Text style={{ textAlign: "center" }}>Select</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      </View>
+    </>
+  );
+};
 
 export default HomeScreen;

@@ -21,7 +21,8 @@ export const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 17,
     fontWeight: "bold",
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
+    width: 110
   },
   fav: {
     position: "absolute",

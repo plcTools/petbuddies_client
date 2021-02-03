@@ -17,49 +17,36 @@ import { Icon } from 'react-native-elements';
 import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
 import BeautySpaScreen from '../components/BeautySpaScreen/BeautySpaScreen'
 import SelectRol from '../components/SelectRol';
-import { hairdresserReducer } from '../redux/Hairdressers/reducer';
-
-/* 
-    Para agregar una ruta tenemos que hacer lo siguiente:
-    1)Agregarla al stack en este mismo archivo.
-    2)Ir al archivo '/NavigationConfig/types' y agregar el componente a RootStackParamList con sus props.
-    3) ir al componente nuevo que creamos y pasarle el prop {navigation}: RootStackParamList<'nombre_componente'>
-
-*/
-/* 
-  Tenemos que ver el tema de Nested-Navigation. 
-  Ver que componente va en cada NAVIGATOR (TAB, DRAWER, STACK)
-*/
+import WalkerForm from "../components/WalkerForm";
 
 export const Routes: React.FC = () => {
   let [fonts] = useFonts({ NunitoSans_400Regular });
 
   const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
 
-  const Tab = createBottomTabNavigator()
+  const Tab = createBottomTabNavigator();
   const TabNavigation = () => {
     return (
       <Tab.Navigator
-        initialRouteName='HomeScreen'
+        initialRouteName="HomeScreen"
         tabBarOptions={{
-          inactiveTintColor: '#fdfafa',
-          activeTintColor: '#008891',
+          inactiveTintColor: "#fdfafa",
+          activeTintColor: "#008891",
           style: {
-            backgroundColor: '#c98c70'
+            backgroundColor: "#c98c70",
           },
           showLabel: false,
-
         }}
         screenOptions={({ route }) => ({
           tabBarIcon: ({ color, size }) => {
             type Icons = {
               [key: string]: string;
-            }
+            };
 
             let icons: Icons;
             icons = { Home: "walking", Hotel: 'bed', Peluquerias: 'cut' };
 
-            if (route.name === 'Walkers') return null;
+            if (route.name === "Walkers") return null;
 
             return (
               <Icon
@@ -76,12 +63,11 @@ export const Routes: React.FC = () => {
         <Tab.Screen name='Hotel' component={HotelScreen} />
         <Tab.Screen name='Peluquerias' component={BeautySpaScreen} />
       </Tab.Navigator>
-    )
-  }
+    );
+  };
   /*   const Drawer = createDrawerNavigator() */
-  if (!fonts) return <Icon name='spinner' reverse type='font-awesome-5' />
+  if (!fonts) return <Icon name="spinner" reverse type="font-awesome-5" />;
   return (
-
     <NavigationContainer>
       <Navigator screenOptions={({ navigation }) => ({
         title: 'PetBuddies',
@@ -105,6 +91,7 @@ export const Routes: React.FC = () => {
         <Screen name='SelectRol' component={SelectRol} options={{ headerShown: false }} />
         <Screen name='Tab' component={TabNavigation} options={() => ({headerLeft: null})} />
         <Screen name='WalkerCard' component={WalkerCard} />
+        <Screen name="WalkerForm" component={WalkerForm} options={{ headerShown: true }} />
         <Screen name='BeautySpaScreen' component={BeatySpaScreen} options={{ headerShown: false }} />
         <Screen name='WalkerProfile' component={WalkerProfile} />
         <Screen name='HotelCard' component={HotelCard} />
@@ -112,12 +99,12 @@ export const Routes: React.FC = () => {
         <Screen name='Profile' component={UserPannel} />
       </Navigator>
     </NavigationContainer>
-  )
-}
-
+  );
+};
 
 // estilos del header
-{/* <Stack.Navigator
+{
+  /* <Stack.Navigator
       initialRouteName='Tab'
       screenOptions={({navigation}) => ({
         title: 'PetBuddies',
@@ -135,4 +122,5 @@ export const Routes: React.FC = () => {
             color='#364f6b'
             onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
           />)
-      })}></Stack.Navigator> */}
+      })}></Stack.Navigator> */
+}

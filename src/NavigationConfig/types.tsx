@@ -19,11 +19,13 @@ export type RootStackParamList = {
   Stack: undefined
   Tab: undefined;
   TabNavigation: undefined;
+  WalkerForm: undefined;
   BeautySpaScreen:undefined;
   HotelCard: {
     hotel: hotel
   }
   Profile: undefined ;
+
 };
 
 export type RouteStackParamList<T extends keyof RootStackParamList> = {
