@@ -18,6 +18,8 @@ import { Icon, Divider } from "react-native-elements";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
 import { NunitoSans_900Black } from "@expo-google-fonts/nunito-sans";
+import MapView from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 const { width, height } = Dimensions.get('screen')
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
@@ -27,10 +29,27 @@ const HotelProfile = ({
   route,
 }: RouteStackParamList<"HotelProfile">) => {
   const [state, setState] = React.useState<any>();
+
+  interface Region {
+    latitude?: number,
+    longitude?: number,
+    longitudeDelta: number,
+    latitudeDelta: number
+  }
+
+  var region:Region = {
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005,
+  }
+
   React.useEffect(() => {
     axios
       .get(`/hotels/${route.params.id}`)
-      .then((result) => setState(result.data));
+      .then((result) => {
+        setState(result.data);
+        region.latitude = result.data.latitude;
+        region.longitude
+      });
   }, []);
 
   const renderLabel = () => {
@@ -50,7 +69,7 @@ const HotelProfile = ({
         </View>
         <View>
           <Animated.Text style={styles.tabLabelText}>
-            {state.petsLoved? state.petsLoved: '?'}
+            {state.petsLoved ? state.petsLoved : '?'}
           </Animated.Text>
           <Animated.Text style={styles.tabLabelNumber}>
             Loved pets
@@ -149,7 +168,7 @@ const HotelProfile = ({
                   size={25}
                   color="#6a2c70"
                 />
-                <Text style={{color: '#fff', marginLeft: 15, fontSize: 15}}>
+                <Text style={{ color: '#fff', marginLeft: 15, fontSize: 15 }}>
                   Requisitos: {state.requirement}
                 </Text>
               </View>
@@ -221,6 +240,8 @@ const HotelProfile = ({
                 )}
               />
             </View>
+            <MapView>
+            </MapView>
             <TouchableOpacity
               style={styles.messageRow}
               onPress={() => Linking.openURL(`tel:${state.phone}`)}
@@ -271,7 +292,7 @@ const styles = StyleSheet.create({
   socialRow: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    alignItems:'center',
+    alignItems: 'center',
     backgroundColor: '#fff',
     width: '100%',
     padding: 5,
@@ -284,11 +305,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   tabBar: {
-    padding:10,
-    borderWidth:1,
+    padding: 10,
+    borderWidth: 1,
     backgroundColor: "rgba(0, 0, 0, 0.05)",
     borderColor: '#000',
-    borderRadius:5,
+    borderRadius: 5,
   },
   tabContainer: {
     flex: 1,

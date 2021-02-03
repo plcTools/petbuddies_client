@@ -95,7 +95,7 @@ const HomeScreen = () => {
             <Divider />
             <View style={styles.viewIcons}>
                 <Icon
-                    name='walking'
+                    name='list-ul'
                     type='font-awesome-5'
                     color={icon?.walkers ? "#fc5185" : "grey"}
                     onPress={() => {

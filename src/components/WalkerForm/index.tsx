@@ -18,6 +18,7 @@ interface State {
   workZone?: string[];
   workHours?: string;
   zona?: string;
+  role?: string;
 }
 
 const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
@@ -50,10 +51,10 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
 
   return (
     <ScrollView style={styles.container}>
-      <View>
-        <Text>Name</Text>
+      <View style={styles.formGroup}>
+        <Text style={styles.label}>Name</Text>
         <TextInput
-          defaultValue={user?.name}
+          defaultValue={user?.name || ""}
           onChangeText={(value) => handleChange("name", value)}
           style={styles.input}
           maxLength={50}
@@ -62,96 +63,107 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
       </View>
 
       <View>
-        <Text>Lastname</Text>
+        <Text style={styles.label}>Lastname</Text>
         <TextInput
-          defaultValue={user?.lastname}
+          defaultValue={user?.lastname || ""}
           onChangeText={(value) => handleChange("lastname", value)}
           style={styles.input}
           maxLength={50}
           autoCapitalize="none"
         />
       </View>
+      {user?.role === "Owner" ? null : 
       <View>
-        <Text>Description</Text>
+        <Text style={styles.label}>Description</Text>
+        <View style={styles.textArea}>
         <TextInput
           defaultValue={user?.description || ""}
           onChangeText={(value) => handleChange("description", value)}
           style={styles.input}
           maxLength={50}
           autoCapitalize="none"
-        />
+          />
+        </View>
       </View>
+      }
+      {user?.role === "Owner" ? null :
       <View>
-        <Text>Cellphone</Text>
+        <Text style={styles.label}>Cellphone</Text>
         <TextInput
-          defaultValue={String(user?.cellphone)}
+          defaultValue={String(user?.cellphone) || undefined ? "" : ""}
           onChangeText={(value) => handleChange("cellphone", value)}
           style={styles.input}
           maxLength={50}
           autoCapitalize="none"
           keyboardType="phone-pad"
-        />
+          />
       </View>
-
+      }
+      {user?.role === "Owner" ? null :
       <View>
-        <Text>DNI</Text>
+        <Text style={styles.label}>DNI</Text>
         <TextInput
-          defaultValue={String(user?.dni)}
+          defaultValue={String(user?.dni) || undefined ? "" : ""}
           onChangeText={(value) => handleChange("dni", value)}
           style={styles.input}
           maxLength={50}
           autoCapitalize="none"
           keyboardType="number-pad"
-        />
+          />
       </View>
+      }
       <View>
-        <Text>City</Text>
+        <Text style={styles.label}>City</Text>
         <TextInput
-          defaultValue={user?.zona}
+          defaultValue={user?.zona || ""}
           onChangeText={(value) => handleChange("zona", value)}
           style={styles.input}
           maxLength={50}
           autoCapitalize="none"
         />
       </View>
-
+      {user?.role === "Owner" ? null :
       <View>
-        <Text>Fee</Text>
+        <Text style={styles.label}>Fee</Text>
         <TextInput
-          defaultValue={String(user?.fee) || ""}
+          defaultValue={String(user?.fee) || undefined ? "" : ""}
           onChangeText={(value) => handleChange("fee", value)}
           style={styles.input}
           maxLength={50}
           autoCapitalize="none"
           keyboardType="number-pad"
-        />
+          />
       </View>
+      }
+      {user?.role === "Owner" ? null :
       <View>
-        <Text>Work Zone</Text>
+        <Text style={styles.label}>Work Zone</Text>
         <TextInput
-          defaultValue={String(user?.workZone)}
+          defaultValue={String(user?.workZone) || undefined ? "" : ""}
           onChangeText={(value) => {
             let result = value.toLowerCase().trim().split(", ");
             return setData({ ...data, workZone: result });
           }}
           style={styles.input}
-          placeholder="E.g Caballito-Palermo "
+          placeholder="E.g Caballito, Palermo"
           maxLength={50}
           autoCapitalize="none"
-        />
+          />
       </View>
-
+      }
+      {user?.role === "Owner" ? null :
       <View>
-        <Text>Work hours</Text>
+        <Text style={styles.label}>Work hours</Text>
         <TextInput
-          defaultValue={String(user?.workHours) || ""}
+          defaultValue={String(user?.workHours) || undefined ? "" : ""}
           style={styles.input}
           onChangeText={(value) => handleChange("workHours", value)}
           maxLength={50}
           autoCapitalize="none"
           placeholder="E.g. : 14 to 18hs"
-        />
+          />
       </View>
+      }
       <TouchableOpacity onPress={handleSubmit} style={styles.button}>
         <Text style={styles.text}>Save</Text>
       </TouchableOpacity>
@@ -164,7 +176,20 @@ export default WalkerForm;
 const styles = StyleSheet.create({
   container: {
     padding: 40,
-    backgroundColor: "#fff",
+    backgroundColor: "#456672",
+  },
+  formGroup: {
+    borderColor: "#fff",
+  },
+  label: {
+    color: "#c98c70",
+    fontSize: 19,
+    textShadowColor: "#fff",
+    textShadowOffset: {
+      width: 0.4,
+      height: -1,
+    },
+    textShadowRadius: 1,
   },
   button: {
     backgroundColor: "#c98c70",
@@ -179,11 +204,29 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
   },
-  input: {
-    height: 25,
+  textArea: {},
+  description: {
+    height: 80,
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    borderRadius: 4,
     borderBottomColor: "#456672",
     borderBottomWidth: 2,
     marginBottom: 10,
+    paddingHorizontal: 4,
+    marginTop: 4,
+    backgroundColor: "#fff",
+    textTransform: "capitalize",
+  },
+  input: {
+    borderRadius: 4,
+    height: 30,
+    borderBottomColor: "#456672",
+    borderBottomWidth: 2,
+    marginBottom: 10,
+    paddingHorizontal: 4,
+    marginTop: 4,
+    backgroundColor: "#fff",
     textTransform: "capitalize",
   },
 });

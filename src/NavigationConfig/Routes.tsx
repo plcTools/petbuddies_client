@@ -18,6 +18,7 @@ import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
 import BeautySpaScreen from '../components/BeautySpaScreen/BeautySpaScreen'
 import SelectRol from '../components/SelectRol';
 import WalkerForm from "../components/WalkerForm";
+import {Image} from 'react-native'
 
 export const Routes: React.FC = () => {
   let [fonts] = useFonts({ NunitoSans_400Regular });
@@ -84,8 +85,10 @@ export const Routes: React.FC = () => {
             name="user"
             type='font-awesome'
             color='#c98c70'
+            size={20}
             onPress={() => navigation.navigate("Profile")}
           />)
+
       })}>
         <Screen name='LoginScreen' component={LoginScreen} options={{ headerShown: false }} />
         <Screen name='SelectRol' component={SelectRol} options={{ headerShown: false }} />

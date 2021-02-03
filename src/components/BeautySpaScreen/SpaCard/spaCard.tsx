@@ -53,11 +53,13 @@ function SpaCard(props: any) {
     setModalVisible(!modalVisible);
   };
 
-  const userFavGroomers = useSelector((state: RootState) => state.user);
+  const userFavGroomers = useSelector((state: RootState) => state.user.userFavGroomers);
 
-  useEffect(() => {
-    console.log(userFavGroomers, "fav groomer!!!");
-  }, []);
+
+  useEffect (() => {
+    const found = userFavGroomers && userFavGroomers.find (peluqueria => peluqueria._id == props.id);
+    if (found) setChecked (true);
+  }, [])
 
   const navigation = useNavigation();
   let [fonts] = useFonts({
@@ -75,7 +77,7 @@ function SpaCard(props: any) {
 
   return (
     <Card containerStyle={styles.container}>
-      <TouchableOpacity style={styles.cardContainer}>
+      <TouchableOpacity style={styles.cardContainer} onPress={()=> setModalVisible(!modalVisible)}>
         <View style={styles.cardHeader}>
           <Image
             style={{
@@ -154,10 +156,8 @@ function SpaCard(props: any) {
           checked={checked}
           onPress={async () => {
             if (!checked) {
-              const result = await axios.post(
-                `/groomer/${props.userId}/favourites`,
-                { groomer: props.peluqueria }
-              );
+
+              const result = await axios.patch(`/groomer/${props.userId}/favourites/${props.id}`);
               dispatch(getOwnerFavGroomers(props.userId));
               return setChecked(true);
             } else {
@@ -167,8 +167,21 @@ function SpaCard(props: any) {
               dispatch(getOwnerFavGroomers(props.userId));
               return setChecked(false);
             }
-          }}
+
+          }} />
+          <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("se cierra el Modal.");
+        }}
+      >
+        <DetailsSpaCard
+          modalStatusChange={modalStatusChange}
+          data={props.peluqueria}
         />
+      </Modal>
       </View>
     </Card>
   );
