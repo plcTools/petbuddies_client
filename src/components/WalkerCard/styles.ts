@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "bold",
     textTransform: 'capitalize',
+    textAlign: 'center',
     width: 110
   },
   fav: {
@@ -66,7 +67,8 @@ export const styles = StyleSheet.create({
     flexBasis: 4,
   },
   text: {
-    width: 85
+    textAlign: 'center',
+    width: 110
   },
   infoContainer: {
     maxWidth: "84%",

@@ -73,5 +73,5 @@ export interface Groomer {
     payload: Owner
   }
   
-  export type OwnerActionsTypes = GetOwnerFavorites | GetOwner | GetOwnerFavHotels ;
+  export type OwnerActionsTypes = GetOwnerFavorites | GetOwner | GetOwnerFavHotels | GetUserFavGroomers;
   // export type OwnerAction = GetOwner;

@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import firebase from 'firebase';
 import axios from 'axios';
+import { storeData } from '../../AsyncStorage/index'
+import { useNavigation } from "@react-navigation/native";
 
 function ModalUserFormScreen(props: any) {
 
@@ -38,7 +40,6 @@ function ModalUserFormScreen(props: any) {
                 const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
                 if(user) {
                     await axios.post('/owners', { email })
-                    return Alert.alert('Registro exitoso!');
                 }
             } catch (error) {
                 Alert.alert(error.message);
@@ -46,7 +47,20 @@ function ModalUserFormScreen(props: any) {
         }
     }
 
-    const onSubmit = () => {
+    const navigation = useNavigation();
+    const login = async () => {
+        try {
+          await firebase.auth().signInWithEmailAndPassword(input.email, input.password);
+          const id = await axios.get(`/owners/email/${input.email}`);
+          await storeData(id.data);
+          navigation.navigate("SelectRol");
+          } catch (error) {
+          console.log(error.message);
+          Alert.alert(error.message);
+        }
+    };
+
+    const onSubmit = async () => {
         const emailValidate = input.email && validateEmail(input.email)
         const lenPass = input.password && input.password.length > 5
         const passValidate = input.password && input.repeatPassword && input.password === input.repeatPassword
@@ -54,13 +68,12 @@ function ModalUserFormScreen(props: any) {
         if (!passValidate) { return Alert.alert('Las contraseñas no coinciden') };
         if (!lenPass) { return Alert.alert('La contraseña debe tener como minimo 6 caracteres') };
         if (input.email && input.password && input.repeatPassword && passValidate && emailValidate && lenPass) {
-            signup();
+            await signup();
             props.modalStatusChange()/* cambia el state para ocultar el modal */
+            await login();
+            Alert.alert('Registro exitoso!');            
         }
-
     };
-
-
 
     return (
         <KeyboardAvoidingView style={styles.keyboard}

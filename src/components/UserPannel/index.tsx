@@ -54,17 +54,17 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
 
   return (
     <View>
-      <ListItem bottomDivider style={{ paddingTop: 40 }}>
+      <ListItem bottomDivider>
         <Avatar /* onPress debería poder modificar la foto de perfil*/
           rounded
           size="large"
-          source={{ uri: `${state?.photo}` }}
+          source={state?.photo ? { uri: `${state?.photo}` } : require("../../images/logo.png")}
           overlayContainerStyle={{ backgroundColor: "orange" }}
           onPress={() => alert("ir a editar perfil")}
         />
         <ListItem.Content>
           <ListItem.Title>
-            {state?.name} {state?.lastname}
+          {state?.name ? state?.name + ' ' + state?.lastname : state?.email}
           </ListItem.Title>
           <ListItem.Subtitle>{state?.zona} </ListItem.Subtitle>
         </ListItem.Content>

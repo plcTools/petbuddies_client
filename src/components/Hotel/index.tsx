@@ -128,7 +128,7 @@ const HotelScreen = () => {
       <View><Divider /></View>
       <View style={styles.viewIcons}>
       <Icon
-        name='hotel'
+        name='list-ul'
         type='font-awesome'
         color={icon?.hotels ? "#fc5185" : "grey"}
         onPress={() => {

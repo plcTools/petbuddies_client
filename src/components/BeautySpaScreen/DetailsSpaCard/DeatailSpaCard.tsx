@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Card, Image, Icon, CheckBox, Divider } from "react-native-elements";
-import { View, Text, TouchableOpacity, Alert, Linking } from "react-native";
+import { View, Text, TouchableOpacity, Alert, Linking, Platform } from "react-native";
 import { styles } from "./styles";
 import MapView from "react-native-maps";
 import { Marker } from "react-native-maps";
@@ -16,58 +16,70 @@ function DetailsSpaCard(props: any) {
   function openWhatsApp() {
     props.data.whatsapp
       ? Alert.alert("WhatsApp", "¿Want to chat?", [
-          {
-            text: "OK",
-            onPress: () => {
-              Linking.openURL(
-                `https://wa.me/${props.data.whatsapp}?text=Quiero mas Información`
-              );
-            },
+        {
+          text: "OK",
+          onPress: () => {
+            Linking.openURL(
+              `https://wa.me/${props.data.whatsapp}?text=Quiero mas Información`
+            );
           },
-          {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel",
-          },
-        ])
-      : Alert.alert("El establecimiento no posee WhatApp");
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ])
+      : Alert.alert("This place hasen't WhatsApp");
   }
 
   function openTel() {
     props.data.phone
       ? Alert.alert("Phone", "¿Want to CALL?", [
-          {
-            text: "OK",
-            onPress: () => {
-              Linking.openURL(`tel:${props.data.phone}`);
-            },
+        {
+          text: "OK",
+          onPress: () => {
+            Linking.openURL(`tel:${props.data.phone}`);
           },
-          {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel",
-          },
-        ])
-      : Alert.alert("El establecimiento no posee Telefono");
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ])
+      : Alert.alert("This place hasen't telephone");
   }
 
   function openMail() {
     props.data.mail
       ? Alert.alert("Mail", "Want to send a MAIL?", [
-          {
-            text: "OK",
-            onPress: () => {
-              Linking.openURL(`mailito:${props.data.mail}`);
-            },
+        {
+          text: "OK",
+          onPress: () => {
+            Linking.openURL(`mailito:${props.data.mail}`);
           },
-          {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel",
-          },
-        ])
-      : Alert.alert("El establecimiento no posee WhatApp");
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ])
+      : Alert.alert("This place hasen't Email");
   }
+
+
+  function openGps(add:String, loc:String, prov:String, pais:String) {
+    //var scheme = Platform.OS === 'ios' ? 'maps:' : 'geo:';  
+    var url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${add} ${loc} ${prov} ${pais} &travelmode=bicycling`;
+    Linking.openURL(url);
+  }
+  //por lat y long
+  //`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`
+
+  //por direccion
+  //`https://www.google.com/maps/dir/?api=1&origin=&destination=${props.data.address} ${props.data.localidad} ${props.data.provincia} ${props.data.pais} &travelmode=bicycling`
 
   return (
     <View /* containerAll */ style={styles.containerAll}>
@@ -109,7 +121,25 @@ function DetailsSpaCard(props: any) {
             <Text style={styles.textButton}>Email</Text>
           </TouchableOpacity>
         </View>
+
         <Divider />
+
+        <View /* dataContainer */ style={styles.dataContainer}>
+
+          <View /* dataLeft */ style={styles.dataLeft}>
+            <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Wait for you!</Text>
+          </View>
+
+          <View /* dataRight */ style={styles.dataright} >
+            <Text style={styles.textData}>{props.data.address}</Text>
+            <Text style={styles.textData}>{props.data.localidad}</Text>
+            <Text style={styles.textData}>{props.data.provincia}</Text>
+            <Text style={styles.textData}>{props.data.pais}</Text>
+          </View>
+        </View>
+
+        <Divider />
+
         <View /* mapContainer*/ style={styles.mapContainer}>
           <MapView region={region} style={{ width: "80%", height: "80%" }}>
             <Marker
@@ -126,8 +156,9 @@ function DetailsSpaCard(props: any) {
         <Divider />
         <View /* buttonGoContainer*/>
           <TouchableOpacity
-            style={styles.button}
-            onPress={() => Alert.alert("hola")}
+            style={{ ...styles.button, backgroundColor: 'blue' }}
+            /* onPress={() => openGps(region.latitude, region.longitude)} */
+            onPress={() => openGps(props.data.address, props.data.localidad, props.data.provincia, props.data.pais)}
           >
             <Text style={styles.textButton}>Go</Text>
           </TouchableOpacity>
