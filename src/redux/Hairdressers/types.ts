@@ -5,7 +5,7 @@ export interface Peluqueria {
     workDays?: string;
     workHours?: string;
     services?: string[];
-    reviews?: number;
+    reviews: number;
     phone?: number;
     whatsapp?: number;
     mail: string;

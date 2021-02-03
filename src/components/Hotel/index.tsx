@@ -116,7 +116,6 @@ const HotelScreen = () => {
     );
   };
 
-
   if (!fonts && !hotels) return <Icon name="spinner" reverse type="font-awesome-5" />;
   return (
     <>

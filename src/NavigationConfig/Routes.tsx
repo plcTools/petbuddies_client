@@ -17,6 +17,7 @@ import { Icon } from 'react-native-elements';
 import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
 import BeautySpaScreen from '../components/BeautySpaScreen/BeautySpaScreen'
 import SelectRol from '../components/SelectRol';
+import { hairdresserReducer } from '../redux/Hairdressers/reducer';
 
 /* 
     Para agregar una ruta tenemos que hacer lo siguiente:
@@ -56,7 +57,7 @@ export const Routes: React.FC = () => {
             }
 
             let icons: Icons;
-            icons = { Home: "walking", Hotel: 'bed' };
+            icons = { Home: "walking", Hotel: 'bed', Peluquerias: 'cut' };
 
             if (route.name === 'Walkers') return null;
 
@@ -72,8 +73,8 @@ export const Routes: React.FC = () => {
         })}
       >
         <Tab.Screen name='Home' component={HomeScreen} />
-        {/* <Tab.Screen name='Profile' component={UserPannel} /> */}
         <Tab.Screen name='Hotel' component={HotelScreen} />
+        <Tab.Screen name='Peluquerias' component={BeautySpaScreen} />
       </Tab.Navigator>
     )
   }

@@ -21,19 +21,46 @@ export interface Owner {
   rating: number;
 }
 
+export interface Groomer {
+  _id?: string;
+  name: string;
+  photo?: string[];
+  workHours?: string;
+  workDays?: string;
+  services?: string[];
+  reviews: number;
+  phone?: number;
+  whatsapp?: number;
+  mail: string;
+  address?: string;
+  localidad?: string;
+  provincia?: string;
+  pais?: string;
+  latitude: number;
+  longitude: number;
+  description?: string;
+}
+
   export interface OwnerState {
     userFavorites: Owner[]
     owner:  Owner[]
     userFavHotels: Hotel[] 
+    userFavGroomers: Groomer[]
   }
   
   export const GET_OWNER_FAVORITES:string = 'GET_OWNER_FAVORITES';
   export const GET_OWNER:string = 'GET_OWNER'
   export const GET_OWNER_FAV_HOTELS: string = "GET_OWNER_FAV_HOTELS";
+  export const GET_USER_FAV_GROOMERS: string = "GET_USER_FAV_GROOMERS";
 
   interface GetOwnerFavHotels {
     type: typeof GET_OWNER_FAV_HOTELS;
     payload: Hotel[];
+  };
+
+  interface GetUserFavGroomers {
+    type: typeof GET_USER_FAV_GROOMERS;
+    payload: Groomer[];
   }
   
   interface GetOwnerFavorites {

@@ -4,12 +4,14 @@ import {
     GET_OWNER_FAV_HOTELS,
     GET_OWNER,
     OwnerState,
+    GET_USER_FAV_GROOMERS
 } from './types'
 
 const initialState:OwnerState  = {
     userFavorites: [],
-    owner: {},
-    userFavHotels:[]
+    owner: [],
+    userFavHotels:[],
+    userFavGroomers: []
 }
 
 export function userReducer(state = initialState, action: OwnerActionsTypes): OwnerState {
@@ -29,6 +31,11 @@ export function userReducer(state = initialState, action: OwnerActionsTypes): Ow
           ...state,
           userFavHotels: action.payload
         };
+      case GET_USER_FAV_GROOMERS:
+        return {
+          ...state,
+          userFavGroomers: action.payload
+        }
       default:
         return state;
     }
