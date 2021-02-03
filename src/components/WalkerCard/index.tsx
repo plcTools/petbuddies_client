@@ -22,34 +22,24 @@ interface Props {
   userFavorites: walker[];
 }
 
-const WalkerCard: React.FC<Props> = ({
-  walker,
-  userFavorites,
-}): JSX.Element => {
-  const [checked, setChecked] = React.useState<boolean>(false);
-  const [id, setId] = useState<string>();
-  const dispatch = useAppDispatch();
-
-  const navigation = useNavigation();
-  let [fonts] = useFonts({
-    NunitoSans_400Regular,
-    NunitoSans_900Black_Italic,
-    NunitoSans_600SemiBold_Italic,
-    NunitoSans_600SemiBold,
-    NunitoSans_300Light_Italic,
-    NunitoSans_300Light,
-  });
-
-  const retrieveStorage = async () => {
-    const user: string = await getData();
-    setId(user);
-  };
-
 const WalkerCard: React.FC<Props> = ({ walker, userFavorites }): JSX.Element => {
     const [checked, setChecked] = React.useState<boolean>(false);
     const [ id, setId ] = useState<string>('');
     const dispatch = useAppDispatch();
+    const navigation = useNavigation();
+    const retrieveStorage = async () => {
+      const user: string = await getData();
+      setId(user);
+    };
 
+    let [fonts] = useFonts({
+      NunitoSans_400Regular,
+      NunitoSans_900Black_Italic,
+      NunitoSans_600SemiBold_Italic,
+      NunitoSans_600SemiBold,
+      NunitoSans_300Light_Italic,
+      NunitoSans_300Light,
+    });
 
   React.useEffect(() => {
     retrieveStorage();

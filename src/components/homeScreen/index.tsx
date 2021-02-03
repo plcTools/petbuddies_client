@@ -10,25 +10,6 @@ import { getWalkers } from '../../redux/walker/actions';
 import { getUserFavorites } from '../../redux/owner/actions';
 import { Walker } from '../../redux/walker/types';
 import { RouteStackParamList } from '../../NavigationConfig/types';
-
-import {
-  View,
-  Text,
-  FlatList,
-  SafeAreaView,
-  Modal,
-  TouchableOpacity,
-  StyleSheet,
-  ImageBackground,
-} from "react-native";
-import { Icon, Divider, CheckBox } from "react-native-elements";
-import { styles } from "./styles";
-import WalkerCard from "../WalkerCard/index";
-import { useSelector } from "react-redux";
-import { useAppDispatch, RootState } from "../../redux/store";
-import { getWalkers } from "../../redux/walker/actions";
-import { getUserFavorites } from "../../redux/owner/actions";
-import { Walker } from "../../redux/walker/types";
 import {
   useFonts,
   NunitoSans_400Regular,
@@ -39,46 +20,6 @@ import {
   NunitoSans_300Light,
 } from "@expo-google-fonts/nunito-sans";
 import { getData } from "../../AsyncStorage";
-
-const lista: string[] = [
-  "palermo",
-  "caballito",
-  "almagro",
-  "belgrano",
-  "saavedra",
-  "puerto madero",
-  "recoleta",
-  "villa crespo",
-  "boedo",
-  "colegiales",
-  "barrio norte",
-].sort();
-interface ModalChecks {
-  [key: string]: boolean;
-}
-
-const HomeScreen = () => {
-  const [state, setState] = React.useState<any | typeof walkers>(null);
-  const [check, setCheck] = React.useState<boolean>(false);
-  const [checked, setChecked] = React.useState<string | boolean>(false);
-  const [input, setInput] = React.useState<ModalChecks>({});
-  const [icon, setIcon] = React.useState<ModalChecks>({});
-  /*  const navigation = useNavigation(); */
-  const walkers = useSelector((state: RootState) => state.paseadores.walkers);
-  const userFavorites = useSelector(
-    (state: RootState) => state.user.userFavorites
-  );
-  const [id, setId] = React.useState<string>("");
-  const dispatch = useAppDispatch();
-  let [fonts] = useFonts({
-    NunitoSans_400Regular,
-    NunitoSans_900Black_Italic,
-    NunitoSans_600SemiBold_Italic,
-    NunitoSans_600SemiBold,
-    NunitoSans_300Light_Italic,
-    NunitoSans_300Light
-} from '@expo-google-fonts/nunito-sans';
-import { getData } from '../../AsyncStorage';
 
 const lista: string[] = ['palermo', 'caballito', 'almagro', 'belgrano', 'saavedra', 'puerto madero', 'recoleta', 'villa crespo', 'boedo', 'colegiales', 'barrio norte'].sort();
 interface ModalChecks {
@@ -117,7 +58,7 @@ const HomeScreen = () => {
         if (Object.keys(walkers).length > 0) {
             setState(walkers)
         } else {
-            dispatch(getUserFavorites(id))
+            // dispatch(getUserFavorites(id))
             dispatch(getWalkers())
         }
     }, [dispatch, walkers]);

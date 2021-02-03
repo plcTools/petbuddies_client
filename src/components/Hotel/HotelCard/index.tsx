@@ -101,7 +101,7 @@ const HotelCard: React.FC<Props> = ({ hotel ,  userFavHotels }): JSX.Element => 
               color="#fc5185"
             />
             
-               <Text style={{textTransform: 'capitalize', fontWeight: 'bold', marginRight: 20}}>{hotel.zone}</Text>
+               <Text style={{textTransform: 'capitalize', fontWeight: 'bold', marginRight: 20, width: 90}}>{hotel.zone}</Text>
           </View>
 
           <View style={styles.cardHeaderRate}>
@@ -126,7 +126,7 @@ const HotelCard: React.FC<Props> = ({ hotel ,  userFavHotels }): JSX.Element => 
               raised
               name="heart-o"
               type="font-awesome"
-              size={12}
+              size={15}
               color="black"
             />
           }
@@ -135,7 +135,7 @@ const HotelCard: React.FC<Props> = ({ hotel ,  userFavHotels }): JSX.Element => 
               raised
               name="heart"
               type="font-awesome"
-              size={12}
+              size={15}
               color={"red"}
             />
           }

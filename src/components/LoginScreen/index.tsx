@@ -31,7 +31,7 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
 
   const retrieveStorage = async () =>{
     const id:string = await getData()
-     if(id) navigation.navigate('SelectRol')
+     if(id) navigation.navigate('Tab')
   }
 
   useLayoutEffect(() => {
@@ -121,7 +121,7 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
               secureTextEntry
               style={styles.inputText}
               placeholder="Password"
-              placeholderTextColor="#ffff"
+              placeholderTextColor="#e3b587"
               onChangeText={(text) =>
                 setUserData({ ...userData, password: text })
               }
@@ -223,6 +223,9 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     padding: 10,
     marginBottom: 20,
+    marginTop: 15,
+    height: 50,
+
   },
   loginText: {
     color: "#eeeeee",

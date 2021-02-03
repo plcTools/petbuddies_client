@@ -92,6 +92,7 @@ export const Routes: React.FC = () => {
         <Screen name='SelectRol' component={SelectRol} options={{ headerShown: false }} />
         <Screen name='Tab' component={TabNavigation} options={() => ({headerLeft: null})} />
         <Screen name='WalkerCard' component={WalkerCard} />
+        <Screen name="WalkerForm" component={WalkerForm} options={{ headerShown: true }} />
         <Screen name='BeautySpaScreen' component={BeatySpaScreen} options={{ headerShown: false }} />
         <Screen name='WalkerProfile' component={WalkerProfile} />
         <Screen name='HotelCard' component={HotelCard} />

@@ -43,7 +43,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
 
   const handleSubmit = () => {
     axios.put(`/walkers/${id}`, data);
-    navigation.navigate("Tab");
+    navigation.navigate("Profile");
     dispatch(getOwner(id));
     return dispatch(getWalkers());
   };
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   input: {
-    height: 20,
+    height: 25,
     borderBottomColor: "#456672",
     borderBottomWidth: 2,
     marginBottom: 10,
