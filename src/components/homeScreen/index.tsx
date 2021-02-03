@@ -1,5 +1,16 @@
-import "react-native-gesture-handler";
-import React from "react";
+import 'react-native-gesture-handler';
+import React from 'react';
+import { View, Text, FlatList, SafeAreaView, Modal, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { Icon, Divider, CheckBox } from 'react-native-elements';
+import { styles } from './styles';
+import WalkerCard from '../WalkerCard/index';
+import { useSelector } from 'react-redux';
+import { useAppDispatch, RootState } from '../../redux/store';
+import { getWalkers } from '../../redux/walker/actions';
+import { getUserFavorites } from '../../redux/owner/actions';
+import { Walker } from '../../redux/walker/types';
+import { RouteStackParamList } from '../../NavigationConfig/types';
+
 import {
   View,
   Text,
@@ -65,24 +76,51 @@ const HomeScreen = () => {
     NunitoSans_600SemiBold_Italic,
     NunitoSans_600SemiBold,
     NunitoSans_300Light_Italic,
-    NunitoSans_300Light,
-  });
+    NunitoSans_300Light
+} from '@expo-google-fonts/nunito-sans';
+import { getData } from '../../AsyncStorage';
 
-  const retrieveStorage = async () => {
-    const idData = await getData();
-    setId(idData);
-  };
+const lista: string[] = ['palermo', 'caballito', 'almagro', 'belgrano', 'saavedra', 'puerto madero', 'recoleta', 'villa crespo', 'boedo', 'colegiales', 'barrio norte'].sort();
+interface ModalChecks {
+    [key: string]: boolean;
+}
 
-  React.useLayoutEffect(() => {
-    retrieveStorage();
-    dispatch(getUserFavorites(id));
-    if (Object.keys(walkers).length > 0) {
-      setState(walkers);
-    } else {
-      // dispatch(getUserFavorites(id))
-      dispatch(getWalkers());
+const HomeScreen = () => {
+
+    const [state, setState] = React.useState<any | typeof walkers>(null);
+    const [check, setCheck] = React.useState<boolean>(false);
+    const [checked, setChecked] = React.useState<string | boolean>(false);
+    const [input, setInput] = React.useState<ModalChecks>({});
+    const [icon, setIcon] = React.useState<ModalChecks>({ walkers: true });
+    /*  const navigation = useNavigation(); */
+    const walkers = useSelector((state: RootState) => state.paseadores.walkers)
+    const userFavorites = useSelector((state: RootState) => state.user.userFavorites)
+    const [id, setId] = React.useState<string>('');
+    const dispatch = useAppDispatch();
+    let [fonts] = useFonts({
+        NunitoSans_400Regular,
+        NunitoSans_900Black_Italic,
+        NunitoSans_600SemiBold_Italic,
+        NunitoSans_600SemiBold,
+        NunitoSans_300Light_Italic,
+        NunitoSans_300Light
+    });
+
+    const retrieveStorage = async () => {
+        const idData = await getData();
+        setId(idData)
     }
-  }, [dispatch, walkers]);
+
+    React.useLayoutEffect(() => {
+        retrieveStorage();
+        dispatch(getUserFavorites(id))
+        if (Object.keys(walkers).length > 0) {
+            setState(walkers)
+        } else {
+            dispatch(getUserFavorites(id))
+            dispatch(getWalkers())
+        }
+    }, [dispatch, walkers]);
 
   const handleInput = (name: string) => {
     setInput({
@@ -97,101 +135,70 @@ const HomeScreen = () => {
     });
   };
 
-  const renderComponent = (arr: any) => {
+    const renderComponent = (arr: any) => {
+        return (
+        <SafeAreaView style={{ width: '100%', display: 'flex', justifyContent: 'center', flex: 1 }}>
+            <FlatList
+                data={arr}
+                keyExtractor={(item: Walker) => item._id}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item }) => {
+                    return (<WalkerCard walker={item} userFavorites={userFavorites} />)
+                }}
+            />
+        </SafeAreaView>)
+    };
+    if (!fonts) return <Icon name='spinner' reverse type='font-awesome-5' />
     return (
-      <SafeAreaView
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          flex: 1,
-        }}
-      >
-        <FlatList
-          data={arr}
-          keyExtractor={(item: Walker) => item._id}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => {
-            return <WalkerCard walker={item} userFavorites={userFavorites} />;
-          }}
-        />
-      </SafeAreaView>
-    );
-  };
-  if (!fonts) return <Icon name="spinner" reverse type="font-awesome-5" />;
-  return (
-    <>
-      {/* <ImageBackground source={require('../../images/wallpaper.jpg')} style={StyleSheet.absoluteFillObject} blurRadius={10} /> */}
-      <View style={styles.viewIcons}>
-        <View style={styles.cardIcons}>
-          <Icon
-            reverse
-            name="walking"
-            type="font-awesome-5"
-            color="#fc5185"
-            onPress={() => {
-              {
-                if (Object.keys(walkers).length === 0) {
-                  dispatch(getWalkers());
-                  setChecked(false);
-                } else {
-                  setState(walkers);
-                  setChecked(false);
-                  setIcon({});
-                }
-              }
-            }}
-          />
-          <Text>Walkers</Text>
-        </View>
-        {/* <View style={styles.cardIcons}>
-                    <Icon
-                        reverse
-                        name='spa'
-                        type='font-awesome-5'
-                        color='#fc5185'
-                    />
-                    <Text>Spa & Hostel</Text>
-                </View> */}
-      </View>
-      <Divider />
-      <View style={styles.viewIcons}>
-        <Icon
-          name="star"
-          type="font-awesome"
-          color={icon?.star ? "#f8dc81" : "grey"}
-          onPress={() => {
-            handleIcon("star");
-            setState(() => {
-              let newState = [...walkers];
-              return newState.sort((a, b) => b.rating - a.rating);
-            });
-            setChecked(false);
-          }}
-        />
-        <Icon
-          name="heart"
-          type="font-awesome"
-          // color='red'
-          color={icon?.heart ? "#ef4f4f" : "grey"}
-          onPress={() => {
-            setState(userFavorites);
-            setChecked(false);
-            handleIcon("heart");
-          }}
-        />
-        <Icon
-          name="map-marker-alt"
-          type="font-awesome-5"
-          // color='#00af91'
-          color={icon?.house ? "#008891" : "grey"}
-          onPress={() => {
-            setCheck(!check);
-            setChecked(false);
-            handleIcon("house");
-          }}
-        />
-        {/* <Icon
+        <>
+            <Divider />
+            <View style={styles.viewIcons}>
+                <Icon
+                    name='walking'
+                    type='font-awesome-5'
+                    color={icon?.walkers ? "#fc5185" : "grey"}
+                    onPress={() => {
+                        setState(walkers);
+                        setChecked(false);
+                        handleIcon("walkers");
+                    }}
+                />
+                <Icon
+                    name='star'
+                    type='font-awesome'
+                    color={icon?.star ? '#f8dc81' : 'grey'}
+                    onPress={() => {
+                        handleIcon('star')
+                        setState(() => {
+                            let newState = [...walkers];
+                            return newState.sort((a, b) => b.rating - a.rating)
+                        })
+                        setChecked(false)
+                    }}
+                />
+                <Icon
+                    name='heart'
+                    type='font-awesome'
+                    // color='red'
+                    color={icon?.heart ? '#ef4f4f' : 'grey'}
+                    onPress={() => {
+                        setState(userFavorites);
+                        setChecked(false)
+                        handleIcon('heart')
+                    }}
+                />
+                <Icon
+                    name='map-marker-alt'
+                    type='font-awesome-5'
+                    // color='#00af91'
+                    color={icon?.house ? '#008891' : 'grey'}
+                    onPress={() => {
+                        setCheck(!check)
+                        setChecked(false)
+                        handleIcon('house')
+                    }}
+                />
+                {/* <Icon
                     name='globe'
                     type='font-awesome-5'
                     color='#51c2d5'

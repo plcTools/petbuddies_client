@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { styles } from "./styles";
+import React from "react";
+import { styles } from "../../WalkerCard/styles";
+import {hotel} from '../../../NavigationConfig/types'
 import { View, Text, TouchableOpacity } from "react-native";
 import { Card, Image, Icon, CheckBox, Divider } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
@@ -13,22 +14,33 @@ import {
   NunitoSans_300Light_Italic,
   NunitoSans_300Light,
 } from "@expo-google-fonts/nunito-sans";
-import { walker } from "../../NavigationConfig/types";
-import { useAppDispatch, RootState } from "../../redux/store";
-import { getUserFavorites } from "../../redux/owner/actions";
-import { getData } from "../../AsyncStorage/index";
-interface Props {
-  walker: walker;
-  userFavorites: walker[];
-}
 
-const WalkerCard: React.FC<Props> = ({
-  walker,
-  userFavorites,
-}): JSX.Element => {
+import { useAppDispatch, RootState } from "../../../redux/store";
+import { getOwnerFavHotels } from '../../../redux/owner/actions';
+import { getData  } from '../../../AsyncStorage/index';
+
+interface Props {
+  hotel: hotel,
+  userFavHotels: hotel[]
+}
+const HotelCard: React.FC<Props> = ({ hotel ,  userFavHotels }): JSX.Element => {
   const [checked, setChecked] = React.useState<boolean>(false);
-  const [id, setId] = useState<string>();
   const dispatch = useAppDispatch();
+  const [ id, setId ] = React.useState<string>('');
+
+  const retrieveStorage = async () =>{
+    const user:string = await getData()
+    setId(user)
+  }
+
+  React.useEffect(() => {
+    retrieveStorage()
+    userFavHotels?.map(u => {
+      if (u._id === hotel._id) {
+          setChecked(true);
+      };
+  });
+  }, [userFavHotels]);
 
   const navigation = useNavigation();
   let [fonts] = useFonts({
@@ -40,33 +52,13 @@ const WalkerCard: React.FC<Props> = ({
     NunitoSans_300Light,
   });
 
-  const retrieveStorage = async () => {
-    const user: string = await getData();
-    setId(user);
-  };
-
-const WalkerCard: React.FC<Props> = ({ walker, userFavorites }): JSX.Element => {
-    const [checked, setChecked] = React.useState<boolean>(false);
-    const [ id, setId ] = useState<string>('');
-    const dispatch = useAppDispatch();
-
-
-  React.useEffect(() => {
-    retrieveStorage();
-    userFavorites?.map((u) => {
-      if (u._id === walker._id) {
-        setChecked(true);
-      }
-    });
-  }, [userFavorites]);
-
   if (!fonts) return <Icon name="spinner" reverse type="font-awesome-5" />;
 
   return (
     <Card containerStyle={styles.container}>
       <TouchableOpacity
         style={styles.cardContainer}
-        onPress={() => navigation.navigate("WalkerProfile", { id: walker._id })}
+        onPress={() => navigation.navigate("HotelProfile", { id: hotel._id })}
       >
         <View style={styles.cardHeader}>
           <Image
@@ -79,24 +71,26 @@ const WalkerCard: React.FC<Props> = ({ walker, userFavorites }): JSX.Element => 
               marginBottom: 7,
             }}
             source={{
-              uri: `${walker.photo}`,
+              uri: `${hotel.photo}`,
             }}
           />
+
           <View style={styles.headerContainer}>
             <Text style={styles.headerTitle}>
-              {`${walker.name} ${walker.lastname}`}
+              {`${hotel.name}`}
             </Text>
 
             <Text style={styles.text}>
-              <Text style={styles.pricing}>${walker.fee}</Text>
-              <Text style={{ fontFamily: "NunitoSans_400Regular" }}>/walk</Text>
+              <Text style={styles.pricing}>${hotel.fee}</Text>
+              <Text style={{ fontFamily: "NunitoSans_400Regular" }}>/night</Text>
             </Text>
           </View>
         </View>
+
         <View>
           <Card.Divider />
           <Text style={{ fontFamily: "NunitoSans_600SemiBold", fontSize: 20 }}>
-            {walker.description}
+            {hotel.description}
           </Text>
           <View style={styles.workZone}>
             <Icon
@@ -106,24 +100,13 @@ const WalkerCard: React.FC<Props> = ({ walker, userFavorites }): JSX.Element => 
               size={20}
               color="#fc5185"
             />
-            {walker.workZone?.map((z, i) => (
-              // <Text key={i} style={{textTransform: 'capitalize', fontWeight: 'bold', marginRight: 20}}>{z}</Text>
-
-              <Text
-                key={i}
-                style={{
-                  textTransform: "capitalize",
-                  marginLeft: 6,
-                  fontFamily: "NunitoSans_600SemiBold",
-                }}
-              >
-                {z}
-              </Text>
-            ))}
+            
+               <Text style={{textTransform: 'capitalize', fontWeight: 'bold', marginRight: 20}}>{hotel.zone}</Text>
           </View>
+
           <View style={styles.cardHeaderRate}>
             <Text style={{ marginRight: 5, fontSize: 15 }}>
-              {walker.rating}
+              { hotel.rating } 
             </Text>
             <Icon
               name="star-o"
@@ -143,7 +126,7 @@ const WalkerCard: React.FC<Props> = ({ walker, userFavorites }): JSX.Element => 
               raised
               name="heart-o"
               type="font-awesome"
-              size={15}
+              size={12}
               color="black"
             />
           }
@@ -152,30 +135,34 @@ const WalkerCard: React.FC<Props> = ({ walker, userFavorites }): JSX.Element => 
               raised
               name="heart"
               type="font-awesome"
-              size={15}
+              size={12}
               color={"red"}
             />
           }
           checked={checked}
           onPress={async () => {
             if (!checked) {
-              const result = await axios.patch(`/owners/${id}/favorites`, {
-                walkerId: walker._id,
-              });
-              dispatch(getUserFavorites(id));
+            
+              const result = await axios.patch(
+                `/owners/${id}/favoritesHotels`,
+                { hotelId: hotel._id }
+              );
+              dispatch(getOwnerFavHotels(id));
               return setChecked(true);
             } else {
               const result = await axios.delete(
-                `/owners/${id}/favorites/` + walker._id
+                `/owners/${id}/favoritesHotels/` + hotel._id
               );
-              dispatch(getUserFavorites(id));
+              dispatch(getOwnerFavHotels(id));
               return setChecked(false);
             }
-          }}
+          }} 
         />
       </View>
     </Card>
   );
 };
 
-export default WalkerCard;
+export default HotelCard;
+
+

@@ -1,3 +1,4 @@
+import {Hotel} from '../hotels/types'
 export interface Owner {
   _id?: string;
   name?: string;
@@ -12,29 +13,38 @@ export interface Owner {
   photo?: string;
   role?: string;
   CUIT?: string;
-  workZone?: string[];
+  workZone: string[];
   workHours?: string;
   fee?: number;
+  reveiewsReceived?: number;
   countDogs?: number;
-  rating?: number;
-}
-export interface OwnerState {
-  userFavorites: Owner[];
-  owner: Owner;
+  rating: number;
 }
 
-export const GET_OWNER_FAVORITES: string = "GET_OWNER_FAVORITES";
-export const GET_OWNER: string = "GET_OWNER";
+  export interface OwnerState {
+    userFavorites: Owner[]
+    owner:  Owner[]
+    userFavHotels: Hotel[] 
+  }
+  
+  export const GET_OWNER_FAVORITES:string = 'GET_OWNER_FAVORITES';
+  export const GET_OWNER:string = 'GET_OWNER'
+  export const GET_OWNER_FAV_HOTELS: string = "GET_OWNER_FAV_HOTELS";
 
-interface GetOwnerFavorites {
-  type: typeof GET_OWNER_FAVORITES;
-  payload: Owner[];
-}
+  interface GetOwnerFavHotels {
+    type: typeof GET_OWNER_FAV_HOTELS;
+    payload: Hotel[];
+  }
+  
+  interface GetOwnerFavorites {
+    type: typeof GET_OWNER_FAVORITES;
+    payload: Owner[]
+  }
 
-interface GetOwner {
-  type: typeof GET_OWNER;
-  payload: Owner;
-}
-
-export type OwnerActionsTypes = GetOwnerFavorites | GetOwner;
-// export type OwnerAction = GetOwner;
+  interface GetOwner {
+    type: typeof GET_OWNER;
+    payload: Owner
+  }
+  
+  export type OwnerActionsTypes = GetOwnerFavorites | GetOwner | GetOwnerFavHotels ;
+  // export type OwnerAction = GetOwner;
