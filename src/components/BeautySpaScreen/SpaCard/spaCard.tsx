@@ -73,7 +73,7 @@ function SpaCard(props: any) {
 
   const dispatch = useAppDispatch();
 
-  if (!fonts) return <Icon name="spinner" reverse type="font-awesome-5" />;
+  /* if (!fonts) return <Icon name="spinner" reverse type="font-awesome-5" />; */
 
   return (
     <Card containerStyle={styles.container}>
@@ -140,7 +140,7 @@ function SpaCard(props: any) {
               raised
               name="heart-o"
               type="font-awesome"
-              size={12}
+              size={15}
               color="black"
             />
           }
@@ -149,7 +149,7 @@ function SpaCard(props: any) {
               raised
               name="heart"
               type="font-awesome"
-              size={12}
+              size={15}
               color={"red"}
             />
           }
@@ -174,7 +174,7 @@ function SpaCard(props: any) {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert("se cierra el Modal.");
+          modalStatusChange();
         }}
       >
         <DetailsSpaCard

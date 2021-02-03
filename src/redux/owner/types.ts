@@ -1,9 +1,9 @@
 import {Hotel} from '../hotels/types'
 export interface Owner {
   _id?: string;
-  name?: string;
+  name: string;
   description?: string;
-  lastname?: string;
+  lastname: string;
   email?: string;
   password?: string;
   cellphone?: number;

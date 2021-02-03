@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Modal,
   TouchableOpacity,
+  Image
 } from "react-native";
 import { Icon, Divider } from "react-native-elements";
 import { styles } from "../homeScreen/styles";
@@ -27,7 +28,7 @@ import {
   NunitoSans_300Light,
 } from "@expo-google-fonts/nunito-sans";
 
-const lista: string[] = [
+/* const lista: string[] = [
   "palermo",
   "caballito",
   "almagro",
@@ -39,7 +40,7 @@ const lista: string[] = [
   "boedo",
   "colegiales",
   "barrio norte",
-].sort();
+].sort(); */
 interface ModalChecks {
   [key: string]: boolean;
 }
@@ -50,9 +51,16 @@ const HotelScreen = () => {
   const [checked, setChecked] = React.useState<string | boolean>(false);
   const [input, setInput] = React.useState<ModalChecks>({});
   const [icon, setIcon] = React.useState<ModalChecks>({hotels: true});
+  const [list, setList] = React.useState<string[]>([]);
 
   const hotels = useSelector((state: RootState) => state.hotels.hotels);
   const [ id, setId ] = React.useState<string>('');
+
+  const handleList = (hotels: Hotel[]) => {
+    const arr:string[] = hotels.map(item => item.zone)
+    const uniqueZones = arr.filter((item, index) => arr.indexOf(item) === index);
+    return setList(uniqueZones)
+  }
 
   const retrieveStorage = async () =>{
     const user:string = await getData()
@@ -78,6 +86,7 @@ const HotelScreen = () => {
       dispatch(getHotels())
     }
     dispatch(getOwnerFavHotels(id))
+    handleList(hotels)
     setState(hotels)
   }, [dispatch, hotels]);
   
@@ -116,7 +125,16 @@ const HotelScreen = () => {
     );
   };
 
-  if (!fonts && !hotels) return <Icon name="spinner" reverse type="font-awesome-5" />;
+  if(!fonts) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Image 
+          source={require('../../images/loader.gif')}
+          style={{width: 200, height: 150}}
+        />
+      </View>
+    )
+  }
   return (
     <>
       {/* <ImageBackground source={require('../../images/wallpaper.jpg')} style={StyleSheet.absoluteFillObject} blurRadius={10} /> */}
@@ -130,7 +148,7 @@ const HotelScreen = () => {
       <Icon
         name='list-ul'
         type='font-awesome'
-        color={icon?.hotels ? "#fc5185" : "grey"}
+        color={icon?.hotels ? "#07689f" : "grey"}
         onPress={() => {
           setState(hotels);
           setChecked(false);
@@ -141,7 +159,7 @@ const HotelScreen = () => {
           name="star"
           type="font-awesome"
           // color='#f8dc81'
-          color={icon?.star ? "#f8dc81" : "grey"}
+          color={icon?.star ? "#1fab89" : "grey"}
           onPress={() => {
             handleIcon("star");
             setState(() => {
@@ -165,7 +183,7 @@ const HotelScreen = () => {
           name="map-marker-alt"
           type="font-awesome-5"
           // color='#00af91'
-          color={icon?.house ? "#008891" : "grey"}
+          color={icon?.house ? "#fc5185" : "grey"}
           onPress={() => {
             setCheck(!check);
             setChecked(false);
@@ -243,8 +261,8 @@ const HotelScreen = () => {
             >
               Select your neighborhood
             </Text>
-            {lista &&
-              lista.map((item, i) => (
+            {list &&
+              list.map((item, i) => (
                 <TouchableOpacity
                   key={i}
                   style={{

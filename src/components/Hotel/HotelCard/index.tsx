@@ -52,7 +52,9 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
     NunitoSans_300Light,
   });
 
-  if (!fonts) return <Icon name="spinner" reverse type="font-awesome-5" />;
+ /*  if (!fonts) return null; */
+
+  //<Icon name="spinner" reverse type="font-awesome-5" />;
 
   return (
     <Card containerStyle={styles.container}>

@@ -53,7 +53,7 @@ const WalkerCard: React.FC<Props> = ({
     });
   }, [userFavorites]);
 
-  if (!fonts) return <Icon name="spinner" reverse type="font-awesome-5" />;
+  /* if (!fonts) return <View><Icon name="spinner" reverse type="font-awesome-5" /></View>; */
 
   return (
     <Card containerStyle={styles.container}>
@@ -71,9 +71,7 @@ const WalkerCard: React.FC<Props> = ({
               marginTop: 3,
               marginBottom: 7,
             }}
-            source={{
-              uri: `${walker.photo}`,
-            }}
+            source={walker?.photo ? {uri:`${walker.photo}`} : require("../../images/logo.png")}
           />
           <View style={styles.headerContainer}>
             <Text style={styles.headerTitle}>

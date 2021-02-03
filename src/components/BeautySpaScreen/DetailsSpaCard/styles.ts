@@ -11,9 +11,9 @@ export const styles = StyleSheet.create({
   containerAll: {
       margin: 10,
       alignItems: "center",
-      height: dimensions.height - 20,
+      height: dimensions.height - 45,
       width: dimensions.width - 20,
-      backgroundColor: "rgba(150, 150, 129, 0.98)",
+      backgroundColor: "#fff",
       borderRadius: 10,
       padding: 5,
       shadowColor: "#000",
@@ -41,32 +41,33 @@ export const styles = StyleSheet.create({
       width: "100%",
       justifyContent: "space-around",
       alignItems: "center",
-      height: 80,
+      height: 50,
   },
   textTitle: {
       fontSize: 25,
       fontWeight: "bold",
-      color: 'whitesmoke',
+      color: '#000',
+      marginLeft: 15
   },
   closeButton: {
-      backgroundColor: "rgba(255,115,160, 0.99)",
+      backgroundColor: "#c98c70",
       justifyContent: "center",
-      borderRadius: 100,
-      height: 35,
-      width: 35,
+      borderRadius: 70,
+      height: 40,
+      width: 40,
       elevation: 1,
   },
   button: {
-      backgroundColor: "rgba(180,170,150, 0.9)",
+      backgroundColor: "#c75643",
       justifyContent: "center",
       borderRadius: 5,
       height: 40,
-      width: 90,
+      width: 200,
       elevation: 1,
   },
   textButton: {
       textAlign: "center",
-      color: "white",
+      color: "#fff",
       fontSize: 15,
   },
   bodyContainer: {
@@ -100,7 +101,7 @@ export const styles = StyleSheet.create({
   textData: {
       fontSize: 12,
       padding: 0,
-      color: 'white'
+      color: '#000'
   },
 
   mapContainer: {
@@ -119,7 +120,36 @@ export const styles = StyleSheet.create({
   },
 
   footerContainer: {
-      marginTop:100,
-      padding: 1,
+    marginTop: 120,
+    padding: 1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
+  title: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: 5
+  }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

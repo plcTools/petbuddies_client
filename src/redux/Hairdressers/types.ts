@@ -10,6 +10,7 @@ export interface Peluqueria {
     whatsapp?: number;
     mail: string;
     address?: string;
+    localidad: string;
 }
 
 export interface HairdressersState {

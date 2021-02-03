@@ -4,7 +4,7 @@ import { StatusBar } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
-    marginTop: 0,
+    marginTop: 15,
     shadowColor: "#000",
     opacity: 0.9,
     shadowOffset: {

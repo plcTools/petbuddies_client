@@ -96,9 +96,9 @@ const styles = StyleSheet.create({
     // flex:1,
     justifyContent:'center',
     alignItems:'center',
-    marginTop:150,
+    marginTop:110,
     height:20,
-    width: 300
+    width: 270
   },
   title: {
       marginTop: 100,

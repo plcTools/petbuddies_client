@@ -14,7 +14,7 @@ const initialState:OwnerState  = {
     userFavGroomers: []
 }
 
-export function userReducer(state = initialState, action: OwnerActionsTypes): OwnerState {
+export function userReducer(state = initialState, action: any/* : OwnerActionsTypes */): OwnerState {
     switch (action.type) {
       case GET_OWNER_FAVORITES:
         return {

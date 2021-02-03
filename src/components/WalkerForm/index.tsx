@@ -7,6 +7,7 @@ import { getData } from "../../AsyncStorage";
 import { RouteStackParamList } from "../../NavigationConfig/types";
 import { getOwner } from "../../redux/owner/actions";
 import { getWalkers } from "../../redux/walker/actions";
+import { RootState } from "../../redux/store";
 
 interface State {
   name?: string;
@@ -30,7 +31,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
   };
 
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.owner);
+  const user = useSelector((state:any /* : RootState */ ) => state.user.owner);
 
   const dataStore = async () => {
     const idData = await getData();
@@ -44,7 +45,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
 
   const handleSubmit = () => {
     axios.put(`/walkers/${id}`, data);
-    navigation.navigate("Profile");
+    navigation.navigate("Tab");
     dispatch(getOwner(id));
     return dispatch(getWalkers());
   };
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     marginTop: 30,
-    marginBottom: 10,
+    marginBottom: 70,
   },
   text: {
     fontSize: 16,

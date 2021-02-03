@@ -82,43 +82,63 @@ function DetailsSpaCard(props: any) {
   //`https://www.google.com/maps/dir/?api=1&origin=&destination=${props.data.address} ${props.data.localidad} ${props.data.provincia} ${props.data.pais} &travelmode=bicycling`
 
   return (
-    <View /* containerAll */ style={styles.containerAll}>
-      <View /* headerContainer*/ style={styles.headersContainer}>
-        <View /* title */>
-          <Text style={styles.textTitle}>{props.data.name}</Text>
-        </View>
+    <View style={styles.containerAll}>
+      <View style={styles.headersContainer}>
 
-        <View /* buttonContainer */>
-          <TouchableOpacity
-            style={{
-              ...styles.button,
-              backgroundColor: "rgba(255,115,160, 0.5)",
-            }}
-            onPress={() => {
-              props.modalStatusChange();
-            }}
-          >
-            <Text style={styles.textButton}>X</Text>
-          </TouchableOpacity>
+        <View style={{width: '90%', alignItems: 'flex-end'}}>
+            <Icon
+                name="times"
+                type="font-awesome-5"
+                color="red"
+                size={15}
+                onPress={() => {
+                  props.modalStatusChange();
+                }}
+              />
         </View>
       </View>
 
-      <View /* bodyContainer */ style={styles.bodyContainer}>
-        <Divider />
+      <View style={styles.bodyContainer}>
+      <View style={styles.title}>
+        <Image
+            style={{
+              height: 75,
+              width: 75,
+              borderRadius: 50,
+            }}
+            source={{
+              uri: `${props.data.photo[0]}`,
+            }}
+          />
+          <Text style={styles.textTitle}>{props.data.name}</Text>
+        </View>
         <View /* buttonsContainer */ style={styles.buttonsContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => openTel()}>
-            <Text style={styles.textButton}>Tel</Text>
+        
+          <TouchableOpacity /* style={styles.button} */ onPress={() => openTel()}>
+            <Icon 
+              name='phone'
+              type='font-awesome-5'
+              color='blue'
+            />
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.button}
+           /*  style={styles.button} */
             onPress={() => openWhatsApp()}
           >
-            <Text style={styles.textButton}>WhatsApp</Text>
+            <Icon 
+              name='whatsapp'
+              type='font-awesome-5'
+              color='green'
+            />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={() => openMail()}>
-            <Text style={styles.textButton}>Email</Text>
+          <TouchableOpacity /* style={styles.button} */ onPress={() => openMail()}>
+            <Icon 
+              name='envelope'
+              type='font-awesome-5'
+              color='#ef4f4f'
+            />
           </TouchableOpacity>
         </View>
 
@@ -127,7 +147,7 @@ function DetailsSpaCard(props: any) {
         <View /* dataContainer */ style={styles.dataContainer}>
 
           <View /* dataLeft */ style={styles.dataLeft}>
-            <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Wait for you!</Text>
+            <Text style={{ color: '#000', fontSize: 20, fontWeight: 'bold' }}>Visit us!</Text>
           </View>
 
           <View /* dataRight */ style={styles.dataright} >
@@ -156,11 +176,11 @@ function DetailsSpaCard(props: any) {
         <Divider />
         <View /* buttonGoContainer*/>
           <TouchableOpacity
-            style={{ ...styles.button, backgroundColor: 'blue' }}
+            style={{ ...styles.button, backgroundColor: '#c75643' }}
             /* onPress={() => openGps(region.latitude, region.longitude)} */
             onPress={() => openGps(props.data.address, props.data.localidad, props.data.provincia, props.data.pais)}
           >
-            <Text style={styles.textButton}>Go</Text>
+            <Text style={styles.textButton}>Go to Maps</Text>
           </TouchableOpacity>
         </View>
       </View>

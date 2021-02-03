@@ -11,16 +11,16 @@ import {
   Dimensions,
   ImageBackground,
   Linking,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { RouteStackParamList } from "../../../NavigationConfig/types";
 import { Icon, Divider } from "react-native-elements";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
 import { NunitoSans_900Black } from "@expo-google-fonts/nunito-sans";
-import MapView from 'react-native-maps';
-import { Marker } from 'react-native-maps';
-const { width, height } = Dimensions.get('screen')
+import MapView from "react-native-maps";
+import { Marker } from "react-native-maps";
+const { width, height } = Dimensions.get("screen");
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
 
@@ -28,28 +28,30 @@ const HotelProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"HotelProfile">) => {
-  const [state, setState] = React.useState<any>();
-
-  interface Region {
-    latitude?: number,
-    longitude?: number,
-    longitudeDelta: number,
-    latitudeDelta: number
-  }
-
-  var region:Region = {
+  const [state, setState] = React.useState<any>('');
+  const [thisRegion, setThisRegion] = React.useState<any>({
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
+    latitude: 0,
+    longitude: 0,
+  });
+
+  interface Region {
+    latitude?: number;
+    longitude?: number;
+    longitudeDelta: number;
+    latitudeDelta: number;
   }
 
   React.useEffect(() => {
-    axios
-      .get(`/hotels/${route.params.id}`)
-      .then((result) => {
-        setState(result.data);
-        region.latitude = result.data.latitude;
-        region.longitude
+    axios.get(`/hotels/${route.params.id}`).then((result) => {
+      setState(result.data);
+      setThisRegion({
+        ...thisRegion,
+        latitude: result.data.latitude,
+        longitude: result.data.longitude,
       });
+    });
   }, []);
 
   const renderLabel = () => {
@@ -69,7 +71,7 @@ const HotelProfile = ({
         </View>
         <View>
           <Animated.Text style={styles.tabLabelText}>
-            {state.petsLoved ? state.petsLoved : '?'}
+            {state.petsLoved ? state.petsLoved : "?"}
           </Animated.Text>
           <Animated.Text style={styles.tabLabelNumber}>
             Loved pets
@@ -88,16 +90,27 @@ const HotelProfile = ({
     );
   };
 
-  if (!state) return <Icon name="spinner" reverse type="font-awesome-5" />;
+  if(!state) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Image 
+          source={require('../../../images/loader.gif')}
+          style={{width: 200, height: 150}}
+        />
+      </View>
+    )
+  }
 
   return (
     <ScrollView style={styles.scroll}>
       <View style={styles.container}>
-        <ImageBackground
-          source={require("../../../images/wallpaper.jpg")}
+        {/* <ImageBackground
+          // source={require("../../../images/descarga.jpeg")}
           style={{ flex: 1, justifyContent: "center" }}
-          blurRadius={5}
-        >
+          resizeMode='cover'
+          // blurRadius={5}
+        > */}
+          <View style={{ flex: 1, justifyContent: "center" }}>
           <View style={styles.cardContainer}>
             <View style={styles.headerContainer}>
               <View style={styles.userRow}>
@@ -116,10 +129,58 @@ const HotelProfile = ({
                   startingValue={state.rating}
                   imageSize={30}
                 />
-                <Text style={styles.ratingText}>{state.reviewsReceived} califications</Text>
+                <Text style={styles.ratingText}>
+                  {state.reviewsReceived} califications
+                </Text>
               </View>
             </View>
             {renderLabel()}
+            <Divider />
+            <View style={{ maxHeight: 300, backgroundColor: '#f4f4f4' }}>
+              <FlatList
+                data={state.adsPics}
+                keyExtractor={(_, index) => index.toString()}
+                horizontal
+                pagingEnabled
+                renderItem={({ item }) => (
+                  <View
+                    style={{
+                      width,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 12,
+                      },
+                      shadowOpacity: 0.58,
+                      shadowRadius: 16.0,
+
+                      elevation: 24,
+                    }}
+                  >
+                    <Image
+                      source={{ uri: item }}
+                      style={{
+                        width: imageW,
+                        height: imageH,
+                        resizeMode: "contain",
+                        borderRadius: 5,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 12,
+                        },
+                        shadowOpacity: 0.58,
+                        shadowRadius: 16.0,
+
+                      }}
+                    />
+                  </View>
+                )}
+              />
+            </View>
+            <Divider />
             <View style={styles.descriptionRow}>
               <Icon
                 name="map-marker"
@@ -168,7 +229,7 @@ const HotelProfile = ({
                   size={25}
                   color="#6a2c70"
                 />
-                <Text style={{ color: '#fff', marginLeft: 15, fontSize: 15 }}>
+                <Text style={{ color: "#000", marginLeft: 15, fontSize: 15 }}>
                   Requisitos: {state.requirement}
                 </Text>
               </View>
@@ -183,7 +244,7 @@ const HotelProfile = ({
                   marginTop: 15,
                 }}
               >
-                <Text style={{ fontSize: 20, color: "#fff" }}>
+                <Text style={{ fontSize: 20, color: "#000" }}>
                   Este hotel ademas cuenta con:
                 </Text>
                 {state.extras?.map((item: string, index: number) => {
@@ -202,45 +263,21 @@ const HotelProfile = ({
                 })}
               </View>
             )}
-
-            <Divider />
-            <View style={{ maxHeight: 350 }}>
-              <FlatList
-                data={state.adsPics}
-                keyExtractor={(_, index) => index.toString()}
-                horizontal
-                pagingEnabled
-                renderItem={({ item }) => (
-                  <View
-                    style={{
-                      width,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      shadowColor: "#fff",
-                      shadowOffset: {
-                        width: 0,
-                        height: 12,
-                      },
-                      shadowOpacity: 0.58,
-                      shadowRadius: 16.0,
-
-                      elevation: 24,
-                    }}
-                  >
-                    <Image
-                      source={{ uri: item }}
-                      style={{
-                        width: imageW,
-                        height: imageH,
-                        resizeMode: "contain",
-                        borderRadius: 16,
-                      }}
-                    />
-                  </View>
-                )}
+            <MapView
+              style={{
+                width:'90%',
+                height: 200,
+                marginBottom: 30,
+                marginTop: 30,
+              }}
+              region={thisRegion}
+            >
+              <Marker
+                coordinate={{
+                  latitude: thisRegion.latitude || 0,
+                  longitude: thisRegion.longitude || 0,
+                }}
               />
-            </View>
-            <MapView>
             </MapView>
             <TouchableOpacity
               style={styles.messageRow}
@@ -255,7 +292,8 @@ const HotelProfile = ({
               <Text style={styles.messageText}>Send message</Text>
             </TouchableOpacity>
           </View>
-        </ImageBackground>
+        {/* </ImageBackground> */}
+        </View>
       </View>
     </ScrollView>
   );
@@ -272,11 +310,11 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: "center",
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    justifyContent: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
     padding: 15,
     borderRadius: 15,
-    width: '90%',
+    width: "90%",
     marginBottom: 10,
     marginTop: 30,
   },
@@ -292,23 +330,24 @@ const styles = StyleSheet.create({
   socialRow: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    width: '100%',
+    alignItems: "center",
+    backgroundColor: "#fff",
+    width: "100%",
     padding: 5,
-    borderRadius: 15
+    borderRadius: 15,
   },
   messageRow: {
     flexDirection: "row",
-    width: '90%',
-    alignItems: 'center',
-    justifyContent: 'center'
+    width: "90%",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20
   },
   tabBar: {
     padding: 10,
     borderWidth: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.05)",
-    borderColor: '#000',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    borderColor: "#000",
     borderRadius: 5,
   },
   tabContainer: {
@@ -322,7 +361,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 15,
     textAlign: "center",
-    padding: 10
+    padding: 10,
   },
   tabLabelText: {
     color: "#fff",
@@ -336,11 +375,11 @@ const styles = StyleSheet.create({
     marginRight: 40,
   },
   descriptionRow: {
-    width: '80%',
+    width: "80%",
     marginBottom: 10,
-    marginTop: 20,
+    marginTop: 10,
     flexDirection: "row",
-    alignItems: 'center'
+    alignItems: "center",
   },
   userBioText: {
     color: "#000",
@@ -348,9 +387,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   userDescriptionText: {
-    color: "#fff",
+    color: "#000",
     fontSize: 15,
-    // textAlign: 'center',
+    textAlign: "center",
     marginLeft: 15,
     textTransform: "capitalize",
   },
@@ -365,12 +404,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   messageText: {
-    color: "#fff",
+    color: "#000",
     fontSize: 20,
     fontWeight: "bold",
     marginLeft: 5, //Tenia 14
     margin: 17, //Tenia 7
-    width: 140, // No estaba
+    width: 140, // No estaba,
   },
   userImage: {
     borderRadius: 60,
@@ -394,5 +433,12 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
 });
+
+const style={
+  width: "90%",
+  height: 200,
+  marginBottom: 30,
+  borderRadius: 16
+}
 
 export default HotelProfile;

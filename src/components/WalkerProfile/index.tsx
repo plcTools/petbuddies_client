@@ -17,7 +17,7 @@ const WalkerProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"WalkerProfile">) => {
-  const [state, setState] = React.useState<any>();
+  const [state, setState] = React.useState<any>('');
   React.useEffect(() => {
     axios
       .get(`/walkers/${route.params.id}`)
@@ -62,7 +62,16 @@ const WalkerProfile = ({
     );
   };
 
-  if (!state) return <Icon name="spinner" reverse type="font-awesome-5" />;
+  if(!state) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Image 
+          source={require('../../images/loader.gif')}
+          style={{width: 200, height: 150}}
+        />
+      </View>
+    )
+  }
 
   return (
     <ScrollView style={styles.scroll}>
@@ -70,7 +79,8 @@ const WalkerProfile = ({
         <View style={styles.cardContainer}>
           <View style={styles.headerContainer}>
             <View style={styles.userRow}>
-              <Image style={styles.userImage} source={{ uri: state.photo }} />
+              <Image style={styles.userImage} source={state?.photo ? {uri:`${state.photo}`} : require("../../images/logo.png")}
+ />
               <View style={styles.userNameRow}>
                 <Text style={styles.userNameText}>
                   {state.name + " " + state.lastname}

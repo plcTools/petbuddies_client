@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { View, Text, FlatList, SafeAreaView, Modal, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, FlatList, SafeAreaView, Modal, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
 import { Icon, Divider, CheckBox } from 'react-native-elements';
 import { styles } from './styles';
 import WalkerCard from '../WalkerCard/index';
@@ -21,7 +21,6 @@ import {
 } from "@expo-google-fonts/nunito-sans";
 import { getData } from "../../AsyncStorage";
 
-const lista: string[] = ['palermo', 'caballito', 'almagro', 'belgrano', 'saavedra', 'puerto madero', 'recoleta', 'villa crespo', 'boedo', 'colegiales', 'barrio norte'].sort();
 interface ModalChecks {
     [key: string]: boolean;
 }
@@ -33,6 +32,7 @@ const HomeScreen = () => {
     const [checked, setChecked] = React.useState<string | boolean>(false);
     const [input, setInput] = React.useState<ModalChecks>({});
     const [icon, setIcon] = React.useState<ModalChecks>({ walkers: true });
+    const [ list, setList ] = React.useState<string[]>([]);
     /*  const navigation = useNavigation(); */
     const walkers = useSelector((state: RootState) => state.paseadores.walkers)
     const userFavorites = useSelector((state: RootState) => state.user.userFavorites)
@@ -55,6 +55,7 @@ const HomeScreen = () => {
     React.useLayoutEffect(() => {
         retrieveStorage();
         dispatch(getUserFavorites(id))
+        handleList(walkers);
         if (Object.keys(walkers).length > 0) {
             setState(walkers)
         } else {
@@ -76,6 +77,12 @@ const HomeScreen = () => {
     });
   };
 
+  const handleList = (array:Walker[]) => {
+    const arr = array.flatMap(item => item.workZone)
+    let uniques = Array.from(new Set(arr)); // pidan explicacion a eze
+    return setList(uniques)
+  };
+
     const renderComponent = (arr: any) => {
         return (
         <SafeAreaView style={{ width: '100%', display: 'flex', justifyContent: 'center', flex: 1 }}>
@@ -84,20 +91,30 @@ const HomeScreen = () => {
                 keyExtractor={(item: Walker) => item._id}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => {
-                    return (<WalkerCard walker={item} userFavorites={userFavorites} />)
+                  return (<WalkerCard walker={item} userFavorites={userFavorites} />)
                 }}
             />
         </SafeAreaView>)
     };
-    if (!fonts) return <Icon name='spinner' reverse type='font-awesome-5' />
+    // if (!fonts) return <Icon name='spinner' reverse type='font-awesome-5' style={{ position: 'relative', top: '50%', left: '50%'}} />
+    if(!fonts) {
+      return (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Image 
+            source={require('../../images/loader.gif')}
+            style={{width: 200, height: 150}}
+          />
+        </View>
+      )
+    }
     return (
         <>
             <Divider />
             <View style={styles.viewIcons}>
                 <Icon
                     name='list-ul'
-                    type='font-awesome-5'
-                    color={icon?.walkers ? "#fc5185" : "grey"}
+                    type='font-awesome'
+                    color={icon?.walkers ? "#07689f" : "grey"}
                     onPress={() => {
                         setState(walkers);
                         setChecked(false);
@@ -107,7 +124,7 @@ const HomeScreen = () => {
                 <Icon
                     name='star'
                     type='font-awesome'
-                    color={icon?.star ? '#f8dc81' : 'grey'}
+                    color={icon?.star ? '#1fab89' : 'grey'}
                     onPress={() => {
                         handleIcon('star')
                         setState(() => {
@@ -132,7 +149,7 @@ const HomeScreen = () => {
                     name='map-marker-alt'
                     type='font-awesome-5'
                     // color='#00af91'
-                    color={icon?.house ? '#008891' : 'grey'}
+                    color={icon?.house ? '#fc5185' : 'grey'}
                     onPress={() => {
                         setCheck(!check)
                         setChecked(false)
@@ -177,7 +194,7 @@ const HomeScreen = () => {
             style={{
               backgroundColor: "#f1f1f1",
               margin: 15,
-              marginTop: 100,
+              marginTop: 40,
               padding: 20,
               marginBottom: 50,
               borderRadius: 25,
@@ -215,8 +232,8 @@ const HomeScreen = () => {
             >
               Select your neighborhood
             </Text>
-            {lista &&
-              lista.map((item, i) => (
+            {list.length > 0 &&
+              list.map((item, i) => (
                 <TouchableOpacity
                   key={i}
                   style={{

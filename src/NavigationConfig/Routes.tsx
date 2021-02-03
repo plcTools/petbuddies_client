@@ -18,7 +18,7 @@ import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
 import BeautySpaScreen from '../components/BeautySpaScreen/BeautySpaScreen'
 import SelectRol from '../components/SelectRol';
 import WalkerForm from "../components/WalkerForm";
-import {Image} from 'react-native'
+import {Image, View} from 'react-native'
 
 export const Routes: React.FC = () => {
   let [fonts] = useFonts({ NunitoSans_400Regular });
@@ -67,7 +67,16 @@ export const Routes: React.FC = () => {
     );
   };
   /*   const Drawer = createDrawerNavigator() */
-  if (!fonts) return <Icon name="spinner" reverse type="font-awesome-5" />;
+  if(!fonts) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Image 
+          source={require('../images/loader.gif')}
+          style={{width: 200, height: 150}}
+        />
+      </View>
+    )
+  }
   return (
     <NavigationContainer>
       <Navigator screenOptions={({ navigation }) => ({

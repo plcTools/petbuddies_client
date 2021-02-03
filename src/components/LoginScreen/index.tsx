@@ -94,6 +94,7 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
   };
+  
 
   return (
     <View style={styles.container}>

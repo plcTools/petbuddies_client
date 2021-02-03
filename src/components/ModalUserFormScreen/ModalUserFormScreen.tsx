@@ -16,6 +16,7 @@ import { storeData } from '../../AsyncStorage/index'
 import { useNavigation } from "@react-navigation/native";
 
 function ModalUserFormScreen(props: any) {
+    const navigation = useNavigation();
 
     const [input, setInput] = useState({
         email: '',
@@ -40,25 +41,17 @@ function ModalUserFormScreen(props: any) {
                 const { user } = await firebase.auth().createUserWithEmailAndPassword(email, password);
                 if(user) {
                     await axios.post('/owners', { email })
+                    await firebase.auth().signInWithEmailAndPassword(input.email, input.password);
+                    const id = await axios.get(`/owners/email/${input.email}`);
+                    await storeData(id.data);
+                    navigation.navigate("SelectRol");
+                    Alert.alert('Registro exitoso!');
                 }
             } catch (error) {
                 Alert.alert(error.message);
             }
         }
     }
-
-    const navigation = useNavigation();
-    const login = async () => {
-        try {
-          await firebase.auth().signInWithEmailAndPassword(input.email, input.password);
-          const id = await axios.get(`/owners/email/${input.email}`);
-          await storeData(id.data);
-          navigation.navigate("SelectRol");
-          } catch (error) {
-          console.log(error.message);
-          Alert.alert(error.message);
-        }
-    };
 
     const onSubmit = async () => {
         const emailValidate = input.email && validateEmail(input.email)
@@ -69,9 +62,7 @@ function ModalUserFormScreen(props: any) {
         if (!lenPass) { return Alert.alert('La contraseña debe tener como minimo 6 caracteres') };
         if (input.email && input.password && input.repeatPassword && passValidate && emailValidate && lenPass) {
             await signup();
-            props.modalStatusChange()/* cambia el state para ocultar el modal */
-            await login();
-            Alert.alert('Registro exitoso!');            
+            props.modalStatusChange()/* cambia el state para ocultar el modal */          
         }
     };
 
