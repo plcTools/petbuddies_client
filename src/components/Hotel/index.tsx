@@ -82,6 +82,7 @@ const HotelScreen = () => {
 
   React.useEffect(() => {
     retrieveStorage();
+    dispatch(getOwnerFavHotels(id))
     if(Object.keys(hotels).length === 0) {
       dispatch(getHotels())
     }

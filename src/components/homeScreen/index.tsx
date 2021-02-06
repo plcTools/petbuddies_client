@@ -59,7 +59,7 @@ const HomeScreen = () => {
         if (Object.keys(walkers).length > 0) {
             setState(walkers)
         } else {
-            // dispatch(getUserFavorites(id))
+            dispatch(getUserFavorites(id))
             dispatch(getWalkers())
         }
     }, [dispatch, walkers]);

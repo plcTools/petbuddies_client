@@ -58,6 +58,7 @@ function BeautySpaScreen() {
 
     React.useEffect(() => {
         retrieveStorage();
+        dispatch(getOwnerFavGroomers(id));
         if(Object.keys(peluquerias).length === 0) {
             dispatch(getHairdressers());
         }
