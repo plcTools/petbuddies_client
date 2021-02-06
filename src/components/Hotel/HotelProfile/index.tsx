@@ -28,7 +28,7 @@ const HotelProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"HotelProfile">) => {
-  const [state, setState] = React.useState<any>('');
+  const [state, setState] = React.useState<any>("");
   const [thisRegion, setThisRegion] = React.useState<any>({
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
@@ -53,6 +53,8 @@ const HotelProfile = ({
       });
     });
   }, []);
+
+  console.log ('STATE LOCAL', state);
 
   const renderLabel = () => {
     return (
@@ -90,15 +92,15 @@ const HotelProfile = ({
     );
   };
 
-  if(!state) {
+  if (!state) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Image 
-          source={require('../../../images/loader.gif')}
-          style={{width: 200, height: 150}}
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Image
+          source={require("../../../images/loader.gif")}
+          style={{ width: 200, height: 150 }}
         />
       </View>
-    )
+    );
   }
 
   return (
@@ -110,7 +112,7 @@ const HotelProfile = ({
           resizeMode='cover'
           // blurRadius={5}
         > */}
-          <View style={{ flex: 1, justifyContent: "center" }}>
+        <View style={{ flex: 1, justifyContent: "center" }}>
           <View style={styles.cardContainer}>
             <View style={styles.headerContainer}>
               <View style={styles.userRow}>
@@ -122,21 +124,23 @@ const HotelProfile = ({
                   <Text style={styles.userBioText}>{state.description}</Text>
                 </View>
               </View>
-              <View style={styles.socialRow}>
-                <Rating
-                  readonly
-                  type="custom"
-                  startingValue={state.rating}
-                  imageSize={30}
-                />
-                <Text style={styles.ratingText}>
-                  {state.reviewsReceived} califications
-                </Text>
-              </View>
+              <TouchableOpacity onPress={() => navigation.navigate("ReviewsScreen", { hotelId: route.params.id})}>
+                <View style={styles.socialRow}>
+                  <Rating
+                    readonly
+                    type="custom"
+                    startingValue={state.rating}
+                    imageSize={30}
+                  />
+                  <Text style={styles.ratingText}>
+                    {state.reviewsReceived} califications
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
             {renderLabel()}
             <Divider />
-            <View style={{ maxHeight: 300, backgroundColor: '#f4f4f4' }}>
+            <View style={{ maxHeight: 300, backgroundColor: "#f4f4f4" }}>
               <FlatList
                 data={state.adsPics}
                 keyExtractor={(_, index) => index.toString()}
@@ -173,7 +177,6 @@ const HotelProfile = ({
                         },
                         shadowOpacity: 0.58,
                         shadowRadius: 16.0,
-
                       }}
                     />
                   </View>
@@ -265,7 +268,7 @@ const HotelProfile = ({
             )}
             <MapView
               style={{
-                width:'90%',
+                width: "90%",
                 height: 200,
                 marginBottom: 30,
                 marginTop: 30,
@@ -292,7 +295,7 @@ const HotelProfile = ({
               <Text style={styles.messageText}>Send message</Text>
             </TouchableOpacity>
           </View>
-        {/* </ImageBackground> */}
+          {/* </ImageBackground> */}
         </View>
       </View>
     </ScrollView>
@@ -341,7 +344,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 20
+    marginBottom: 20,
   },
   tabBar: {
     padding: 10,
@@ -434,11 +437,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const style={
+const style = {
   width: "90%",
   height: 200,
   marginBottom: 30,
-  borderRadius: 16
-}
+  borderRadius: 16,
+};
 
 export default HotelProfile;
