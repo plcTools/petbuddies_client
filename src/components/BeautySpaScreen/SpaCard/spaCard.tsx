@@ -30,21 +30,6 @@ import { getOwnerFavGroomers } from "../../../redux/owner/actions";
 import axios from "axios";
 
 function SpaCard(props: any) {
-  // const renderItem = (item: any) => {
-  //   return (
-  //     <View style={styles.itemList}>
-  //       <Text style={styles.textList}>{item.item}</Text>
-  //     </View>
-  //   );
-  // };
-
-  /* muestra o cierra el modal */
-
-  // useEffect (() => {
-  //   console.log (userFavGroomers, 'fav groomers');
-  //   const found = userFavGroomers.find (groomer => groomer._id == props.id);
-  //   if (!found) setChecked (true);
-  // }, [])
 
   const [modalVisible, setModalVisible] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -73,7 +58,7 @@ function SpaCard(props: any) {
 
   const dispatch = useAppDispatch();
 
-  /* if (!fonts) return <Icon name="spinner" reverse type="font-awesome-5" />; */
+
 
   return (
     <Card containerStyle={styles.container}>

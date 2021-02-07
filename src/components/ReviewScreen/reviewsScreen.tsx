@@ -5,28 +5,58 @@ import {
   TouchableOpacityComponent,
   Text,
   FlatList,
-  SafeAreaView
+  SafeAreaView,
+  Image,
+  StyleSheet,
 } from "react-native";
 import ReviewCard from "./reviewCard";
-import axios from "axios";
-import { Review } from './types';
+
 
 function reviewsScreen({ route }: any) {
-  const [reviews, setReviews] = useState([]);
-
-  useEffect(() => {
-    const hotelId = route.params.hotelId;
-    axios
-      .get(`/reviews/Hotel/${hotelId}`)
-      .then((hotelReviews) => setReviews(hotelReviews.data))
-      .catch((err) => console.log(err));
-  }, []);
-
+  const [reviews, setReviews] = useState(route.params.reviews);
   return (
-    <SafeAreaView>
-        {reviews.map (review => <ReviewCard />)}
+    <SafeAreaView style={styles.containerAll}>
+      <View style={styles.headers}>
+        <Image style={styles.logo} source={{ uri: route.params.photo }} />
+      </View>
+      <ScrollView style={styles.body}>
+        {reviews.review?.map((review: any, i: number) => (
+          <View style={styles.review} key={i}>
+            <ReviewCard
+              data={review}
+              HotelData={route.params}
+            />
+          </View>
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
+const styles = StyleSheet.create({
+
+  containerAll: {
+    alignItems: "center",
+    backgroundColor: 'white',
+    height:'100%'
+  },
+  headers: {
+    padding: 20
+  },
+  logo: {
+    height: 100,
+    width: 100
+  },
+  body: {
+    width: '100%',
+  },
+  review:{
+    padding:10,
+  },
+
+
+})
+
 export default reviewsScreen;
+
+

@@ -24,10 +24,12 @@ const { width, height } = Dimensions.get("screen");
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
 
+
 const HotelProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"HotelProfile">) => {
+  const [reviews, setReviews] = useState(route.params.reviews);
   const [state, setState] = React.useState<any>("");
   const [thisRegion, setThisRegion] = React.useState<any>({
     latitudeDelta: 0.005,
@@ -36,6 +38,7 @@ const HotelProfile = ({
     longitude: 0,
   });
 
+  
   interface Region {
     latitude?: number;
     longitude?: number;
@@ -54,7 +57,6 @@ const HotelProfile = ({
     });
   }, []);
 
-  console.log ('STATE LOCAL', state);
 
   const renderLabel = () => {
     return (
@@ -102,7 +104,6 @@ const HotelProfile = ({
       </View>
     );
   }
-
   return (
     <ScrollView style={styles.scroll}>
       <View style={styles.container}>
@@ -124,16 +125,16 @@ const HotelProfile = ({
                   <Text style={styles.userBioText}>{state.description}</Text>
                 </View>
               </View>
-              <TouchableOpacity onPress={() => navigation.navigate("ReviewsScreen", { hotelId: route.params.id})}>
+              <TouchableOpacity onPress={() => reviews.prom && navigation.navigate("ReviewsScreen", { hotelId: state._id, photo: state.photo, reviews:reviews })}>
                 <View style={styles.socialRow}>
                   <Rating
                     readonly
                     type="custom"
-                    startingValue={state.rating}
+                    startingValue={reviews.prom}//aca pido reviews
                     imageSize={30}
                   />
                   <Text style={styles.ratingText}>
-                    {state.reviewsReceived} califications
+                    {reviews.review.length} califications
                   </Text>
                 </View>
               </TouchableOpacity>
