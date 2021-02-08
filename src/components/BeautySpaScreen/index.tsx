@@ -1,82 +1,51 @@
-import "react-native-gesture-handler";
-import React from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  SafeAreaView,
-  Modal,
-  TouchableOpacity,
-  Image
-} from "react-native";
-import { Icon, Divider } from "react-native-elements";
-import { styles } from "../WalkerScreen/styles";
-import HotelCard from "./HotelCard/index";
-import { useSelector } from "react-redux";
+import * as React from "react";
+import { useState } from "react";
+import { View, Text, SafeAreaView, FlatList, TouchableOpacity, Modal, Image } from "react-native";
+import { Divider, Icon } from "react-native-elements";
+import SpaCard from "./SpaCard/spaCard";
 import { useAppDispatch, RootState } from "../../redux/store";
-import { getData } from '../../AsyncStorage/index';
-import { getHotels } from "../../redux/hotels/actions";
-import { getOwnerFavHotels } from "../../redux/owner/actions";
-import { Hotel } from "../../redux/hotels/types";
-import {
-  useFonts,
-  NunitoSans_400Regular,
-  NunitoSans_900Black_Italic,
-  NunitoSans_600SemiBold_Italic,
-  NunitoSans_600SemiBold,
-  NunitoSans_300Light_Italic,
-  NunitoSans_300Light,
-} from "@expo-google-fonts/nunito-sans";
+import { useSelector } from "react-redux";
+import { getHairdressers } from "../../redux/Hairdressers/actions";
+import styles from "./styles";
+import { getData } from "../../AsyncStorage/index";
+import { getOwnerFavGroomers } from "../../redux/owner/actions";
+import { Peluqueria } from '../../redux/Hairdressers/types'
 
-interface ModalChecks {
-  [key: string]: boolean;
-}
-
-const HotelScreen = () => {
-  const [state, setState] = React.useState<any | typeof hotels>(null);
-  const [check, setCheck] = React.useState<boolean>(false);
-  const [checked, setChecked] = React.useState<string | boolean>(false);
+function BeautySpaScreen() {
+  const [id, setId] = useState('');
+  const [icon, setIcon] = React.useState<ModalChecks>({ walkers: true });
   const [input, setInput] = React.useState<ModalChecks>({});
-  const [icon, setIcon] = React.useState<ModalChecks>({ hotels: true });
+  const [state, setState] = useState<any>(null);
+  const [checked, setChecked] = React.useState<string | boolean>(false);
+  const [check, setCheck] = React.useState<boolean>(false);
   const [list, setList] = React.useState<string[]>([]);
 
-  const hotels = useSelector((state: RootState) => state.hotels.hotels);
-  const [id, setId] = React.useState<string>('');
-
-  const handleList = (hotels: Hotel[]) => {
-    const arr: string[] = hotels.map(item => item.zone)
-    const uniqueZones = arr.filter((item, index) => arr.indexOf(item) === index);
-    return setList(uniqueZones)
+  interface ModalChecks {
+    [key: string]: boolean;
   }
 
   const retrieveStorage = async () => {
-    const user: string = await getData()
-    setId(user)
-  }
+    const user: string = await getData();
+    setId(user);
+  };
 
-  const userFavHotels = useSelector(
-    (state: RootState) => state.user.userFavHotels
+  const peluquerias = useSelector((state: RootState) => state.peluqueros.peluquerias);
+  const userFavGroomers = useSelector(
+    (state: RootState) => state.user.userFavGroomers
   );
+
   const dispatch = useAppDispatch();
-  let [fonts] = useFonts({
-    NunitoSans_400Regular,
-    NunitoSans_900Black_Italic,
-    NunitoSans_600SemiBold_Italic,
-    NunitoSans_600SemiBold,
-    NunitoSans_300Light_Italic,
-    NunitoSans_300Light,
-  });
 
-  React.useEffect(() => {
-    retrieveStorage();
-    if (Object.keys(hotels).length === 0) {
-      dispatch(getHotels())
-    }
-    dispatch(getOwnerFavHotels(id))
-    handleList(hotels)
-    setState(hotels)
-  }, [dispatch, hotels]);
-
+  const handleIcon = (name: string) => {
+    setIcon({
+      [name]: true,
+    });
+  };
+  const handleList = (peluquerias: Peluqueria[]) => {
+    const arr: string[] = peluquerias.map(item => item.zone)
+    const uniqueZones = arr.filter((item, index) => arr.indexOf(item) === index);
+    return setList(uniqueZones)
+  }
   const handleInput = (name: string) => {
     setInput({
       // ...input, -> esta comentado para q solo renderice por una sola zona
@@ -84,11 +53,17 @@ const HotelScreen = () => {
     });
   };
 
-  const handleIcon = (name: string) => {
-    setIcon({
-      [name]: true,
-    });
-  };
+
+  React.useEffect(() => {
+    retrieveStorage();
+    if (Object.keys(peluquerias).length === 0) {
+      dispatch(getHairdressers());
+    }
+    dispatch(getOwnerFavGroomers(id));
+    handleList(peluquerias)
+    setState(peluquerias);
+  }, [dispatch, peluquerias])
+
 
   const renderComponent = (arr: any) => {
     return (
@@ -102,17 +77,16 @@ const HotelScreen = () => {
       >
         <FlatList
           data={arr}
-          keyExtractor={(item: Hotel) => item._id}
+          keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => {
-            return <HotelCard hotel={item} userFavHotels={userFavHotels} />;
+            return <SpaCard id={item._id} peluqueria={item} userId={id} />;
           }}
         />
       </SafeAreaView>
     );
   };
-
-  if (!fonts) {
+  if (peluquerias.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Image
@@ -124,46 +98,47 @@ const HotelScreen = () => {
   }
   return (
     <>
-      <View><Divider /></View>
+      <Divider />
       <View style={styles.viewIcons}>
         <Icon
           name='list-ul'
           type='font-awesome'
-          color={icon?.hotels ? "#07689f" : "grey"}
+          color={icon?.walkers ? "#07689f" : "grey"}
           onPress={() => {
-            setState(hotels);
+            setState(peluquerias);
             setChecked(false);
-            handleIcon("hotels");
+            handleIcon("walkers");
           }}
         />
         <Icon
-          name="star"
-          type="font-awesome"
-          // color='#f8dc81'
-          color={icon?.star ? "#1fab89" : "grey"}
+          name='star'
+          type='font-awesome'
+          color={icon?.star ? '#1fab89' : 'grey'}
           onPress={() => {
             handleIcon("star");
             setState(() => {
-              let newState = [...hotels];
+              let newState = [...peluquerias];
               return newState.sort((a, b) => b.rating - a.rating);
             });
             setChecked(false);
           }}
         />
         <Icon
-          name="heart"
-          type="font-awesome"
-          color={icon?.heart ? "#ef4f4f" : "grey"}
+          name='heart'
+          type='font-awesome'
+          // color='red'
+          color={icon?.heart ? '#ef4f4f' : 'grey'}
           onPress={() => {
-            setState(userFavHotels);
+            setState(userFavGroomers);
             setChecked(false);
             handleIcon("heart");
           }}
         />
         <Icon
-          name="map-marker-alt"
-          type="font-awesome-5"
-          color={icon?.house ? "#fc5185" : "grey"}
+          name='map-marker-alt'
+          type='font-awesome-5'
+          // color='#00af91'
+          color={icon?.house ? '#fc5185' : 'grey'}
           onPress={() => {
             setCheck(!check);
             setChecked(false);
@@ -171,32 +146,11 @@ const HotelScreen = () => {
           }}
         />
 
+
       </View>
       <Divider />
-      {checked ? (
-        <>
-          <View
-            style={{
-              width: "100%",
-              flexDirection: "row",
-              justifyContent: "center",
-              marginTop: 10,
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: "NunitoSans_600SemiBold",
-                textTransform: "capitalize",
-                fontSize: 18,
-              }}
-            >
-              hotels por {checked}
-            </Text>
-          </View>
-          <Divider />
-        </>
-      ) : null}
       <View style={styles.container}>{renderComponent(state)}</View>
+      {/*  {state !== null && state.map((item: any) => <SpaCard id={item._id} peluqueria={item} userId={id} />)} */}
       <View>
         <Modal animationType="slide" transparent={true} visible={check}>
           <View
@@ -292,7 +246,7 @@ const HotelScreen = () => {
                     setCheck(!check);
                     setChecked(prop);
                     return setState(
-                      hotels.filter((h) => h.zone.toLowerCase() === prop.toLowerCase())
+                      peluquerias.filter((h) => h.zone.toLowerCase() === prop.toLowerCase())
                     );
                   }
                 }
@@ -303,8 +257,9 @@ const HotelScreen = () => {
           </View>
         </Modal>
       </View>
-    </>
-  );
-};
+    </ >
+  )
 
-export default HotelScreen;
+}
+
+export default BeautySpaScreen;
