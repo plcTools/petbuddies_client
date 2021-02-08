@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, TextInput, Platform } from "react-native";
+import { Text, View, StyleSheet, TextInput, Platform   } from "react-native";
 import { Avatar } from 'react-native-elements'
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,9 +9,7 @@ import { RouteStackParamList } from "../../NavigationConfig/types";
 import { getOwner } from "../../redux/owner/actions";
 import { getWalkers } from "../../redux/walker/actions";
 import * as ImagePicker from 'expo-image-picker';
-import * as firebase from 'firebase';
-
-
+import firebase from 'firebase';
 interface State {
   name?: string;
   lastname?: string;
@@ -23,12 +21,14 @@ interface State {
   workHours?: string;
   zona?: string;
   role?: string;
+  photo?:string;
 }
 
 const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
   const [data, setData] = useState<State>();
   const [id, setId] = useState<string>("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<string | null>(null);
+  const storage = firebase.storage() 
 
   const handleChange = (name: string, value: string) => {
     setData({ ...data, [name]: value });
@@ -54,38 +54,41 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
       }
     })();
   }, []);
-
-  const handleSubmit = () => {
+  
+  const handleSubmit = async () => {
+    await uploadImage(image, `profile-${id}`);
     axios.put(`/walkers/${id}`, data);
     navigation.navigate("Tab");
     dispatch(getOwner(id));
-    return dispatch(getWalkers());
+    dispatch(getWalkers());
   };
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
-      uploadImage(result.uri, 'photo');
     }
   };
 
   const uploadImage = async (uri:any, imageName:any) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-
-    var ref = firebase.storage().ref().child('images/' + imageName);
-    return ref.put(blob);
-
-    // axios.put(`/walkers/${id}`, {photo: blob})
+    const ref = await storage.ref().child('images/' + imageName);
+    // const url =  storage.refFromURL(`gs://${ref.bucket}/images/${imageName}`)
+    await ref.put(blob);
+      ref.getDownloadURL()
+      .then(function onSuccess(urlImg) {
+        axios.put(`/walkers/${id}`, {photo: urlImg});
+      })
+      .catch(function onError(err) {
+        console.log("Error occured..." + err);
+      })
 }
 
   return (
@@ -97,7 +100,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
         <Avatar
           rounded
           size="large"
-          source={image !== null ? {uri: image} : require("../../images/logo.png")}
+          source={(image !== null ? {uri: image} : ( user?.photo ? {uri: user?.photo} : require("../../images/logo.png"))) }
           overlayContainerStyle={{ backgroundColor: "white" }}
           onPress={pickImage}
           />
