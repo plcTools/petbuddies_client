@@ -9,25 +9,27 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
-import ReviewCard from "./reviewCard";
+import ModalReviewCard from "./modalReviewCard";
 
 
-function reviewsScreen({ route }: any) {
+function ModalReviewsScreen(params: any) {
+console.log(params);
 
 
-  const [reviews, setReviews] = useState(route.params.reviews);
+
+  const [reviews, setReviews] = useState(params.data.reviews);
  
   return (
     <SafeAreaView style={styles.containerAll}>
       <View style={styles.headers}>
-        <Image style={styles.logo} source={{ uri: route.params.photo }} />
+        <Image style={styles.logo} source={{ uri: params.data.photo[0] }} />
       </View>
       <ScrollView style={styles.body}>
         {reviews.review?.map((review: any, i: number) => (
           <View style={styles.review} key={i}>
-            <ReviewCard
+            <ModalReviewCard
               data={review}
-              HotelData={route.params}
+              HotelData={params}
             />
           </View>
         ))}
@@ -62,6 +64,6 @@ const styles = StyleSheet.create({
 
 })
 
-export default reviewsScreen;
+export default ModalReviewsScreen;
 
 

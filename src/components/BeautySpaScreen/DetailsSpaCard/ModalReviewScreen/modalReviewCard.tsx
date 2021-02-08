@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Image, View, ScrollView, TouchableOpacityComponent, Text, StyleSheet } from "react-native";
 import { Rating } from "react-native-ratings";
 
-function reviewCard(props: any) {
+function ModalReviewCard(props: any) {
 
 
     return (
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default reviewCard;
+export default ModalReviewCard;

@@ -31,6 +31,9 @@ import axios from "axios";
 
 function SpaCard(props: any) {
 
+
+  
+
   const [modalVisible, setModalVisible] = useState(false);
   const [checked, setChecked] = useState(false);
 
@@ -58,7 +61,21 @@ function SpaCard(props: any) {
 
   const dispatch = useAppDispatch();
 
+  /* Para Mostrar las reviews, Get a reviews
+    y posteriormente se pasan por props a los childs */
 
+    const [reviews, setReviews] = useState([]);
+    React.useEffect(() => {
+      axios
+        .get(`/reviews/DogGroomer/${props.peluqueria._id}`)
+        .then((reviews) => {
+          const sum = reviews.data.map((e: any) => e.rating).reduce((a: any, c: any) => a + c, 0)
+          const prom = sum && sum / reviews.data.length
+          setReviews({ review: reviews.data, prom })
+        })
+        .catch((err) => console.log(err));
+    }, []);
+  
 
   return (
     <Card containerStyle={styles.container}>
@@ -106,16 +123,17 @@ function SpaCard(props: any) {
           </View>
         </View>
         <View style={styles.cardHeaderRate}>
-          <Text style={{ marginRight: 5, fontSize: 15 }}>
-            {props.peluqueria.reviews}
-          </Text>
-          <Icon
-            name="star-o"
-            type="font-awesome"
-            size={18}
-            color="green"
-            underlayColor="red"
-          />
+            <Text style={{ marginRight: 5, fontSize: 15 }}>{
+              reviews.prom > 0 && reviews.prom
+
+            }</Text>
+            <Icon
+              name={reviews.prom && "star" || "star-o"}
+              type="font-awesome"
+              size={18}
+              color="green"
+              underlayColor="red"
+            />
         </View>
       </TouchableOpacity>
       <View style={styles.fav}>
@@ -164,7 +182,7 @@ function SpaCard(props: any) {
       >
         <DetailsSpaCard
           modalStatusChange={modalStatusChange}
-          data={props.peluqueria}
+          data={{peluqueria:props.peluqueria,reviews}}
         />
       </Modal>
       </View>

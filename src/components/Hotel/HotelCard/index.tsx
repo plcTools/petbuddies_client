@@ -63,7 +63,6 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
         const sum = reviews.data.map((e: any) => e.rating).reduce((a: any, c: any) => a + c, 0)
         const prom = sum && sum / reviews.data.length
         setReviews({ review: reviews.data, prom })
-        console.log('state', reviews)
       })
       .catch((err) => console.log(err));
   }, []);
@@ -130,7 +129,7 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
 
           <View style={styles.cardHeaderRate}>
             <Text style={{ marginRight: 5, fontSize: 15 }}>{
-              reviews.prom
+             reviews.prom > 0 && reviews.prom
 
             }</Text>
             <Icon

@@ -1,17 +1,27 @@
-import * as React from "react";
+
+import React, { useState } from "react";
 import { Card, Image, Icon, CheckBox, Divider } from "react-native-elements";
-import { View, Text, TouchableOpacity, Alert, Linking, Platform } from "react-native";
+import { View, Text, TouchableOpacity, Alert, Linking, Platform,Modal } from "react-native";
 import { styles } from "./styles";
 import MapView from "react-native-maps";
 import { Marker } from "react-native-maps";
+import { Rating } from "react-native-ratings";
+import ModalReviewsScreen from './ModalReviewScreen/modalReviewsScreen'
 
 function DetailsSpaCard(props: any) {
+
+const peluqueria = props.data.peluqueria
+
+
   var region = {
-    latitude: props.data.latitude || 0,
-    longitude: props.data.longitude || 0,
+    latitude: peluqueria.latitude || 0,
+    longitude: peluqueria.longitude || 0,
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
   };
+
+
+  const [reviews, setReviews] = useState(props.data.reviews);
 
   function openWhatsApp() {
     props.data.whatsapp
@@ -20,7 +30,7 @@ function DetailsSpaCard(props: any) {
           text: "OK",
           onPress: () => {
             Linking.openURL(
-              `https://wa.me/${props.data.whatsapp}?text=Quiero mas Información`
+              `https://wa.me/${peluqueria.whatsapp}?text=Quiero mas Información`
             );
           },
         },
@@ -39,7 +49,7 @@ function DetailsSpaCard(props: any) {
         {
           text: "OK",
           onPress: () => {
-            Linking.openURL(`tel:${props.data.phone}`);
+            Linking.openURL(`tel:${peluqueria.phone}`);
           },
         },
         {
@@ -57,7 +67,7 @@ function DetailsSpaCard(props: any) {
         {
           text: "OK",
           onPress: () => {
-            Linking.openURL(`mailito:${props.data.mail}`);
+            Linking.openURL(`mailito:${peluqueria.mail}`);
           },
         },
         {
@@ -80,6 +90,11 @@ function DetailsSpaCard(props: any) {
 
   //por direccion
   //`https://www.google.com/maps/dir/?api=1&origin=&destination=${props.data.address} ${props.data.localidad} ${props.data.provincia} ${props.data.pais} &travelmode=bicycling`
+
+  const [modalRatingVisible, setModalRatingVisible] = useState(false);
+  const modalRatingStatusChange = () => {
+    setModalRatingVisible(!modalRatingVisible);
+  };
 
   return (
     <View style={styles.containerAll}>
@@ -107,10 +122,10 @@ function DetailsSpaCard(props: any) {
               borderRadius: 50,
             }}
             source={{
-              uri: `${props.data.photo[0]}`,
+              uri: `${props.data.peluqueria.photo[0]}`,
             }}
           />
-          <Text style={styles.textTitle}>{props.data.name}</Text>
+          <Text style={styles.textTitle}>{peluqueria.name}</Text>
         </View>
         <View /* buttonsContainer */ style={styles.buttonsContainer}>
         
@@ -148,13 +163,26 @@ function DetailsSpaCard(props: any) {
 
           <View /* dataLeft */ style={styles.dataLeft}>
             <Text style={{ color: '#000', fontSize: 20, fontWeight: 'bold' }}>Visit us!</Text>
+            <TouchableOpacity onPress={() => reviews.prom && setModalRatingVisible(!modalRatingVisible)}>
+                <View style={styles.socialRow}>
+                  <Rating
+                    readonly
+                    type="custom"
+                    startingValue={reviews.prom}//aca pido reviews
+                    imageSize={15}
+                  />
+                  <Text style={styles.ratingText}>
+                    {reviews.review.length} califications
+                  </Text>
+                </View>
+              </TouchableOpacity>
           </View>
 
           <View /* dataRight */ style={styles.dataright} >
-            <Text style={styles.textData}>{props.data.address}</Text>
-            <Text style={styles.textData}>{props.data.localidad}</Text>
-            <Text style={styles.textData}>{props.data.provincia}</Text>
-            <Text style={styles.textData}>{props.data.pais}</Text>
+            <Text style={styles.textData}>{peluqueria.address}</Text>
+            <Text style={styles.textData}>{peluqueria.localidad}</Text>
+            <Text style={styles.textData}>{peluqueria.provincia}</Text>
+            <Text style={styles.textData}>{peluqueria.pais}</Text>
           </View>
         </View>
 
@@ -178,12 +206,25 @@ function DetailsSpaCard(props: any) {
           <TouchableOpacity
             style={{ ...styles.button, backgroundColor: '#c75643' }}
             /* onPress={() => openGps(region.latitude, region.longitude)} */
-            onPress={() => openGps(props.data.address, props.data.localidad, props.data.provincia, props.data.pais)}
+            onPress={() => openGps(peluqueria.address, peluqueria.localidad, peluqueria.provincia, peluqueria.pais)}
           >
             <Text style={styles.textButton}>Go to Maps</Text>
           </TouchableOpacity>
         </View>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalRatingVisible}
+        onRequestClose={() => {
+          modalRatingStatusChange();
+        }}
+      >
+        <ModalReviewsScreen
+          modalRatingStatusChange={modalRatingStatusChange}
+          data={{photo:peluqueria.photo,reviews}}
+        />
+      </Modal>
     </View>
   );
 }

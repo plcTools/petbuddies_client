@@ -34,6 +34,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     position: "absolute",
+    alignItems:'center',
     right: -4,
     bottom: -4,
   },

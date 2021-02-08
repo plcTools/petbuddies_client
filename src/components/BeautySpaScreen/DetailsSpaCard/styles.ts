@@ -75,6 +75,24 @@ export const styles = StyleSheet.create({
       height: "60%",
       width: "100%",
   },
+  socialRow: {
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    width: "100%",
+    padding: 5,
+    borderRadius: 15,
+  },
+  ratingText: {
+    color: "white",
+    fontSize: 13.5,
+    textAlign: "center",
+    marginLeft: 14,
+    margin: 10,
+    backgroundColor: "gray",
+    padding: 3,
+    borderRadius: 5,
+  },
 
   dataContainer: {
       flex: 1,
@@ -89,7 +107,8 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: "center",
       height: 100,
-      color: 'white'
+      color: 'white',
+      padding:10
   },
 
   dataright: {
