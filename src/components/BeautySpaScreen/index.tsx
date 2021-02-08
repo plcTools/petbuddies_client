@@ -254,6 +254,7 @@ function BeautySpaScreen() {
             >
               <Text style={{ textAlign: "center" }}>Select</Text>
             </TouchableOpacity>
+            
           </View>
         </Modal>
       </View>

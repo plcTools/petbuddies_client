@@ -156,7 +156,7 @@ function InfoModal(props: any) {
 
                 <Divider />
 
-                <View style={styles.mapContainer}>
+                { data.latitude && <View style={styles.mapContainer}>
                     <MapView region={region} style={{ width: "80%", height: "80%" }}>
                         <Marker
                             coordinate={{
@@ -165,7 +165,7 @@ function InfoModal(props: any) {
                             }}
                         />
                     </MapView>
-                </View>
+                </View>}
             </View>
 
             <View  style={styles.footerContainer}>
