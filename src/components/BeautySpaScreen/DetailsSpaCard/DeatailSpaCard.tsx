@@ -163,7 +163,7 @@ const peluqueria = props.data.peluqueria
 
           <View /* dataLeft */ style={styles.dataLeft}>
             <Text style={{ color: '#000', fontSize: 20, fontWeight: 'bold' }}>Visit us!</Text>
-            <TouchableOpacity onPress={() => reviews.prom && setModalRatingVisible(!modalRatingVisible)}>
+            <TouchableOpacity onPress={() =>  setModalRatingVisible(!modalRatingVisible)}>
                 <View style={styles.socialRow}>
                   <Rating
                     readonly
