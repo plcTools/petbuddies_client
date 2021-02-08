@@ -74,8 +74,11 @@ function SpaCard(props: any) {
           setReviews({ review: reviews.data, prom })
         })
         .catch((err) => console.log(err));
+        
     }, []);
-  
+    /* console.log(1111111111,navigator.geolocation.getCurrentPosition((p) => p.coords )); */
+
+     
 
   return (
     <Card containerStyle={styles.container}>
@@ -135,13 +138,14 @@ function SpaCard(props: any) {
               underlayColor="red"
             />
         </View>
+        
       </TouchableOpacity>
       <View style={styles.fav}>
         <CheckBox
           uncheckedIcon={
             <Icon
-              raised
-              name="heart-o"
+            raised
+            name="heart-o"
               type="font-awesome"
               size={15}
               color="black"
@@ -154,24 +158,24 @@ function SpaCard(props: any) {
               type="font-awesome"
               size={15}
               color={"red"}
-            />
-          }
-          checked={checked}
-          onPress={async () => {
-            if (!checked) {
-
-              const result = await axios.patch(`/groomer/${props.userId}/favourites/${props.id}`);
-              dispatch(getOwnerFavGroomers(props.userId));
-              return setChecked(true);
-            } else {
-              const result = await axios.delete(
-                `/groomer/${props.userId}/favourites/${props.id}`
-              );
-              dispatch(getOwnerFavGroomers(props.userId));
-              return setChecked(false);
+              />
             }
-
-          }} />
+            checked={checked}
+            onPress={async () => {
+              if (!checked) {
+                
+                const result = await axios.patch(`/groomer/${props.userId}/favourites/${props.id}`);
+                dispatch(getOwnerFavGroomers(props.userId));
+                return setChecked(true);
+              } else {
+                const result = await axios.delete(
+                  `/groomer/${props.userId}/favourites/${props.id}`
+                  );
+                  dispatch(getOwnerFavGroomers(props.userId));
+                  return setChecked(false);
+                }
+                
+              }} />
           <Modal
         animationType="slide"
         transparent={true}
