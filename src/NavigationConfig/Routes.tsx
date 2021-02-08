@@ -17,13 +17,9 @@ import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
 import BeautySpaScreen from '../components/BeautySpaScreen'
 import SelectRol from '../components/SelectRol';
 import WalkerForm from "../components/WalkerForm";
-<<<<<<< HEAD
-import {Image, View} from 'react-native';
-import ReviewsScreen from '../components/ReviewScreen/reviewsScreen';
-=======
 import {Image, View} from 'react-native'
 import SpaProfile from '../components/BeautySpaScreen/SpaProfile/';
->>>>>>> origin/master
+import ReviewsScreen from '../components/ReviewScreen/reviewsScreen';
 
 export const Routes: React.FC = () => {
   let [fonts] = useFonts({ NunitoSans_400Regular });
@@ -113,11 +109,8 @@ export const Routes: React.FC = () => {
         <Screen name='HotelCard' component={HotelCard} />
         <Screen name='HotelProfile' component={HotelProfile} />
         <Screen name='Profile' component={UserPannel} />
-<<<<<<< HEAD
         <Screen name='ReviewsScreen' component={ReviewsScreen} />
-=======
         <Screen name='SpaProfile' component={SpaProfile} />
->>>>>>> origin/master
       </Navigator>
     </NavigationContainer>
   );

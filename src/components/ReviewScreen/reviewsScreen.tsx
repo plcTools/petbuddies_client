@@ -6,62 +6,90 @@ import {
   Text,
   FlatList,
   SafeAreaView,
-  Image,
   StyleSheet,
+  Alert,
+  Modal
 } from "react-native";
 import ReviewCard from "./reviewCard";
-
+import { Image, Divider } from "react-native-elements";
+import { getData } from "../../AsyncStorage/index";
+import axios from "axios";
+import { Rating } from "react-native-ratings";
+import styles from "./styles";
+import PostReview from './PostReview/PostReview';
 
 function reviewsScreen({ route }: any) {
-
-
   const [reviews, setReviews] = useState(route.params.reviews);
- 
+  const [user, setUser] = useState({});
+
+  const retrieveStorage = async () => {
+    const user: string = await getData();
+    const usuario = await axios.get(`/owners/${user}`);
+    setUser(usuario.data.owner);
+  };
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const modalStatusChange = () => {
+    setModalVisible(!modalVisible);
+  };
+
+  useEffect(() => {
+    retrieveStorage();
+  }, []);
+
+  console.log("PARAMSSSSSS____",route.params);
+  
+
   return (
     <SafeAreaView style={styles.containerAll}>
+      <Divider style={styles.divider} />
+      <View style={styles.ratingView}>
+        <Text style={styles.title}>Rate and give your opinion</Text>
+        <Text style={styles.secondLine}>
+          Share your experience and help other users get a clearer idea about
+          the place.
+        </Text>
+        <View style={styles.imageView}>
+          <Image
+            style={{
+              marginTop: 10,
+              height: 60,
+              width: 60,
+              borderRadius: 50,
+              marginRight: 25
+            }}
+            source={{
+              uri: `${user.photo}`,
+            }}
+          />
+          <Rating onFinishRating={modalStatusChange} type="custom" startingValue={5} imageSize={30} />
+        </View>
+      </View>
+      <Divider style={styles.divider} />
+
       <View style={styles.headers}>
         <Image style={styles.logo} source={{ uri: route.params.photo }} />
       </View>
       <ScrollView style={styles.body}>
         {reviews.review?.map((review: any, i: number) => (
           <View style={styles.review} key={i}>
-            <ReviewCard
-              data={review}
-              HotelData={route.params}
-            />
+            <ReviewCard data={review} HotelData={route.params} />
           </View>
         ))}
       </ScrollView>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          modalStatusChange();
+        }}
+      >
+         <PostReview user={user} companyName={route.params} modalStatusChange={modalStatusChange} />
+      </Modal>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-
-  containerAll: {
-    alignItems: "center",
-    backgroundColor: 'white',
-    height:'100%'
-  },
-  headers: {
-    padding: 20
-  },
-  logo: {
-    height: 100,
-    width: 100,
-    borderRadius:100
-
-  },
-  body: {
-    width: '100%',
-  },
-  review:{
-    padding:10,
-  },
-
-
-})
-
 export default reviewsScreen;
-
-

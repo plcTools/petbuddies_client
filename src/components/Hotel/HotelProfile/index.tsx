@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useState }from "react";
 import {
   Animated,
   View,
@@ -122,7 +122,7 @@ const HotelProfile = ({
                   <Text style={styles.userBioText}>{state.description}</Text>
                 </View>
               </View>
-              <TouchableOpacity onPress={() => reviews.prom && navigation.navigate("ReviewsScreen", { hotelId: state._id, photo: state.photo, reviews:reviews })}>
+              <TouchableOpacity onPress={() => navigation.navigate("ReviewsScreen", { hotelId: state._id, photo: state.photo, reviews:reviews })}>
                 <View style={styles.socialRow}>
                   <Rating
                     readonly
