@@ -1,16 +1,22 @@
 export interface Peluqueria {
     _id: string;
     name: string;
-    photo?: string[];
-    workDays?: string;
-    workHours?: string;
+    logo?: string;
+    workHours: string;
+    workDays: string;
+    description: string;
+    adPics?: string[];
+    fee: number;
+    reviewsReceived?: number;
+    rating: number;
+    phone: string;
+    email: string;
+    adress: string;
+    zone: string;
+    provincia: string;
+    latitude: number;
+    longitude: number;
     services?: string[];
-    reviews: number;
-    phone?: number;
-    whatsapp?: number;
-    mail: string;
-    address?: string;
-    localidad: string;
 }
 
 export interface HairdressersState {

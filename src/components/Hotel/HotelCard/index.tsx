@@ -73,7 +73,7 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
               marginBottom: 7,
             }}
             source={{
-              uri: `${hotel.photo}`,
+              uri: `${hotel.logo}`,
             }}
           />
 

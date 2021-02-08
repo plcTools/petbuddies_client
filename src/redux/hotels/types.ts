@@ -1,24 +1,30 @@
 export interface Hotel {
   _id: string;
   name: string;
-  photo?:string;
-  schedule?:string;
+  logo?:string;
+  workHours:string;
+  workDays: string;
   description?:string;
+  adPics: string[];
   fee:number;
-  allowedPets?:string[];
-  foodInclude?:boolean;
-  requirement?:string;
+  reviewsReceived?:number;
+  rating:number;
+  phone:string;
+  email:string;
+  address:string;
   zone:string;
-  celphone:string;
+  provincia: string;
+  pais: string;
+  latitude: number;
+  longitude: number;
   allowedNumber?:number;
   checkIn?:number;
   checkOut?:number;
-  email:string;
-  address:string;
-  rating:number;
-  reviewsReceived?:number;
   petsLoved?:number;
   extras?:string[]
+  allowedPets?:string[];
+  foodInclude?:boolean;
+  requirement?:string;
 }
 export interface HotelState {
   hotels: Hotel[];

@@ -1,15 +1,11 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { styles } from "./styles";
-import DetailsSpaCard from "./../DetailsSpaCard/DeatailSpaCard";
 import {
   View,
   Image,
   TouchableOpacity,
   Text,
-  FlatList,
-  SafeAreaView,
-  Alert,
   Modal,
 } from "react-native";
 import { Icon, Card, CheckBox } from "react-native-elements";
@@ -25,29 +21,14 @@ import {
 } from "@expo-google-fonts/nunito-sans";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../../redux/store";
-import { getData } from "../../../AsyncStorage/index";
 import { getOwnerFavGroomers } from "../../../redux/owner/actions";
 import axios from "axios";
+import InfoModal from "../../InfoModal";
 
 function SpaCard(props: any) {
-  // const renderItem = (item: any) => {
-  //   return (
-  //     <View style={styles.itemList}>
-  //       <Text style={styles.textList}>{item.item}</Text>
-  //     </View>
-  //   );
-  // };
 
-  /* muestra o cierra el modal */
-
-  // useEffect (() => {
-  //   console.log (userFavGroomers, 'fav groomers');
-  //   const found = userFavGroomers.find (groomer => groomer._id == props.id);
-  //   if (!found) setChecked (true);
-  // }, [])
-
-  const [modalVisible, setModalVisible] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
@@ -56,12 +37,13 @@ function SpaCard(props: any) {
   const userFavGroomers = useSelector((state: RootState) => state.user.userFavGroomers);
 
 
-  useEffect (() => {
-    const found = userFavGroomers && userFavGroomers.find (peluqueria => peluqueria._id == props.id);
-    if (found) setChecked (true);
+  useEffect(() => {
+    const found = userFavGroomers && userFavGroomers.find(peluqueria => peluqueria._id == props.id);
+    if (found) setChecked(true);
   }, [])
 
   const navigation = useNavigation();
+
   let [fonts] = useFonts({
     NunitoSans_400Regular,
     NunitoSans_900Black_Italic,
@@ -73,11 +55,9 @@ function SpaCard(props: any) {
 
   const dispatch = useAppDispatch();
 
-  /* if (!fonts) return <Icon name="spinner" reverse type="font-awesome-5" />; */
-
   return (
-    <Card containerStyle={styles.container}>
-      <TouchableOpacity style={styles.cardContainer} onPress={()=> setModalVisible(!modalVisible)}>
+    <Card containerStyle={styles.container} >
+      <TouchableOpacity style={styles.cardContainer} onPress={() => navigation.navigate('SpaProfile', {id: props.id})}>
         <View style={styles.cardHeader}>
           <Image
             style={{
@@ -89,7 +69,7 @@ function SpaCard(props: any) {
               marginBottom: 7,
             }}
             source={{
-              uri: `${props.peluqueria.photo[0]}`,
+              uri: `${props.peluqueria.logo}`,
             }}
           />
           <View style={styles.headerContainer}>
@@ -116,13 +96,13 @@ function SpaCard(props: any) {
                 fontFamily: "NunitoSans_600SemiBold",
               }}
             >
-              {props.peluqueria.localidad}
+              {props.peluqueria.zone}
             </Text>
           </View>
         </View>
         <View style={styles.cardHeaderRate}>
           <Text style={{ marginRight: 5, fontSize: 15 }}>
-            {props.peluqueria.reviews}
+            {props.peluqueria.rating}
           </Text>
           <Icon
             name="star-o"
@@ -156,32 +136,31 @@ function SpaCard(props: any) {
           checked={checked}
           onPress={async () => {
             if (!checked) {
-
-              const result = await axios.patch(`/groomer/${props.userId}/favourites/${props.id}`);
+              const result = await axios.patch(`/groomer/${props.userId}/favorites/${props.id}`);
               dispatch(getOwnerFavGroomers(props.userId));
               return setChecked(true);
             } else {
               const result = await axios.delete(
-                `/groomer/${props.userId}/favourites/${props.id}`
+                `/groomer/${props.userId}/favorites/${props.id}`
               );
               dispatch(getOwnerFavGroomers(props.userId));
               return setChecked(false);
             }
 
           }} />
-          <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          modalStatusChange();
-        }}
-      >
-        <DetailsSpaCard
-          modalStatusChange={modalStatusChange}
-          data={props.peluqueria}
-        />
-      </Modal>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            modalStatusChange();
+          }}
+        >
+          <InfoModal
+            modalStatusChange={modalStatusChange}
+            data={props.peluqueria}
+          />
+        </Modal>
       </View>
     </Card>
   );
