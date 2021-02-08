@@ -6,8 +6,8 @@ export const styles = StyleSheet.create({
       flex: 1,
     },
     container: {
-      alignItems: "center",
-      flex: 1,
+     /*  alignItems: "center",
+      flex: 1, */
     },
     headerContainer: {
       alignItems: "center",

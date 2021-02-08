@@ -1,13 +1,38 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+const dimensions = {
+  width: Dimensions.get('window').width,
+  height: Dimensions.get('window').height,
+}
 
 export const styles = StyleSheet.create({
     cardContainer: {
       alignItems: "center",
       flex: 1,
     },
-    container: {
+    overlay: {
+      height: dimensions.height - 600,
+      width: dimensions.width - 100,
       alignItems: "center",
-      flex: 1,
+      justifyContent: "center",
+      flexDirection: "row",
+      padding: 10
+    },
+    fotoverlay: {
+      width: 75,
+      height: 75,
+      borderRadius: 5
+    },
+    socialOverlay: {
+      flexDirection: "row",
+      justifyContent: "space-around",
+      marginTop: 10,
+      marginBottom: 5
+    },
+    titleOverlay: {
+      margin: 10,
+      fontWeight: "bold",
+      fontSize: 15,
     },
     headerContainer: {
       alignItems: "center",
