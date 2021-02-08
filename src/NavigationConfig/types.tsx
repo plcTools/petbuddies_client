@@ -9,9 +9,10 @@ export type RootStackParamList = {
   Prueba: undefined;
   WalkerProfile: { id: number };
   HotelProfile: { id: number };
+  SpaProfile: { id: number };
   UserPannel: undefined;
   UserFormScreen: undefined;
-  HomeScreen: undefined;
+  WalkerScreen: undefined;
   LoginScreen: undefined;
   SelectRol: undefined;
   Home: undefined;
@@ -57,22 +58,48 @@ export type walker = {
 export type hotel = {
   _id: string;
   name: string;
-  photo?:string;
-  schedule?:string;
+  logo?:string;
+  workHours:string;
+  workDays: string;
   description?:string;
+  adPics: string[];
   fee:number;
-  allowedPets?:string[];
-  foodInclude?:boolean;
-  requirement?:string;
+  reviewsReceived?:number;
+  rating:number;
+  phone:string;
+  email:string;
+  address:string;
   zone:string;
-  celphone:string;
+  provincia: string;
+  pais: string;
+  latitude: number;
+  longitude: number;
   allowedNumber?:number;
   checkIn?:number;
   checkOut?:number;
-  email:string;
-  address:string;
-  rating?:number;
-  reviewsReceived?:number;
   petsLoved?:number;
   extras?:string[]
+  allowedPets?:string[];
+  foodInclude?:boolean;
+  requirement?:string;
+}
+export type groomer = {
+  _id: string;
+  name: string;
+  logo?: string;
+  workHours: string;
+  workDays: string;
+  description: string;
+  adPics?: string[];
+  fee: number;
+  reviewsReceived?: number;
+  rating: number;
+  phone: string;
+  email: string;
+  adress: string;
+  zone: string;
+  provincia: string;
+  latitude: number;
+  longitude: number;
+  services?: string[];
 }

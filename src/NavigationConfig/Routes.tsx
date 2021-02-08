@@ -8,18 +8,22 @@ import UserPannel from '../components/UserPannel';
 import HotelScreen from '../components/Hotel';
 import HotelProfile from '../components/Hotel/HotelProfile';
 import HotelCard from '../components/Hotel/HotelCard';
-// import UserFormScreen from '../components/UserFormScreen/UserFormScreen';
 import LoginScreen from '../components/LoginScreen';
 import { RootStackParamList } from './types';
-import HomeScreen from '../components/homeScreen';
-import BeatySpaScreen from '../components/BeautySpaScreen/BeautySpaScreen';
+import WalkerScreen from '../components/WalkerScreen';
+import BeatySpaScreen from '../components/BeautySpaScreen';
 import { Icon } from 'react-native-elements';
 import { useFonts, NunitoSans_400Regular } from '@expo-google-fonts/nunito-sans'
-import BeautySpaScreen from '../components/BeautySpaScreen/BeautySpaScreen'
+import BeautySpaScreen from '../components/BeautySpaScreen'
 import SelectRol from '../components/SelectRol';
 import WalkerForm from "../components/WalkerForm";
+<<<<<<< HEAD
 import {Image, View} from 'react-native';
 import ReviewsScreen from '../components/ReviewScreen/reviewsScreen';
+=======
+import {Image, View} from 'react-native'
+import SpaProfile from '../components/BeautySpaScreen/SpaProfile/';
+>>>>>>> origin/master
 
 export const Routes: React.FC = () => {
   let [fonts] = useFonts({ NunitoSans_400Regular });
@@ -30,7 +34,7 @@ export const Routes: React.FC = () => {
   const TabNavigation = () => {
     return (
       <Tab.Navigator
-        initialRouteName="HomeScreen"
+        initialRouteName="Walker"
         tabBarOptions={{
           inactiveTintColor: "#fdfafa",
           activeTintColor: "#008891",
@@ -61,13 +65,12 @@ export const Routes: React.FC = () => {
           },
         })}
       >
-        <Tab.Screen name='Home' component={HomeScreen} />
+        <Tab.Screen name='Home' component={WalkerScreen} />
         <Tab.Screen name='Hotel' component={HotelScreen} />
         <Tab.Screen name='Peluquerias' component={BeautySpaScreen} />
       </Tab.Navigator>
     );
   };
-  /*   const Drawer = createDrawerNavigator() */
   if(!fonts) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -110,31 +113,12 @@ export const Routes: React.FC = () => {
         <Screen name='HotelCard' component={HotelCard} />
         <Screen name='HotelProfile' component={HotelProfile} />
         <Screen name='Profile' component={UserPannel} />
+<<<<<<< HEAD
         <Screen name='ReviewsScreen' component={ReviewsScreen} />
+=======
+        <Screen name='SpaProfile' component={SpaProfile} />
+>>>>>>> origin/master
       </Navigator>
     </NavigationContainer>
   );
 };
-
-// estilos del header
-{
-  /* <Stack.Navigator
-      initialRouteName='Tab'
-      screenOptions={({navigation}) => ({
-        title: 'PetBuddies',
-        headerStyle: {
-          backgroundColor: '#364f6b',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-        headerRight: () => (
-          <Icon
-            reverse
-            name="message"
-            color='#364f6b'
-            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-          />)
-      })}></Stack.Navigator> */
-}

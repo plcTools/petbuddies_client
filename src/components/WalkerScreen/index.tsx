@@ -25,7 +25,7 @@ interface ModalChecks {
     [key: string]: boolean;
 }
 
-const HomeScreen = () => {
+const WalkerScreen = () => {
 
     const [state, setState] = React.useState<any | typeof walkers>(null);
     const [check, setCheck] = React.useState<boolean>(false);
@@ -298,4 +298,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default WalkerScreen;

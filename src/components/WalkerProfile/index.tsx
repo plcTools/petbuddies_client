@@ -8,11 +8,16 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  FlatList,
+  Dimensions
 } from "react-native";
 import { RouteStackParamList } from "../../NavigationConfig/types";
-import { Icon } from "react-native-elements";
+import { Icon, Divider } from "react-native-elements";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
+const { width, height } = Dimensions.get("screen");
+const imageW = width * 0.9;
+const imageH = imageW * 1.7;
 
 const WalkerProfile = ({
   navigation,
@@ -77,6 +82,7 @@ const WalkerProfile = ({
   return (
     <ScrollView style={styles.scroll}>
       <View style={styles.container}>
+        <View style={{flex:1, justifyContent:'center'}}>
         <View style={styles.cardContainer}>
           <View style={styles.headerContainer}>
             <View style={styles.userRow}>
@@ -98,40 +104,95 @@ const WalkerProfile = ({
               </View>
             </View>
             <View style={styles.socialRow}>
-              <Rating readonly startingValue={state.rating} />
-              <Text style={styles.ratingText}>
-                {state.reveiewsReceived} califications
-              </Text>
-            </View>
+                <Rating
+                  readonly
+                  type="custom"
+                  startingValue={state.rating}
+                  imageSize={30}
+                />
+                <Text style={styles.ratingText}>
+                  {state.reviewsReceived} califications
+                </Text>
+              </View>
           </View>
           {renderLabel()}
+          <Divider />
+          {
+              state.adsPics && 
+            <View style={{ maxHeight: 300, backgroundColor: '#f4f4f4' }}>
+              <FlatList
+                data={state.adsPics}
+                keyExtractor={(_, index) => index.toString()}
+                horizontal
+                pagingEnabled
+                renderItem={({ item }) => (
+                  <View
+                    style={{
+                      width,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 12,
+                      },
+                      shadowOpacity: 0.58,
+                      shadowRadius: 16.0,
+
+                      elevation: 24,
+                    }}
+                  >
+                    <Image
+                      source={{ uri: item }}
+                      style={{
+                        width: imageW,
+                        height: imageH,
+                        resizeMode: "contain",
+                        borderRadius: 5,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 12,
+                        },
+                        shadowOpacity: 0.58,
+                        shadowRadius: 16.0,
+
+                      }}
+                    />
+                  </View>
+                )}
+              />
+            </View>
+            }
+          <Divider />
           <View style={styles.descriptionRow}>
             <Icon
               name="map-marker"
               type="font-awesome"
+              reverse
               size={25}
-              color="#c98c70"
+              color="#6a2c70"
             />
             <Text style={styles.userDescriptionText}>
               lives in {state.zona}
             </Text>
           </View>
           <View style={styles.descriptionRow}>
-            <Icon name="paw" type="font-awesome" size={25} color="#c98c70" />
-            <Text style={styles.userDescriptionText}>
-              walks in {state.workZone?.map((item: string) => `${item} `)}
-            </Text>
+            <Icon name="paw" type="font-awesome" size={25} color="#6a2c70" reverse/>
+            {state.workZone?.length > 0 &&
+                state.workZone.map((item: string, index: number) => (
+                  <Text style={styles.userDescriptionText} key={index}>
+                    {item}
+                  </Text>
+                ))}
           </View>
-          <View style={styles.messageRow}>
-            <Icon
-              name="comments"
-              type="font-awesome"
-              reverse
-              color="#456672"
-              onPress={() => alert(`Ahora no puedo pasear.`)}
-            />
-            <Text style={styles.messageText}>Send message</Text>
-          </View>
+          <TouchableOpacity
+              style={styles.messageRow}
+              onPress={() => {}}
+            >
+            <Text style={styles.messageText}>Get Contact Info</Text>
+          </TouchableOpacity>
+        </View>
         </View>
       </View>
     </ScrollView>
@@ -140,14 +201,20 @@ const WalkerProfile = ({
 
 const styles = StyleSheet.create({
   cardContainer: {
+    alignItems: "center",
     flex: 1,
   },
   container: {
+    alignItems: "center",
     flex: 1,
   },
   headerContainer: {
     alignItems: "center",
-    backgroundColor: "#FFF",
+    justifyContent: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    padding: 15,
+    borderRadius: 15,
+    width: "90%",
     marginBottom: 10,
     marginTop: 30,
   },
@@ -162,15 +229,29 @@ const styles = StyleSheet.create({
   },
   socialRow: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    width: "100%",
+    padding: 5,
+    borderRadius: 15,
   },
   messageRow: {
-    flexDirection: "row",
-    marginLeft: 0, //Tenia 40
-    marginRight: 40,
+    display: 'flex',
+    width: "90%",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+    backgroundColor: '#456672',
+    borderRadius: 10,
+    padding: 8
   },
   tabBar: {
-    backgroundColor: "#EEE",
+    padding: 10,
+    borderWidth: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    borderColor: "#000",
+    borderRadius: 5,
   },
   tabContainer: {
     flex: 1,
@@ -180,12 +261,13 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
   },
   tabLabelNumber: {
-    color: "gray",
-    fontSize: 12.5,
+    color: "#fff",
+    fontSize: 15,
     textAlign: "center",
+    padding: 10,
   },
   tabLabelText: {
-    color: "black",
+    color: "#fff",
     fontSize: 22.5,
     fontWeight: "600",
     textAlign: "center",
@@ -196,22 +278,22 @@ const styles = StyleSheet.create({
     marginRight: 40,
   },
   descriptionRow: {
-    marginLeft: 20,
-    marginRight: 40,
-    marginBottom: 20,
-    marginTop: 20,
-    flexDirection: "row",
+    width: "80%",
+    marginBottom: 10,
+    marginTop: 10,
+    flex: 1,
+    alignItems: "center",
   },
   userBioText: {
-    color: "gray",
-    fontSize: 13.5,
+    color: "#000",
+    fontSize: 16,
     textAlign: "center",
   },
   userDescriptionText: {
-    color: "gray",
-    fontSize: 13.5,
-    // textAlign: 'center',
-    marginLeft: 5,
+    color: "#000",
+    fontSize: 15,
+    textAlign: "center",
+    marginLeft: 15,
     textTransform: "capitalize",
   },
   ratingText: {
@@ -225,12 +307,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   messageText: {
-    color: "#456672",
+    color: "#fff",
     fontSize: 20,
     fontWeight: "bold",
-    marginLeft: 5, //Tenia 14
-    margin: 17, //Tenia 7
-    width: 140, // No estaba
   },
   userImage: {
     borderRadius: 60,
@@ -254,5 +333,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
 });
+
+const style={
+  width: "90%",
+  height: 200,
+  marginBottom: 30,
+  borderRadius: 16
+}
+
 
 export default WalkerProfile;

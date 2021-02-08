@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useState } from "react";
 import {
   Animated,
   View,
@@ -9,9 +9,9 @@ import {
   ScrollView,
   FlatList,
   Dimensions,
+  ImageBackground,
   Linking,
   TouchableOpacity,
-  Modal
 } from "react-native";
 import { RouteStackParamList } from "../../../NavigationConfig/types";
 import { Icon, Divider } from "react-native-elements";
@@ -20,31 +20,22 @@ import axios from "axios";
 import { NunitoSans_900Black } from "@expo-google-fonts/nunito-sans";
 import MapView from "react-native-maps";
 import { Marker } from "react-native-maps";
-import InfoModal from "../../InfoModal";
 const { width, height } = Dimensions.get("screen");
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
 
-
-const HotelProfile = ({
+const SpaProfile = ({
   navigation,
   route,
-}: RouteStackParamList<"HotelProfile">) => {
-  const [reviews, setReviews] = useState(route.params.reviews);
-  const [state, setState] = React.useState<any>("");
+}: RouteStackParamList<"SpaProfile">) => {
+  const [state, setState] = React.useState<any>('');
   const [thisRegion, setThisRegion] = React.useState<any>({
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
     latitude: 0,
     longitude: 0,
   });
-  const [modalVisible, setModalVisible] = React.useState(false);
 
-  const modalStatusChange = () => {
-    setModalVisible(!modalVisible);
-  };
-
-  
   interface Region {
     latitude?: number;
     longitude?: number;
@@ -53,7 +44,7 @@ const HotelProfile = ({
   }
 
   React.useEffect(() => {
-    axios.get(`/hotels/${route.params.id}`).then((result) => {
+    axios.get(`/groomer/${route.params.id}`).then((result) => {
       setState(result.data);
       setThisRegion({
         ...thisRegion,
@@ -63,83 +54,82 @@ const HotelProfile = ({
     });
   }, []);
 
-
   const renderLabel = () => {
     return (
       <View style={[styles.tabBar, styles.tabContainer]}>
         <View>
           <Animated.Text style={styles.tabLabelText}>
-            $ {state.fee}
+            $ {state?.fee}
           </Animated.Text>
           <Animated.Text style={styles.tabLabelNumber}>Per Night</Animated.Text>
         </View>
         <View>
           <Animated.Text style={styles.tabLabelText}>Schedule</Animated.Text>
           <Animated.Text style={styles.tabLabelNumber}>
-            {state.workHours}
+            {state?.schedule}
           </Animated.Text>
         </View>
         <View>
           <Animated.Text style={styles.tabLabelText}>
-            {state.petsLoved ? state.petsLoved : "?"}
+            {state?.petsLoved ? state.petsLoved : "?"}
           </Animated.Text>
           <Animated.Text style={styles.tabLabelNumber}>
             Loved pets
           </Animated.Text>
         </View>
+        {/* <View>
+        <Animated.Text style={styles.tabLabelText}>
+          100%
+        </Animated.Text>
+        <Animated.Text style={styles.tabLabelNumber}>
+        Respuesta <br/>
+        a mensajes
+        </Animated.Text>
+        </View> */}
       </View>
     );
   };
 
-  if (!state) {
+  if(!state) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Image
-          source={require("../../../images/loader.gif")}
-          style={{ width: 200, height: 150 }}
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Image 
+          source={require('../../../images/loader.gif')}
+          style={{width: 200, height: 150}}
         />
       </View>
-    );
+    )
   }
+
   return (
     <ScrollView style={styles.scroll}>
       <View style={styles.container}>
-        {/* <ImageBackground
-          // source={require("../../../images/descarga.jpeg")}
-          style={{ flex: 1, justifyContent: "center" }}
-          resizeMode='cover'
-          // blurRadius={5}
-        > */}
-        <View style={{ flex: 1, justifyContent: "center" }}>
+          <View style={{ flex: 1, justifyContent: "center" }}>
           <View style={styles.cardContainer}>
             <View style={styles.headerContainer}>
               <View style={styles.userRow}>
                 <Image style={styles.userImage} source={{ uri: state.logo }} />
                 <View style={styles.userNameRow}>
-                  <Text style={styles.userNameText}>{state.name}</Text>
+                  <Text style={styles.userNameText}>{state?.name}</Text>
                 </View>
                 <View style={styles.userBioRow}>
-                  <Text style={styles.userBioText}>{state.description}</Text>
+                  <Text style={styles.userBioText}>{state?.description}</Text>
                 </View>
               </View>
-              <TouchableOpacity onPress={() => reviews.prom && navigation.navigate("ReviewsScreen", { hotelId: state._id, photo: state.photo, reviews:reviews })}>
-                <View style={styles.socialRow}>
-                  <Rating
-                    readonly
-                    type="custom"
-                    startingValue={reviews.prom}//aca pido reviews
-                    imageSize={30}
-                  />
-                  <Text style={styles.ratingText}>
-                    {reviews.review.length} califications
-                  </Text>
-                </View>
-              </TouchableOpacity>
+              <View style={styles.socialRow}>
+                <Rating
+                  readonly
+                  type="custom"
+                  startingValue={state?.rating}
+                  imageSize={30}
+                />
+                <Text style={styles.ratingText}>
+                  {state?.reviewsReceived} califications
+                </Text>
+              </View>
             </View>
             {renderLabel()}
             <Divider />
-            {
-              state.adsPics && 
             <View style={{ maxHeight: 300, backgroundColor: '#f4f4f4' }}>
               <FlatList
                 data={state.adsPics}
@@ -177,13 +167,13 @@ const HotelProfile = ({
                         },
                         shadowOpacity: 0.58,
                         shadowRadius: 16.0,
+
                       }}
                     />
                   </View>
                 )}
               />
             </View>
-            }
             <Divider />
             <View style={styles.descriptionRow}>
               <Icon
@@ -269,7 +259,7 @@ const HotelProfile = ({
             )}
             <MapView
               style={{
-                width: "90%",
+                width:'90%',
                 height: 200,
                 marginBottom: 30,
                 marginTop: 30,
@@ -285,25 +275,19 @@ const HotelProfile = ({
             </MapView>
             <TouchableOpacity
               style={styles.messageRow}
-              onPress={modalStatusChange}
+              onPress={() => Linking.openURL(`tel:${state.phone}`)}
             >
-              <Text style={styles.messageText}>Get contact info</Text>
+              <Icon
+                name="comments"
+                type="font-awesome"
+                reverse
+                color="#456672"
+              />
+              <Text style={styles.messageText}>Send message</Text>
             </TouchableOpacity>
           </View>
+        {/* </ImageBackground> */}
         </View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            modalStatusChange();
-          }}
-        >
-          <InfoModal
-            modalStatusChange={modalStatusChange}
-            data={state}
-          />
-        </Modal>
       </View>
     </ScrollView>
   );
@@ -347,14 +331,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   messageRow: {
-    display: 'flex',
+    flexDirection: "row",
     width: "90%",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 10,
-    backgroundColor: '#456672',
-    borderRadius: 10,
-    padding: 8
+    marginBottom: 20
   },
   tabBar: {
     padding: 10,
@@ -417,10 +398,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   messageText: {
-    color: "#fff",
+    color: "#000",
     fontSize: 20,
     fontWeight: "bold",
-    marginLeft: 5, 
+    marginLeft: 5, //Tenia 14
+    margin: 17, //Tenia 7
+    width: 140, // No estaba,
   },
   userImage: {
     borderRadius: 60,
@@ -445,11 +428,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const style = {
+const style={
   width: "90%",
   height: 200,
   marginBottom: 30,
-  borderRadius: 16,
-};
+  borderRadius: 16
+}
 
-export default HotelProfile;
+export default SpaProfile;
