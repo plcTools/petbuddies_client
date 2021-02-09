@@ -19,6 +19,7 @@ import SelectRol from '../components/SelectRol';
 import WalkerForm from "../components/WalkerForm";
 import {Image, View} from 'react-native'
 import SpaProfile from '../components/BeautySpaScreen/SpaProfile/';
+import ServiceForm from '../components/ServiceForm/';
 
 export const Routes: React.FC = () => {
   let [fonts] = useFonts({ NunitoSans_400Regular });
@@ -100,9 +101,10 @@ export const Routes: React.FC = () => {
       })}>
         <Screen name='LoginScreen' component={LoginScreen} options={{ headerShown: false }} />
         <Screen name='SelectRol' component={SelectRol} options={{ headerShown: false }} />
-        <Screen name='Tab' component={TabNavigation} options={() => ({headerLeft: null})} />
+        <Screen name='Tab' component={TabNavigation} options={{headerLeft: undefined}} />
         <Screen name='WalkerCard' component={WalkerCard} />
         <Screen name="WalkerForm" component={WalkerForm} options={{ headerShown: true }} />
+        <Screen name="ServiceForm" component={ServiceForm} options={{ headerShown: true }} />
         <Screen name='BeautySpaScreen' component={BeatySpaScreen} options={{ headerShown: false }} />
         <Screen name='WalkerProfile' component={WalkerProfile} />
         <Screen name='HotelCard' component={HotelCard} />

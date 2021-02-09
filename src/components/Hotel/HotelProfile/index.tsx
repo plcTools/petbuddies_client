@@ -184,7 +184,7 @@ const HotelProfile = ({
                 color="#6a2c70"
               />
               <Text style={styles.userDescriptionText}>
-                {state.address + ", " + state.zone}
+                {state?.address + ", " + state?.zone}
               </Text>
             </View>
             <View style={styles.descriptionRow}>

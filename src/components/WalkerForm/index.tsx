@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, TextInput, Platform   } from "react-native";
-import { Avatar } from 'react-native-elements'
+import { Text, View, StyleSheet, TextInput, Platform  } from "react-native";
+import { Avatar  } from 'react-native-elements'
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { getData } from "../../AsyncStorage";
@@ -56,14 +56,16 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
   }, []);
   
   const handleSubmit = async () => {
-    await uploadImage(image, `profile-${id}`);
-    axios.put(`/walkers/${id}`, data);
-    navigation.navigate("Tab");
-    dispatch(getOwner(id));
-    dispatch(getWalkers());
+      if(image){
+        await uploadImage(image, `profile-${id}`);
+      }
+      axios.put(`/walkers/${id}`, data);
+      navigation.navigate("Tab");
+      dispatch(getOwner(id));
+      dispatch(getWalkers());
   };
 
-  const pickImage = async () => {
+  const pickImage = async (type: string) => {
      let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -72,24 +74,26 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
     });
 
     if (!result.cancelled) {
-      setImage(result.uri);
-    }
-  };
+      if( type === 'profile'){
+        setImage(result.uri);
+      }   
+    };
+  }
 
   const uploadImage = async (uri:any, imageName:any) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    const ref = await storage.ref().child('images/' + imageName);
-    // const url =  storage.refFromURL(`gs://${ref.bucket}/images/${imageName}`)
-    await ref.put(blob);
-      ref.getDownloadURL()
-      .then(function onSuccess(urlImg) {
-        axios.put(`/walkers/${id}`, {photo: urlImg});
-      })
-      .catch(function onError(err) {
-        console.log("Error occured..." + err);
-      })
-}
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const ref = await storage.ref().child('images/' + imageName);
+      // const url =  storage.refFromURL(`gs://${ref.bucket}/images/${imageName}`)
+      await ref.put(blob);
+        ref.getDownloadURL()
+        .then(function onSuccess(urlImg) {
+          axios.put(`/walkers/${id}`, {photo: urlImg});
+        })
+        .catch(function onError(err) {
+          console.log("Error occured..." + err);
+        })
+    }
 
   return (
     <ScrollView style={styles.container}>
@@ -102,7 +106,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
           size="large"
           source={(image !== null ? {uri: image} : ( user?.photo ? {uri: user?.photo} : require("../../images/logo.png"))) }
           overlayContainerStyle={{ backgroundColor: "white" }}
-          onPress={pickImage}
+          onPress={() => pickImage('profile')}
           />
           </View>
       </View>

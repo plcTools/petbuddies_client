@@ -58,7 +58,7 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
         <Avatar /* onPress debería poder modificar la foto de perfil*/
           rounded
           size="large"
-          source={state?.photo ? { uri: `${state?.photo}` } : require("../../images/logo.png")}
+          source={state?.photo ? { uri: `data:image/jpeg;base64,${state?.photo}` } : require("../../images/logo.png")}
           overlayContainerStyle={{ backgroundColor: "orange" }}
           onPress={() => alert("ir a editar perfil")}
         />
