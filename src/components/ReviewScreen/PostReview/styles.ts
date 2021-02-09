@@ -25,30 +25,35 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   hotelName: {
-      fontSize: 20,
-      fontWeight: "bold",
-      textAlign:'center'
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   upView: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      width: '100%',
-      alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    alignItems: "center",
   },
   publishBtn: {
-      color: '#c98c70',
-      fontSize: 15
+    color: "#c98c70",
+    fontSize: 15,
   },
   userView: {
     marginTop: 25,
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'flex-start'
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-start",
   },
   name: {
-    fontWeight: 'bold',
-    marginRight: 25
-  }
+    fontWeight: "bold",
+    marginRight: 25,
+  },
+  textInput: {
+    width: "100%",
+    fontSize: 16,
+    marginTop: 25
+  },
 });
 
 export default styles;

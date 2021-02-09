@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Alert,
-  Modal
+  Modal,
 } from "react-native";
 import ReviewCard from "./reviewCard";
 import { Image, Divider } from "react-native-elements";
@@ -16,19 +16,28 @@ import { getData } from "../../AsyncStorage/index";
 import axios from "axios";
 import { Rating } from "react-native-ratings";
 import styles from "./styles";
-import PostReview from './PostReview/PostReview';
+import PostReview from "./PostReview/PostReview";
 
 function reviewsScreen({ route }: any) {
-  const [reviews, setReviews] = useState(route.params.reviews);
+  const [reviews, setReviews] = useState([]);
   const [user, setUser] = useState({});
+  const [rating, setRating] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const retrieveStorage = async () => {
     const user: string = await getData();
     const usuario = await axios.get(`/owners/${user}`);
     setUser(usuario.data.owner);
+    const hotel = route.params.hotelId;
+    const allReviews = await axios.get(`/reviews/Hotel/${hotel}`);
+    setReviews(allReviews.data);
   };
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const getReviews = async () => {
+    const hotel = route.params.hotelId;
+    const allReviews = await axios.get(`/reviews/Hotel/${hotel}`);
+    setReviews(allReviews.data);
+  };
 
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
@@ -38,8 +47,10 @@ function reviewsScreen({ route }: any) {
     retrieveStorage();
   }, []);
 
-  console.log("PARAMSSSSSS____",route.params);
-  
+  function finishRating(e) {
+    setRating(e);
+    modalStatusChange();
+  }
 
   return (
     <SafeAreaView style={styles.containerAll}>
@@ -57,22 +68,23 @@ function reviewsScreen({ route }: any) {
               height: 60,
               width: 60,
               borderRadius: 50,
-              marginRight: 25
+              marginRight: 25,
             }}
             source={{
               uri: `${user.photo}`,
             }}
           />
-          <Rating onFinishRating={modalStatusChange} type="custom" startingValue={5} imageSize={30} />
+          <Rating
+            onFinishRating={(e) => finishRating(e)}
+            type="custom"
+            startingValue={5}
+            imageSize={30}
+          />
         </View>
       </View>
       <Divider style={styles.divider} />
-
-      <View style={styles.headers}>
-        <Image style={styles.logo} source={{ uri: route.params.photo }} />
-      </View>
       <ScrollView style={styles.body}>
-        {reviews.review?.map((review: any, i: number) => (
+        {reviews?.map((review: any, i: number) => (
           <View style={styles.review} key={i}>
             <ReviewCard data={review} HotelData={route.params} />
           </View>
@@ -86,7 +98,13 @@ function reviewsScreen({ route }: any) {
           modalStatusChange();
         }}
       >
-         <PostReview user={user} companyName={route.params} modalStatusChange={modalStatusChange} />
+        <PostReview
+          getReviews={getReviews}
+          preRating={rating}
+          user={user}
+          companyName={route.params}
+          modalStatusChange={modalStatusChange}
+        />
       </Modal>
     </SafeAreaView>
   );

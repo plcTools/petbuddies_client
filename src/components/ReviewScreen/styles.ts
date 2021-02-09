@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
       marginBottom: 5
   },
   ratingView: {
-      padding: 25
+      padding: 25,
+      paddingBottom: 0
   },
   divider: {
       backgroundColor: '#e7e7e7',

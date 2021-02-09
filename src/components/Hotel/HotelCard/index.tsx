@@ -55,14 +55,17 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
   /* Para Mostrar las reviews, Get a reviews
     y posteriormente se pasan por props a los childs */
 
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState({});
   React.useEffect(() => {
     axios
       .get(`/reviews/Hotel/${hotel._id}`)
-      .then((reviews) => {
-        const sum = reviews.data.map((e: any) => e.rating).reduce((a: any, c: any) => a + c, 0)
-        const prom = sum && sum / reviews.data.length
-        setReviews({ review: reviews.data, prom })
+      .then((reviewsData) => {
+        const sum = reviewsData.data
+          .map((e: any) => e.rating)
+          .reduce((a: any, c: any) => a + c, 0);
+        console.log (sum, 'SUM');
+        const prom = Number (String (sum / reviewsData.data.length).slice (0,3));
+        setReviews({ review: reviewsData.data, prom })
       })
       .catch((err) => console.log(err));
   }, []);
@@ -73,7 +76,9 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
     <Card containerStyle={styles.container}>
       <TouchableOpacity
         style={styles.cardContainer}
-        onPress={() => navigation.navigate("HotelProfile", { id: hotel._id, reviews })}
+        onPress={() =>
+          navigation.navigate("HotelProfile", { id: hotel._id, reviews })
+        }
       >
         <View style={styles.cardHeader}>
           <Image
@@ -128,12 +133,11 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
           </View>
 
           <View style={styles.cardHeaderRate}>
-            <Text style={{ marginRight: 5, fontSize: 15 }}>{
-             reviews.prom > 0 && reviews.prom
-
-            }</Text>
+            <Text style={{ marginRight: 5, fontSize: 15 }}>
+              {reviews.prom > 0 && reviews.prom}
+            </Text>
             <Icon
-              name={reviews.prom && "star" || "star-o"}
+              name={(reviews.prom && "star") || "star-o"}
               type="font-awesome"
               size={18}
               color="green"

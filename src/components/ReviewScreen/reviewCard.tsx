@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 15,
         width: '100%',
-        borderColor: 'grey',
+        borderColor: '#c98c70',
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius: 10
@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
         padding: 5,
         flexDirection: 'row',
         justifyContent: 'space-around',
-        borderColor: 'grey',
+        borderColor: '#c98c70',
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius: 10,
-        backgroundColor:'grey',
+        backgroundColor:"#c98c70",
     },
     detailDown: {
         padding: 10,
