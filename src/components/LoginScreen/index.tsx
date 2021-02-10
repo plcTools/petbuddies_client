@@ -14,37 +14,36 @@ import { RouteStackParamList } from "../../NavigationConfig/types";
 import ModalUserFormScreen from "../ModalUserFormScreen/ModalUserFormScreen";
 import firebase from "firebase";
 import * as Google from "expo-google-app-auth";
-import axios from 'axios';
-import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from '@env';
-import { storeData, getData  } from '../../AsyncStorage/index'
+import axios from "axios";
+import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from "@env";
+import { storeData, getData } from "../../AsyncStorage/index";
 
 interface state {
-  [key: string]: any
+  [key: string]: any;
 }
 
-
-const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
+const LoginScreen = ({ navigation }: RouteStackParamList<"LoginScreen">) => {
   const [userData, setUserData] = useState({
     email: "",
-    password: ""
-  })
+    password: "",
+  });
 
-  const retrieveStorage = async () =>{
-    const id:string = await getData()
-     if(id) navigation.navigate('ServiceForm')
-  }
+  const retrieveStorage = async () => {
+    const id: string = await getData();
+    if (id) navigation.navigate("Tab");
+  };
 
   useLayoutEffect(() => {
     retrieveStorage();
-  }, [])
+  }, []);
 
   const signIn = async () => {
     try {
       const result = await Google.logInAsync({
         androidClientId: ANDROID_CLIENT_ID,
         iosClientId: IOS_CLIENT_ID,
-        scopes: ["profile", "email"]
-      })
+        scopes: ["profile", "email"],
+      });
 
       if (result.type === "success") {
         const id: { data: string | any } = await axios.post("/owners", {
@@ -94,7 +93,6 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
   };
-  
 
   return (
     <View style={styles.container}>
@@ -111,11 +109,11 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
             <TextInput
               style={styles.inputText}
               autoCorrect={false}
-              autoCapitalize={'none'}
+              autoCapitalize={"none"}
               placeholder="Email..."
               placeholderTextColor="#e3b587"
-              onChangeText={text => setUserData({ ...userData, email: text })} />
-
+              onChangeText={(text) => setUserData({ ...userData, email: text })}
+            />
           </View>
           <View style={styles.inputView}>
             <TextInput
@@ -226,7 +224,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 15,
     height: 50,
-
   },
   loginText: {
     color: "#eeeeee",
