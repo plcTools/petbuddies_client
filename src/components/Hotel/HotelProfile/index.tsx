@@ -24,6 +24,7 @@ const HotelProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"HotelProfile">) => {
+  const [reviews, setReviews] = useState(route.params.reviews);
   const [state, setState] = React.useState<any>("");
   const [modalVisible, setModalVisible] = React.useState(false);
 
@@ -67,6 +68,7 @@ const HotelProfile = ({
                   navigation.navigate("ReviewsScreen", {
                     hotelId: state._id,
                     photo: state.logo,
+                    reviews: reviews,
                     service: "Hotel",
                   })
                 }
@@ -75,11 +77,11 @@ const HotelProfile = ({
                   <Rating
                     readonly
                     type="custom"
-                    startingValue={state?.rating}
+                    startingValue={reviews.prom ? reviews.prom : 0}
                     imageSize={30}
                   />
                   <Text style={styles.ratingText}>
-                  {state?.reviewsReceived} califications
+                    {reviews ? reviews.review.length : 0} califications
                   </Text>
                 </View>
               </TouchableOpacity>
