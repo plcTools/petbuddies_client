@@ -1,14 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, TextInput } from "react-native";
+import { Text, View, StyleSheet, TextInput, Platform  } from "react-native";
+import { Avatar  } from 'react-native-elements'
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { getData } from "../../AsyncStorage";
 import { RouteStackParamList } from "../../NavigationConfig/types";
 import { getOwner } from "../../redux/owner/actions";
 import { getWalkers } from "../../redux/walker/actions";
-import { RootState } from "../../redux/store";
-
+import * as ImagePicker from 'expo-image-picker';
+import firebase from 'firebase';
 interface State {
   name?: string;
   lastname?: string;
@@ -20,11 +21,14 @@ interface State {
   workHours?: string;
   zona?: string;
   role?: string;
+  photo?:string;
 }
 
 const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
   const [data, setData] = useState<State>();
   const [id, setId] = useState<string>("");
+  const [image, setImage] = useState<string | null>(null);
+  const storage = firebase.storage() 
 
   const handleChange = (name: string, value: string) => {
     setData({ ...data, [name]: value });
@@ -41,18 +45,71 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
 
   useEffect(() => {
     dataStore();
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
   }, []);
-
-  const handleSubmit = () => {
-    axios.put(`/walkers/${id}`, data);
-    navigation.navigate("Tab");
-    dispatch(getOwner(id));
-    return dispatch(getWalkers());
+  
+  const handleSubmit = async () => {
+      if(image){
+        await uploadImage(image, `profile-${id}`);
+      }
+      axios.put(`/walkers/${id}`, data);
+      navigation.navigate("Tab");
+      dispatch(getOwner(id));
+      dispatch(getWalkers());
   };
+
+  const pickImage = async (type: string) => {
+     let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      if( type === 'profile'){
+        setImage(result.uri);
+      }   
+    };
+  }
+
+  const uploadImage = async (uri:any, imageName:any) => {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const ref = await storage.ref().child('images/' + imageName);
+      // const url =  storage.refFromURL(`gs://${ref.bucket}/images/${imageName}`)
+      await ref.put(blob);
+        ref.getDownloadURL()
+        .then(function onSuccess(urlImg) {
+          axios.put(`/walkers/${id}`, {photo: urlImg});
+        })
+        .catch(function onError(err) {
+          console.log("Error occured..." + err);
+        })
+    }
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.formGroup}>
+      <View style={styles.formImage}>
+        <Text style={styles.labelImage}>Upload / change profile pic</Text>
+        <View>
+        <Avatar
+          rounded
+          size="large"
+          source={(image !== null ? {uri: image} : ( user?.photo ? {uri: user?.photo} : require("../../images/logo.png"))) }
+          overlayContainerStyle={{ backgroundColor: "white" }}
+          onPress={() => pickImage('profile')}
+          />
+          </View>
+      </View>
         <Text style={styles.label}>Name</Text>
         <TextInput
           defaultValue={user?.name || ""}
@@ -229,5 +286,21 @@ const styles = StyleSheet.create({
     marginTop: 4,
     backgroundColor: "#fff",
     textTransform: "capitalize",
+  },
+  labelImage: {
+    marginBottom: 10,
+    color: "#c98c70",
+    fontSize: 19,
+    textShadowColor: "#fff",
+    textShadowOffset: {
+      width: 0.4,
+      height: -1,
+    },
+    textShadowRadius: 1,
+  },
+formImage: {
+    borderColor: "#fff",
+    alignItems: 'center',
+    marginBottom: 10,
   },
 });

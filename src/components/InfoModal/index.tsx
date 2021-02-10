@@ -33,7 +33,7 @@ function InfoModal(props: any) {
                     style: "cancel",
                 },
             ])
-            : Alert.alert("This place hasen't WhatsApp");
+            : Alert.alert("This place hasn't WhatsApp");
     }
 
     function openTel() {
@@ -77,7 +77,6 @@ function InfoModal(props: any) {
         var url = `https://www.google.com/maps/dir/?api=1&origin=&destination=${add} ${loc} ${prov} ${pais} &travelmode=bicycling`;
         Linking.openURL(url);
     }
-
     return (
         <View style={styles.containerAll}>
             <View style={styles.headersContainer}>
@@ -103,9 +102,7 @@ function InfoModal(props: any) {
                             width: 75,
                             borderRadius: 50,
                         }}
-                        source={{
-                            uri: `${data.logo}`
-                        }}
+                        source={data.logo ? { uri: `${data.logo}`} : { uri:`${data.photo}` }}
                     />
                     <Text style={styles.textTitle}>{data.name}</Text>
                 </View>
@@ -140,7 +137,7 @@ function InfoModal(props: any) {
 
                 <Divider />
 
-                <View style={styles.dataContainer}>
+                 <View style={styles.dataContainer}>
 
                     <View style={styles.dataLeft}>
                         <Text style={{ color: '#000', fontSize: 20, fontWeight: 'bold' }}>Visit us!</Text>

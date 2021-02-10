@@ -22,6 +22,7 @@ export type RootStackParamList = {
   TabNavigation: undefined;
   WalkerForm: undefined;
   BeautySpaScreen:undefined;
+  ServiceForm:undefined;
   HotelCard: {
     hotel: hotel
   }
@@ -75,7 +76,6 @@ export type hotel = {
   latitude: number;
   longitude: number;
   allowedNumber?:number;
-  checkIn?:number;
   checkOut?:number;
   petsLoved?:number;
   extras?:string[]

@@ -4,17 +4,20 @@ import {
   Animated,
   View,
   Text,
-  StyleSheet,
   Image,
   ScrollView,
   TouchableOpacity,
-  FlatList,
-  Dimensions
+  Dimensions,
+  Modal,
+  SafeAreaView,
+  Linking,
 } from "react-native";
 import { RouteStackParamList } from "../../NavigationConfig/types";
-import { Icon, Divider } from "react-native-elements";
+import { styles } from "./styles";
+import { Icon, Divider, Overlay } from "react-native-elements";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
+import InfoModal from "../InfoModal";
 const { width, height } = Dimensions.get("screen");
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
@@ -29,6 +32,11 @@ const WalkerProfile = ({
       .get(`/walkers/${route.params.id}`)
       .then((result) => setState(result.data));
   }, []);
+  const [modalVisible, setModalVisible] = React.useState(false);
+
+  const modalStatusChange = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const renderLabel = () => {
     return (
@@ -80,266 +88,153 @@ const WalkerProfile = ({
   }
 
   return (
-    <ScrollView style={styles.scroll}>
-      <View style={styles.container}>
-        <View style={{flex:1, justifyContent:'center'}}>
-        <View style={styles.cardContainer}>
-          <View style={styles.headerContainer}>
-            <View style={styles.userRow}>
-              <Image
-                style={styles.userImage}
-                source={
-                  state?.photo
-                    ? { uri: `${state.photo}` }
-                    : require("../../images/logo.png")
-                }
-              />
-              <View style={styles.userNameRow}>
-                <Text style={styles.userNameText}>
+    <SafeAreaView
+      style={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        flex: 1,
+        height: "100%",
+      }}
+    >
+      <ScrollView style={styles.scroll}>
+        <View>
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            {/* Main container */}
+            <View style={styles.cardContainer}>
+              <View style={styles.headerContainer}>
+                <View style={styles.userRow}>
+                  <Image
+                    style={styles.userImage}
+                    source={
+                      state?.photo
+                        ? { uri: `${state.photo}` }
+                        : require("../../images/logo.png")
+                    }
+                  />
+                  <View style={styles.userNameRow}>
+                    <Text style={styles.userNameText}>
+                      {state.name + " " + state.lastname}
+                    </Text>
+                  </View>
+                  <View style={styles.userBioRow}>
+                    <Text style={styles.userBioText}>{state.description}</Text>
+                  </View>
+                </View>
+                <View style={styles.socialRow}>
+                  <Rating
+                    readonly
+                    type="custom"
+                    startingValue={state.rating}
+                    imageSize={30}
+                  />
+                  <Text style={styles.ratingText}>
+                    {state.reveiewsReceived} califications
+                  </Text>
+                </View>
+              </View>
+              <Divider />
+              {/* Description items */}
+              <View style={styles.descriptionRow}>
+                <View style={{ justifyContent: "center", width: 30 }}>
+                  <Icon
+                    name="dollar-sign"
+                    type="font-awesome-5"
+                    size={25}
+                    color="#6a2c70"
+                  />
+                </View>
+                <Text style={styles.userDescriptionText}>
+                  {`$${state.fee} average per walk `}
+                </Text>
+              </View>
+              <View style={styles.descriptionRow}>
+                <View style={{ justifyContent: "center", width: 30 }}>
+                  <Icon
+                    name="clock"
+                    type="font-awesome-5"
+                    size={25}
+                    color="#6a2c70"
+                  />
+                </View>
+                <Text style={styles.userDescriptionText}>
+                  {`${state.workHours} `}
+                </Text>
+              </View>
+              <View style={styles.descriptionRow}>
+                <View style={{ justifyContent: "center", width: 30 }}>
+                  <Icon
+                    name="map-marker"
+                    type="font-awesome"
+                    size={25}
+                    color="#6a2c70"
+                  />
+                </View>
+                <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
+                  {state.workZone?.length > 0 &&
+                    state.workZone.map((item: string, index: number) => (
+                      <Text style={styles.userDescriptionText} key={index}>
+                        {item}
+                      </Text>
+                    ))}
+                </View>
+              </View>
+              <TouchableOpacity
+                style={styles.messageRow}
+                onPress={modalStatusChange}
+              >
+                <Text style={styles.messageText}>Get Contact Info</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <Overlay
+            isVisible={modalVisible}
+            onBackdropPress={modalStatusChange}
+            style={styles.overlay}
+          >
+            <View>
+              <View style={styles.overlay}>
+                <View>
+                  <Image
+                    style={styles.fotoverlay}
+                    source={{ uri: `${state.photo}` }}
+                  />
+                </View>
+                <Text style={styles.titleOverlay}>
                   {state.name + " " + state.lastname}
                 </Text>
               </View>
-              <View style={styles.userBioRow}>
-                <Text style={styles.userBioText}>{state.description}</Text>
-              </View>
-            </View>
-            <View style={styles.socialRow}>
-                <Rating
-                  readonly
-                  type="custom"
-                  startingValue={state.rating}
-                  imageSize={30}
+
+              <View style={styles.socialOverlay}>
+                <Icon
+                  name="phone"
+                  type="font-awesome-5"
+                  color="blue"
+                  onPress={() => Linking.openURL(`tel:${state?.phone}`)}
                 />
-                <Text style={styles.ratingText}>
-                  {state.reviewsReceived} califications
-                </Text>
+                <Icon
+                  name="whatsapp"
+                  type="font-awesome-5"
+                  color="green"
+                  onPress={() =>
+                    Linking.openURL(
+                      `https://wa.me/${state?.phone}?text=Quiero mas Información`
+                    )
+                  }
+                />
+                <Icon
+                  name="envelope"
+                  type="font-awesome-5"
+                  color="#ef4f4f"
+                  onPress={() => Linking.openURL(`mailto:${state?.email}`)}
+                />
               </View>
-          </View>
-          {renderLabel()}
-          <Divider />
-          {
-              state.adsPics && 
-            <View style={{ maxHeight: 300, backgroundColor: '#f4f4f4' }}>
-              <FlatList
-                data={state.adsPics}
-                keyExtractor={(_, index) => index.toString()}
-                horizontal
-                pagingEnabled
-                renderItem={({ item }) => (
-                  <View
-                    style={{
-                      width,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      shadowColor: "#000",
-                      shadowOffset: {
-                        width: 0,
-                        height: 12,
-                      },
-                      shadowOpacity: 0.58,
-                      shadowRadius: 16.0,
-
-                      elevation: 24,
-                    }}
-                  >
-                    <Image
-                      source={{ uri: item }}
-                      style={{
-                        width: imageW,
-                        height: imageH,
-                        resizeMode: "contain",
-                        borderRadius: 5,
-                        shadowColor: "#000",
-                        shadowOffset: {
-                          width: 0,
-                          height: 12,
-                        },
-                        shadowOpacity: 0.58,
-                        shadowRadius: 16.0,
-
-                      }}
-                    />
-                  </View>
-                )}
-              />
             </View>
-            }
-          <Divider />
-          <View style={styles.descriptionRow}>
-            <Icon
-              name="map-marker"
-              type="font-awesome"
-              reverse
-              size={25}
-              color="#6a2c70"
-            />
-            <Text style={styles.userDescriptionText}>
-              lives in {state.zona}
-            </Text>
-          </View>
-          <View style={styles.descriptionRow}>
-            <Icon name="paw" type="font-awesome" size={25} color="#6a2c70" reverse/>
-            {state.workZone?.length > 0 &&
-                state.workZone.map((item: string, index: number) => (
-                  <Text style={styles.userDescriptionText} key={index}>
-                    {item}
-                  </Text>
-                ))}
-          </View>
-          <TouchableOpacity
-              style={styles.messageRow}
-              onPress={() => {}}
-            >
-            <Text style={styles.messageText}>Get Contact Info</Text>
-          </TouchableOpacity>
+          </Overlay>
         </View>
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  cardContainer: {
-    alignItems: "center",
-    flex: 1,
-  },
-  container: {
-    alignItems: "center",
-    flex: 1,
-  },
-  headerContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
-    padding: 15,
-    borderRadius: 15,
-    width: "90%",
-    marginBottom: 10,
-    marginTop: 30,
-  },
-  indicatorTab: {
-    backgroundColor: "transparent",
-  },
-  scroll: {
-    backgroundColor: "#FFF",
-  },
-  sceneContainer: {
-    marginTop: 10,
-  },
-  socialRow: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    width: "100%",
-    padding: 5,
-    borderRadius: 15,
-  },
-  messageRow: {
-    display: 'flex',
-    width: "90%",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 10,
-    backgroundColor: '#456672',
-    borderRadius: 10,
-    padding: 8
-  },
-  tabBar: {
-    padding: 10,
-    borderWidth: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderColor: "#000",
-    borderRadius: 5,
-  },
-  tabContainer: {
-    flex: 1,
-    flexDirection: "row",
-    marginBottom: 12,
-    justifyContent: "space-around",
-    paddingBottom: 2,
-  },
-  tabLabelNumber: {
-    color: "#fff",
-    fontSize: 15,
-    textAlign: "center",
-    padding: 10,
-  },
-  tabLabelText: {
-    color: "#fff",
-    fontSize: 22.5,
-    fontWeight: "600",
-    textAlign: "center",
-    width: 100, //Agregado
-  },
-  userBioRow: {
-    marginLeft: 40,
-    marginRight: 40,
-  },
-  descriptionRow: {
-    width: "80%",
-    marginBottom: 10,
-    marginTop: 10,
-    flex: 1,
-    alignItems: "center",
-  },
-  userBioText: {
-    color: "#000",
-    fontSize: 16,
-    textAlign: "center",
-  },
-  userDescriptionText: {
-    color: "#000",
-    fontSize: 15,
-    textAlign: "center",
-    marginLeft: 15,
-    textTransform: "capitalize",
-  },
-  ratingText: {
-    color: "white",
-    fontSize: 13.5,
-    textAlign: "center",
-    marginLeft: 14,
-    margin: 10,
-    backgroundColor: "gray",
-    padding: 3,
-    borderRadius: 5,
-  },
-  messageText: {
-    color: "#fff",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  userImage: {
-    borderRadius: 60,
-    height: 120,
-    marginBottom: 10,
-    width: 120,
-  },
-  userNameRow: {
-    marginBottom: 10,
-  },
-  userNameText: {
-    color: "#5B5A5A",
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  userRow: {
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "center",
-    marginBottom: 12,
-  },
-});
-
-const style={
-  width: "90%",
-  height: 200,
-  marginBottom: 30,
-  borderRadius: 16
-}
-
 
 export default WalkerProfile;
