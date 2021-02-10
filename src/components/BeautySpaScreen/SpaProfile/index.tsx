@@ -25,12 +25,6 @@ const SpaProfile = ({
   route,
 }: RouteStackParamList<"SpaProfile">) => {
   const [state, setState] = React.useState<any>("");
-  // const [thisRegion, setThisRegion] = React.useState<any>({
-  //   latitudeDelta: 0.005,
-  //   longitudeDelta: 0.005,
-  //   latitude: 0,
-  //   longitude: 0,
-  // });
   const [modalVisible, setModalVisible] = React.useState(false);
 
   const modalStatusChange = () => {
@@ -74,7 +68,7 @@ const SpaProfile = ({
                   navigation.navigate("ReviewsScreen", {
                     hotelId: state._id,
                     photo: state.logo,
-                    service: "DogGroomer"
+                    service: "DogGroomer",
                   })
                 }
               >

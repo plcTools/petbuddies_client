@@ -20,6 +20,11 @@ import PostReview from "./PostReview/PostReview";
 
 function reviewsScreen({ route }: any) {
 
+  // hotelId: state._id,
+  //                   photo: state.logo,
+  //                   reviews: reviews,
+  //                   service: "Hotel",
+
   const [reviews, setReviews] = useState([]);
   const [user, setUser] = useState({});
   const [rating, setRating] = useState(0);
@@ -33,6 +38,8 @@ function reviewsScreen({ route }: any) {
     const allReviews = await axios.get(`/reviews/${route.params.service}/${hotel}`);
     setReviews(allReviews.data);
   };
+
+  console.log (route, '<=============== Route');
 
   const getReviews = async () => {
     const hotel = route.params.hotelId;
