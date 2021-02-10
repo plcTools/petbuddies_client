@@ -81,7 +81,7 @@ const HotelProfile = ({
                     imageSize={30}
                   />
                   <Text style={styles.ratingText}>
-                    {reviews ? reviews.review.length : 0} califications
+                    {reviews.review.length} califications
                   </Text>
                 </View>
               </TouchableOpacity>

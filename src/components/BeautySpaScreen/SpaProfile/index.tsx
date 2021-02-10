@@ -26,7 +26,8 @@ const SpaProfile = ({
 }: RouteStackParamList<"SpaProfile">) => {
   const [state, setState] = React.useState<any>("");
   const [modalVisible, setModalVisible] = React.useState(false);
-
+  const [reviews, setReviews] = React.useState(route.params.reviews);
+  
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
   };
@@ -76,11 +77,11 @@ const SpaProfile = ({
                   <Rating
                     readonly
                     type="custom"
-                    startingValue={state?.rating}
+                    startingValue={reviews.prom ? reviews.prom : 0}
                     imageSize={30}
                   />
                   <Text style={styles.ratingText}>
-                    {state?.reviewsReceived} califications
+                    {reviews.review.length} califications
                   </Text>
                 </View>
               </TouchableOpacity>

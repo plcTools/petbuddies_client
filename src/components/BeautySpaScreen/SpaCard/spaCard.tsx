@@ -80,7 +80,7 @@ function SpaCard(props: any) {
 
   return (
     <Card containerStyle={styles.container} >
-      <TouchableOpacity style={styles.cardContainer} onPress={() => navigation.navigate('SpaProfile', {id: props.id})}>
+      <TouchableOpacity style={styles.cardContainer} onPress={() => navigation.navigate('SpaProfile', {id: props.id,reviews})}>
         <View style={styles.cardHeader}>
           <Image
             style={{
