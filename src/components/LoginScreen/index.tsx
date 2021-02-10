@@ -31,10 +31,10 @@ const LoginScreen = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
 
   const retrieveStorage = async () =>{
     const id:string = await getData()
-     if(id) navigation.navigate('ServiceForm')
+     if(id) navigation.navigate('Tab')
   }
 
-  useLayoutEffect(() => {
+  React.useEffect(() => {
     retrieveStorage();
   }, [])
 

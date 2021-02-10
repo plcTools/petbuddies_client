@@ -7,6 +7,8 @@ import WalkerCard from '../WalkerCard/index';
 import { useSelector } from 'react-redux';
 import { useAppDispatch, RootState } from '../../redux/store';
 import { getWalkers } from '../../redux/walker/actions';
+import { getHairdressers } from '../../redux/Hairdressers/actions';
+import { getHotels } from '../../redux/hotels/actions';
 import { getUserFavorites } from '../../redux/owner/actions';
 import { Walker } from '../../redux/walker/types';
 import { RouteStackParamList } from '../../NavigationConfig/types';
@@ -58,6 +60,8 @@ const WalkerScreen = () => {
         handleList(walkers);
         if (Object.keys(walkers).length > 0) {
             setState(walkers)
+            dispatch(getHotels());
+            dispatch(getHairdressers());
         } else {
             dispatch(getUserFavorites(id))
             dispatch(getWalkers())

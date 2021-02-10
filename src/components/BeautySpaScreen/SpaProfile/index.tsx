@@ -63,7 +63,9 @@ const SpaProfile = ({ navigation, route }: RouteStackParamList<"SpaProfile">) =>
           <View style={styles.cardContainer}>
             <View style={styles.headerContainer}>
               <View style={styles.userRow}>
-                <Image style={styles.userImage} source={{ uri: state.logo }} />
+                <Image style={styles.userImage}             
+                  source={state?.logo ? state.logo[0] === 'h' ? { uri: `${state.logo}` } : { uri: `data:image/jpeg;base64,${state.logo}` } : require("../../../images/logo.png")}
+                />
                 <View style={styles.userNameRow}>
                   <Text style={styles.userNameText}>{state?.name}</Text>
                 </View>
@@ -108,7 +110,7 @@ const SpaProfile = ({ navigation, route }: RouteStackParamList<"SpaProfile">) =>
                     }}
                   >
                     <Image
-                      source={{ uri: item }}
+                      source={item[0] === 'h' ? { uri: item } : { uri: `data:image/jpeg;base64,${item}` }}
                       style={{
                         width: imageW,
                         height: imageH,
@@ -169,8 +171,8 @@ const SpaProfile = ({ navigation, route }: RouteStackParamList<"SpaProfile">) =>
                 {state.address + ", " + state.zone}
               </Text>
             </View>
-            {state.services?.length > 0 && (
-                state.services?.map((item: string, index: number) => {
+            {state.extras?.length > 0 && (
+                state.extras?.map((item: string, index: number) => {
                   return (
                     <View style={styles.descriptionRow} key={index}>
                       <View style={{ justifyContent: "center", width: 30 }}>

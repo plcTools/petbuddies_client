@@ -7,6 +7,7 @@ import { getData } from "../../AsyncStorage/index";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { getWalkers } from "../../redux/walker/actions";
+import { getOwner } from "../../redux/owner/actions";
 
 const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
   const [state, setState] = React.useState<any>();
@@ -22,10 +23,12 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
   useEffect(() => {
     retrieveStorage();
   }, [owners]);
+  console.log(owners.serviceType)
 
   const logout = async () => {
     try {
       await AsyncStorage.removeItem("@id");
+      // dispatch(getOwner(""))
       navigation.navigate("LoginScreen");
     } catch (e) {
       console.log(e);
@@ -58,7 +61,7 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
         <Avatar /* onPress debería poder modificar la foto de perfil*/
           rounded
           size="large"
-          source={state?.photo ? { uri: `data:image/jpeg;base64,${state?.photo}` } : require("../../images/logo.png")}
+          source={state?.photo ? state.photo[0] === 'h' ? { uri: `${state.photo}` } : { uri: `data:image/jpeg;base64,${state?.photo}` } : require("../../images/logo.png")}
           overlayContainerStyle={{ backgroundColor: "orange" }}
           onPress={() => alert("ir a editar perfil")}
         />
@@ -69,22 +72,13 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
           <ListItem.Subtitle>{state?.zona} </ListItem.Subtitle>
         </ListItem.Content>
       </ListItem>
-
-      <ListItem bottomDivider onPress={() => navigation.navigate("WalkerForm")}>
+      <ListItem bottomDivider onPress={() => owners.service ? navigation.navigate("ServiceForm", {service: owners.serviceType}) : navigation.navigate("WalkerForm")}>
         <Icon raised name="user-cog" type="font-awesome-5" size={20} />
         <ListItem.Content>
           <ListItem.Title>Edit Account</ListItem.Title>
         </ListItem.Content>
         <ListItem.Chevron />
       </ListItem>
-      {/* <ListItem bottomDivider>
-        <Icon raised name="blind" type="font-awesome" size={10} />
-        <ListItem.Content>
-          <ListItem.Title>Walks</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem> */}
-
       <ListItem
         bottomDivider
         onPress={() => Linking.openURL("mailto:petBuddies@support.com")}

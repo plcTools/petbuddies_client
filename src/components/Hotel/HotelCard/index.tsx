@@ -72,9 +72,7 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
               marginTop: 3,
               marginBottom: 7,
             }}
-            source={{
-              uri: `${hotel.logo}`,
-            }}
+            source={hotel?.logo ? hotel.logo[0] === 'h' ? { uri: `${hotel.logo}` } : { uri: `data:image/jpeg;base64,${hotel.logo}` } : require("../../../images/logo.png")}
           />
 
           <View style={styles.headerContainer}>
