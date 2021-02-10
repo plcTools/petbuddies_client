@@ -55,6 +55,27 @@ function SpaCard(props: any) {
 
   const dispatch = useAppDispatch();
 
+
+  /* Para Mostrar las reviews, Get a reviews
+    y posteriormente se pasan por props a los childs */
+
+    const [reviews, setReviews] = useState([]);
+    React.useEffect(() => {
+      axios
+        .get(`/reviews/DogGroomer/${props.peluqueria._id}`)
+        .then((reviews) => {
+          const sum = reviews.data.map((e: any) => e.rating).reduce((a: any, c: any) => a + c, 0)
+          const prom = sum && sum / reviews.data.length
+          setReviews({ review: reviews.data, prom })
+        })
+        .catch((err) => console.log(err));
+        
+    }, []);
+    /* console.log(1111111111,navigator.geolocation.getCurrentPosition((p) => p.coords )); */
+
+     
+
+
   return (
     <Card containerStyle={styles.container} >
       <TouchableOpacity style={styles.cardContainer} onPress={() => navigation.navigate('SpaProfile', {id: props.id})}>
@@ -100,24 +121,28 @@ function SpaCard(props: any) {
           </View>
         </View>
         <View style={styles.cardHeaderRate}>
-          <Text style={{ marginRight: 5, fontSize: 15 }}>
-            {props.peluqueria.rating}
-          </Text>
-          <Icon
-            name="star-o"
-            type="font-awesome"
-            size={18}
-            color="green"
-            underlayColor="red"
-          />
+
+            <Text style={{ marginRight: 5, fontSize: 15 }}>{
+              reviews.prom > 0 && reviews.prom
+
+            }</Text>
+            <Icon
+              name={reviews.prom && "star" || "star-o"}
+              type="font-awesome"
+              size={18}
+              color="green"
+              underlayColor="red"
+            />
+
         </View>
+        
       </TouchableOpacity>
       <View style={styles.fav}>
         <CheckBox
           uncheckedIcon={
             <Icon
-              raised
-              name="heart-o"
+            raised
+            name="heart-o"
               type="font-awesome"
               size={15}
               color="black"
@@ -130,36 +155,37 @@ function SpaCard(props: any) {
               type="font-awesome"
               size={15}
               color={"red"}
-            />
-          }
-          checked={checked}
-          onPress={async () => {
-            if (!checked) {
-              const result = await axios.patch(`/groomer/${props.userId}/favorites/${props.id}`);
-              dispatch(getOwnerFavGroomers(props.userId));
-              return setChecked(true);
-            } else {
-              const result = await axios.delete(
-                `/groomer/${props.userId}/favorites/${props.id}`
-              );
-              dispatch(getOwnerFavGroomers(props.userId));
-              return setChecked(false);
+              />
             }
-
-          }} />
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            modalStatusChange();
-          }}
-        >
-          <InfoModal
-            modalStatusChange={modalStatusChange}
-            data={props.peluqueria}
-          />
-        </Modal>
+            checked={checked}
+            onPress={async () => {
+              if (!checked) {
+                
+                const result = await axios.patch(`/groomer/${props.userId}/favourites/${props.id}`);
+                dispatch(getOwnerFavGroomers(props.userId));
+                return setChecked(true);
+              } else {
+                const result = await axios.delete(
+                  `/groomer/${props.userId}/favourites/${props.id}`
+                  );
+                  dispatch(getOwnerFavGroomers(props.userId));
+                  return setChecked(false);
+                }
+                
+              }} />
+          <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          modalStatusChange();
+        }}
+      >
+        {/* <DetailsSpaCard
+          modalStatusChange={modalStatusChange}
+          data={{peluqueria:props.peluqueria,reviews}}
+        /> */}
+      </Modal>
       </View>
     </Card>
   );

@@ -29,7 +29,7 @@ export type RootStackParamList = {
     hotel: hotel
   }
   Profile: undefined ;
-
+  ReviewsScreen: undefined;
 };
 
 export type RouteStackParamList<T extends keyof RootStackParamList> = {

@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,20 +8,24 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
-  Modal
+  Modal,
 } from "react-native";
 import { RouteStackParamList } from "../../../NavigationConfig/types";
 import { Icon, Divider } from "react-native-elements";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
 import InfoModal from "../../InfoModal";
-import {styles} from './styles'
+import { styles } from "./styles";
 const { width } = Dimensions.get("screen");
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
 
-const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile">) => {
-  const [state, setState] = React.useState<any>('');
+const HotelProfile = ({
+  navigation,
+  route,
+}: RouteStackParamList<"HotelProfile">) => {
+  const [reviews, setReviews] = useState(route.params.reviews);
+  const [state, setState] = React.useState<any>("");
   const [thisRegion, setThisRegion] = React.useState<any>({
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
@@ -33,6 +37,14 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
   };
+
+  interface Region {
+    latitude?: number;
+    longitude?: number;
+    longitudeDelta: number;
+    latitudeDelta: number;
+  }
+
   React.useEffect(() => {
     axios.get(`/hotels/${route.params.id}`).then((result) => {
       setState(result.data);
@@ -46,15 +58,14 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
 
   if (!state) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
-          source={require('../../../images/loader.gif')}
+          source={require("../../../images/loader.gif")}
           style={{ width: 200, height: 150 }}
         />
       </View>
-    )
+    );
   }
-
   return (
     <ScrollView style={styles.scroll}>
       <View style={styles.container}>
@@ -71,22 +82,31 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                   <Text style={styles.userBioText}>{state.description}</Text>
                 </View>
               </View>
-              <View style={styles.socialRow}>
-                <Rating
-                  readonly
-                  type="custom"
-                  startingValue={state.rating}
-                  imageSize={30}
-                />
-                <Text style={styles.ratingText}>
-                  {state.reviewsReceived} califications
-                </Text>
-              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("ReviewsScreen", {
+                    hotelId: state._id,
+                    photo: state.photo,
+                    reviews: reviews,
+                  })
+                }
+              >
+                <View style={styles.socialRow}>
+                  <Rating
+                    readonly
+                    type="custom"
+                    startingValue={reviews.prom} //aca pido reviews
+                    imageSize={30}
+                  />
+                  <Text style={styles.ratingText}>
+                    {reviews.review.length} califications
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
             <Divider />
             {/* Fotos */}
-            {
-              state.adsPics &&
+            {state.adsPics && (
               <View style={{ maxHeight: 300 }}>
                 <FlatList
                   data={state.adsPics}
@@ -106,7 +126,6 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                         },
                         shadowOpacity: 0.58,
                         shadowRadius: 16.0,
-
                         elevation: 24,
                       }}
                     >
@@ -124,14 +143,13 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                           },
                           shadowOpacity: 0.58,
                           shadowRadius: 16.0,
-
                         }}
                       />
                     </View>
                   )}
                 />
               </View>
-            }
+            )}
             <Divider />
             {/* Description items */}
             <View style={styles.descriptionRow}>
@@ -182,10 +200,9 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                   color="#6a2c70"
                 />
               </View>
-              {state.allowedPets?.length > 0 &&
-                <Text style={styles.userDescriptionText}>
-                  {`We accept:`}
-                </Text>}
+              {state.allowedPets?.length > 0 && (
+                <Text style={styles.userDescriptionText}>{`We accept:`}</Text>
+              )}
               {state.allowedPets?.length > 0 &&
                 state.allowedPets.map((item: string, index: number) => (
                   <Text style={styles.userDescriptionText} key={index}>
@@ -237,8 +254,7 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                     <Text style={styles.userDescriptionText}>{item}</Text>
                   </View>
                 );
-              })
-            }
+              })}
             <TouchableOpacity
               style={styles.messageRow}
               onPress={modalStatusChange}
@@ -256,10 +272,7 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
             modalStatusChange();
           }}
         >
-          <InfoModal
-            modalStatusChange={modalStatusChange}
-            data={state}
-          />
+          <InfoModal modalStatusChange={modalStatusChange} data={state} />
         </Modal>
       </View>
     </ScrollView>

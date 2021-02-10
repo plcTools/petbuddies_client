@@ -10,11 +10,11 @@ import {
   Dimensions,
   Modal,
   SafeAreaView,
-  Linking
+  Linking,
 } from "react-native";
 import { RouteStackParamList } from "../../NavigationConfig/types";
-import { styles } from './styles'
-import { Icon, Divider, Overlay, } from "react-native-elements";
+import { styles } from "./styles";
+import { Icon, Divider, Overlay } from "react-native-elements";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
 import InfoModal from "../InfoModal";
@@ -26,7 +26,7 @@ const WalkerProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"WalkerProfile">) => {
-  const [state, setState] = React.useState<any>('');
+  const [state, setState] = React.useState<any>("");
   React.useEffect(() => {
     axios
       .get(`/walkers/${route.params.id}`)
@@ -78,13 +78,13 @@ const WalkerProfile = ({
 
   if (!state) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
-          source={require('../../images/loader.gif')}
+          source={require("../../images/loader.gif")}
           style={{ width: 200, height: 150 }}
         />
       </View>
-    )
+    );
   }
 
   return (
@@ -94,11 +94,12 @@ const WalkerProfile = ({
         display: "flex",
         justifyContent: "center",
         flex: 1,
-        height: '100%'
-      }}>
+        height: "100%",
+      }}
+    >
       <ScrollView style={styles.scroll}>
         <View>
-          <View style={{ flex: 1, justifyContent: 'center' }}>
+          <View style={{ flex: 1, justifyContent: "center" }}>
             {/* Main container */}
             <View style={styles.cardContainer}>
               <View style={styles.headerContainer}>
@@ -123,7 +124,7 @@ const WalkerProfile = ({
                   />
                   <Text style={styles.ratingText}>
                     {state.reveiewsReceived} califications
-                </Text>
+                  </Text>
                 </View>
               </View>
               <Divider />
@@ -156,9 +157,14 @@ const WalkerProfile = ({
               </View>
               <View style={styles.descriptionRow}>
                 <View style={{ justifyContent: "center", width: 30 }}>
-                  <Icon name="map-marker" type="font-awesome" size={25} color="#6a2c70" />
+                  <Icon
+                    name="map-marker"
+                    type="font-awesome"
+                    size={25}
+                    color="#6a2c70"
+                  />
                 </View>
-                <View style={{ flexWrap: 'wrap', flexDirection: 'row', }}>
+                <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
                   {state.workZone?.length > 0 &&
                     state.workZone.map((item: string, index: number) => (
                       <Text style={styles.userDescriptionText} key={index}>
@@ -188,26 +194,32 @@ const WalkerProfile = ({
                     source={state?.photo ? state.photo[0] === 'h' ? { uri: `${state.photo}` } : { uri: `data:image/jpeg;base64,${state.photo}` } : require("../../images/logo.png")}                  />
 
                 </View>
-                <Text style={styles.titleOverlay}>{state.name + ' ' + state.lastname}</Text>
+                <Text style={styles.titleOverlay}>
+                  {state.name + " " + state.lastname}
+                </Text>
               </View>
 
               <View style={styles.socialOverlay}>
                 <Icon
-                  name='phone'
-                  type='font-awesome-5'
-                  color='blue'
+                  name="phone"
+                  type="font-awesome-5"
+                  color="blue"
                   onPress={() => Linking.openURL(`tel:${state?.phone}`)}
                 />
                 <Icon
-                  name='whatsapp'
-                  type='font-awesome-5'
-                  color='green'
-                  onPress={() => Linking.openURL(`https://wa.me/${state?.phone}?text=Quiero mas Información`)}
+                  name="whatsapp"
+                  type="font-awesome-5"
+                  color="green"
+                  onPress={() =>
+                    Linking.openURL(
+                      `https://wa.me/${state?.phone}?text=Quiero mas Información`
+                    )
+                  }
                 />
                 <Icon
-                  name='envelope'
-                  type='font-awesome-5'
-                  color='#ef4f4f'
+                  name="envelope"
+                  type="font-awesome-5"
+                  color="#ef4f4f"
                   onPress={() => Linking.openURL(`mailto:${state?.email}`)}
                 />
               </View>
