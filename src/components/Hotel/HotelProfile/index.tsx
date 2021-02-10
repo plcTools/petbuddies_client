@@ -26,33 +26,23 @@ const HotelProfile = ({
 }: RouteStackParamList<"HotelProfile">) => {
   const [reviews, setReviews] = useState(route.params.reviews);
   const [state, setState] = React.useState<any>("");
-  const [thisRegion, setThisRegion] = React.useState<any>({
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005,
-    latitude: 0,
-    longitude: 0,
-  });
+  // const [thisRegion, setThisRegion] = React.useState<any>({
+  //   latitudeDelta: 0.005,
+  //   longitudeDelta: 0.005,
+  //   latitude: 0,
+  //   longitude: 0,
+  // });
   const [modalVisible, setModalVisible] = React.useState(false);
 
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
   };
 
-  interface Region {
-    latitude?: number;
-    longitude?: number;
-    longitudeDelta: number;
-    latitudeDelta: number;
-  }
+  console.log (navigation, route, 'PROPS DE HOTELPROFILE');
 
   React.useEffect(() => {
     axios.get(`/hotels/${route.params.id}`).then((result) => {
       setState(result.data);
-      setThisRegion({
-        ...thisRegion,
-        latitude: result.data.latitude,
-        longitude: result.data.longitude,
-      });
     });
   }, []);
 
@@ -88,6 +78,7 @@ const HotelProfile = ({
                     hotelId: state._id,
                     photo: state.photo,
                     reviews: reviews,
+                    service: "Hotel",
                   })
                 }
               >

@@ -12,22 +12,30 @@ import styles from "./styles";
 import axios from "axios";
 import { Rating } from "react-native-ratings";
 
-function PostReview({ getReviews, modalStatusChange, companyName, user, preRating }) {
+function PostReview({
+  service,
+  getReviews,
+  modalStatusChange,
+  companyName,
+  user,
+  preRating,
+}) {
   const [hotel, setHotel] = useState({});
   const [input, setInput] = useState("");
   const [rating, setRating] = useState(preRating);
+
+  console.log("---POSTREVIEW---", service);
 
   useEffect(() => {
     axios
       .get(`/hotels/${companyName.hotelId}`)
       .then((hotelData) => setHotel(hotelData.data))
       .catch((err) => console.log(err));
-  
   }, []);
 
   function handleSubmit() {
     const body = {
-      serviceType: "Hotel",
+      serviceType: service,
       userId: user._id,
       userName: `${user.name} ${user.lastname}`,
       reviewedId: companyName.hotelId,
@@ -60,7 +68,7 @@ function PostReview({ getReviews, modalStatusChange, companyName, user, preRatin
           </View>
           <View>
             <TouchableOpacity>
-              <Text onPress={ handleSubmit } style={styles.publishBtn}>
+              <Text onPress={handleSubmit} style={styles.publishBtn}>
                 Publish
               </Text>
             </TouchableOpacity>

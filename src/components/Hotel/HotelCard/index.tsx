@@ -63,7 +63,6 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
         const sum = reviewsData.data
           .map((e: any) => e.rating)
           .reduce((a: any, c: any) => a + c, 0);
-        console.log (sum, 'SUM');
         const prom = Number (String (sum / reviewsData.data.length).slice (0,3));
         setReviews({ review: reviewsData.data, prom })
       })

@@ -19,6 +19,7 @@ import styles from "./styles";
 import PostReview from "./PostReview/PostReview";
 
 function reviewsScreen({ route }: any) {
+
   const [reviews, setReviews] = useState([]);
   const [user, setUser] = useState({});
   const [rating, setRating] = useState(0);
@@ -29,13 +30,13 @@ function reviewsScreen({ route }: any) {
     const usuario = await axios.get(`/owners/${user}`);
     setUser(usuario.data.owner);
     const hotel = route.params.hotelId;
-    const allReviews = await axios.get(`/reviews/Hotel/${hotel}`);
+    const allReviews = await axios.get(`/reviews/${route.params.service}/${hotel}`);
     setReviews(allReviews.data);
   };
 
   const getReviews = async () => {
     const hotel = route.params.hotelId;
-    const allReviews = await axios.get(`/reviews/Hotel/${hotel}`);
+    const allReviews = await axios.get(`/reviews/${route.params.service}/${hotel}`);
     setReviews(allReviews.data);
   };
 
@@ -99,6 +100,7 @@ function reviewsScreen({ route }: any) {
         }}
       >
         <PostReview
+          service={route.params.service}
           getReviews={getReviews}
           preRating={rating}
           user={user}

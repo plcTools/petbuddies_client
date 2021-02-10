@@ -63,10 +63,12 @@ function SpaCard(props: any) {
     React.useEffect(() => {
       axios
         .get(`/reviews/DogGroomer/${props.peluqueria._id}`)
-        .then((reviews) => {
-          const sum = reviews.data.map((e: any) => e.rating).reduce((a: any, c: any) => a + c, 0)
-          const prom = sum && sum / reviews.data.length
-          setReviews({ review: reviews.data, prom })
+        .then((reviewsData) => {
+          const sum = reviewsData.data
+            .map((e: any) => e.rating)
+            .reduce((a: any, c: any) => a + c, 0);
+          const prom = Number (String (sum / reviewsData.data.length).slice (0,3));
+          setReviews({ review: reviewsData.data, prom })
         })
         .catch((err) => console.log(err));
         
