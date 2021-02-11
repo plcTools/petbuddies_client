@@ -29,7 +29,7 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
   const [checked, setChecked] = React.useState<boolean>(false);
   const dispatch = useAppDispatch();
   const [id, setId] = React.useState<string>("");
-  const theme = useSelector((state) => state.user.theme);
+  const theme = useSelector((state: RootState) => state.user.theme);
   const retrieveStorage = async () => {
     const user: string = await getData();
     setId(user);
@@ -58,7 +58,7 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
   /* Para Mostrar las reviews, Get a reviews
     y posteriormente se pasan por props a los childs */
 
-  const [reviews, setReviews] = useState({});
+  const [reviews, setReviews] = useState<any>({});
   React.useEffect(() => {
     axios
       .get(`/reviews/Hotel/${hotel._id}`)
@@ -69,7 +69,7 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
         const prom = Number (String (sum / reviewsData.data.length).slice (0,3));
         setReviews({ review: reviewsData.data, prom })
       })
-      .catch((err) => console.log(err));
+      .catch((err) => alert(err));
   }, []);
 
 

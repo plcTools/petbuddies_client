@@ -22,11 +22,11 @@ import { tema } from "../../../Theme/theme";
 
 function SpaCard(props: any) {
 
-  const theme = useSelector((state) => state.user.theme);
+  const theme = useSelector((state: RootState) => state.user.theme);
 
   const [checked, setChecked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState<any>([]);
 
 
   const userFavGroomers = useSelector(
@@ -67,11 +67,9 @@ function SpaCard(props: any) {
           const prom = Number (String (sum / reviewsData.data.length).slice (0,3));
           setReviews({ review: reviewsData.data, prom })
         })
-        .catch((err) => console.log(err));
+        .catch((err) => alert(err));
     }, []);
-    /* console.log(1111111111,navigator.geolocation.getCurrentPosition((p) => p.coords )); */
-
-     
+   
 
 
   return (

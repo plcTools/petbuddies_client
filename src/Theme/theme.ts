@@ -11,6 +11,11 @@ export const tema = StyleSheet.create({
     //  backgroundAlt: "#575c66",
     //  borderAlt: "#2E3440",
   },
+  darkView: {
+    backgroundColor: '#121212',
+    borderColor: 'rgba(256,256,256,0.4)',
+    borderWidth: 1
+  },
   darkText: {
     color: "#ffff",
   },

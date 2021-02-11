@@ -30,11 +30,11 @@ import WalkerForm from "../components/WalkerForm";
 import { Image, View } from "react-native";
 import SpaProfile from "../components/BeautySpaScreen/SpaProfile/";
 import ReviewsScreen from "../components/ReviewScreen/reviewsScreen";
-
+import {RootState} from '../redux/store'
 import ServiceForm from "../components/ServiceForm/";
 
 export const Routes: React.FC = () => {
-  const theme = useSelector((state) => state.user.theme);
+  const theme = useSelector((state:RootState) => state.user.theme);
   let [fonts] = useFonts({ NunitoSans_400Regular });
 
   const { Navigator, Screen } = createStackNavigator<RootStackParamList>();
@@ -115,7 +115,7 @@ export const Routes: React.FC = () => {
               color={!theme ? "#0A0E14" : "#c98c70"}
 
               size={20}
-              onPress={() => navigation.navigate("Profile")}
+              onPress={() => navigation.push("Profile")}
             />
           ),
         })}

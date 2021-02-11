@@ -119,18 +119,22 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
           setImage(result.base64);
         } else {
           if(route.params.service){
-            setPics(oldpics => {
-              return oldpics?.map((item,i) => {
-                if(index === i ){
-                  return result.base64
-                } else {
-                  return item
-                }
-              })
-            });
-          } else {
-            setPics([...pics, result.base64]);
-          }
+            if(!pics[index]) {
+              setPics(oldpics => [...oldpics, result.base64])
+            } else {
+              setPics(oldpics => {
+                return oldpics?.map((item,i) => {
+                  if(index === i ){
+                    return result.base64
+                  } else {
+                    return item
+                  }
+                })
+              });
+            } 
+            } else {
+              setPics([...pics, result.base64]);
+            }
         }
       }
     };

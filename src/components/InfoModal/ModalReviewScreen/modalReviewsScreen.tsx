@@ -13,10 +13,6 @@ import ModalReviewCard from "./modalReviewCard";
 
 
 function ModalReviewsScreen(params: any) {
-console.log(params);
-
-
-
   const [reviews, setReviews] = useState(params.data.reviews);
  
   return (

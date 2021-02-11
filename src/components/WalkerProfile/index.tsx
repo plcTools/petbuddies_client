@@ -22,13 +22,14 @@ import { useSelector } from "react-redux";
 const { width, height } = Dimensions.get("screen");
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
+import {RootState} from '../../redux/store'
 
 const WalkerProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"WalkerProfile">) => {
   const [state, setState] = React.useState<any>("");
-  const theme = useSelector((state) => state.user.theme);
+  const theme = useSelector((state: RootState) => state.user.theme);
 
   React.useEffect(() => {
     axios
@@ -214,36 +215,13 @@ const WalkerProfile = ({
                   style={styles.overlay}
                 > */}
             </View>
-          </View>
+          {/* </View>
           <Overlay
             isVisible={modalVisible}
             onBackdropPress={modalStatusChange}
             style={styles.overlay}
           >
-            <View>
-              <View style={styles.overlay}>
-                <View>
-                  <Image
-                    style={styles.fotoverlay}
-                    source={
-                      state?.photo
-                        ? state.photo[0] === "h"
-                          ? { uri: `${state.photo}` }
-                          : { uri: `data:image/jpeg;base64,${state.photo}` }
-                        : require("../../images/logo.png")
-                    }
-                  />
-                </View>
-                <Text style={styles.titleOverlay}>
-                  {state.name + " " + state.lastname}
-                </Text>
-
-              </View>
-              <Text style={styles.titleOverlay}>
-              {state.name + " " + state.lastname}
-              </Text>
-            </View> */}
-
+            <View> */}
             <View
               style={[
                 styles.socialOverlay,

@@ -46,9 +46,9 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
     try {
       await AsyncStorage.removeItem("@id");
       // dispatch(getOwner(""))
-      navigation.navigate("LoginScreen");
+      navigation.push("LoginScreen");
     } catch (e) {
-      console.log(e);
+      alert(e);
     }
   };
 
@@ -123,7 +123,7 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
 
       <TouchableOpacity
         style={[styles.box, !theme && tema.darkContainer]}
-        onPress={() => navigation.navigate("WalkerForm")}
+        onPress={() => state?.service ? navigation.push("ServiceForm", {service: state?.serviceType}) : navigation.push("WalkerForm")}
       >
         <Icon raised name="user-cog" type="font-awesome-5" size={20} />
         <Text style={[styles.text, !theme && tema.darkText]}>Edit Account</Text>

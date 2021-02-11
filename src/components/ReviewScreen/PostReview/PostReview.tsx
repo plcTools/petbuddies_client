@@ -31,13 +31,11 @@ function PostReview({
 
   const dispatch = useAppDispatch();
 
-  console.log("---POSTREVIEW---", service);
-
   useEffect(() => {
     axios
       .get(`/hotels/${companyName.hotelId}`)
       .then((hotelData) => setHotel(hotelData.data))
-      .catch((err) => console.log(err));
+      .catch((err) => alert(err));
   }, []);
 
   function handleSubmit() {
@@ -58,8 +56,8 @@ function PostReview({
         else if (service === "DogGroomer") dispatch(getHairdressers());
         else if (service === "Walker") dispatch(getWalkers());
       })
-      .then(Alert.alert("PetBuddies","Gracias por su comentario"))
-      .catch((err) => console.log(err));
+      .then(()=> Alert.alert("PetBuddies","Gracias por su comentario"))
+      .catch((err) => alert(err));
   }
 
   return (
@@ -95,9 +93,13 @@ function PostReview({
               borderRadius: 50,
               marginRight: 25,
             }}
-            source={{
-              uri: `${user?.photo}`,
-            }}
+            source={
+              user?.photo
+                ? user.photo[0] === "h"
+                  ? { uri: `${user.photo}` }
+                  : { uri: `data:image/jpeg;base64,${user?.photo}` }
+                : require("../../../images/logo.png")
+            }
           />
           <View style={styles.ratingView}>
             <Text style={styles.name}>{`${user.name} ${user.lastname}`}</Text>

@@ -38,7 +38,6 @@ function InfoModal(props: any) {
           },
           {
             text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
             style: "cancel",
           },
         ])
@@ -56,7 +55,6 @@ function InfoModal(props: any) {
           },
           {
             text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
             style: "cancel",
           },
         ])
@@ -74,7 +72,6 @@ function InfoModal(props: any) {
           },
           {
             text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
             style: "cancel",
           },
         ])

@@ -8,25 +8,38 @@ import {
   StyleSheet,
 } from "react-native";
 import { Rating } from "react-native-ratings";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { tema } from "../../Theme/theme";
 
 function reviewCard(props: any) {
+  const theme = useSelector((state: RootState) => state.user.theme);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.detailUp}>
+    <View style={[styles.container, !theme && tema.darkContainer]}>
+      <View style={[styles.detailUp, !theme && tema.darkView]}>
         <Text style={{ color: "white" }}>{props.data.userName}</Text>
         <Text style={{ color: "white" }}>{props.data.date.split()}</Text>
       </View>
       <View style={styles.detailDown}>
-        <Text>{props.data.reviewText}</Text>
+        <Text style={!theme && { color: '#fff'}}>{props.data.reviewText}</Text>
       </View>
-
-      <Rating
-        readonly
-        type="custom"
-        startingValue={props.data.rating}
-        imageSize={20}
-      />
+      <View style={!theme && {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        backgroundColor: "#fff",
+        width: "50%",
+        marginHorizontal: '25%',
+        padding: 5,
+        borderRadius: 15,
+      }}>
+        <Rating
+          readonly
+          type="custom"
+          startingValue={props.data.rating}
+          imageSize={20}
+          />
+        </View>
     </View>
   );
 }

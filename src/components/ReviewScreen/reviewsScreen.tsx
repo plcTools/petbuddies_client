@@ -18,16 +18,19 @@ import { Rating } from "react-native-ratings";
 import styles from "./styles";
 import PostReview from "./PostReview/PostReview";
 import { getHotels } from "../../redux/hotels/actions";
-import { useAppDispatch } from "../../redux/store";
+import { RootState, useAppDispatch } from "../../redux/store";
 import { getWalkers } from "../../redux/walker/actions";
 import { getHairdressers } from "../../redux/Hairdressers/actions";
+import { tema } from "../../Theme/theme";
+import { useSelector } from "react-redux";
 
 function reviewsScreen({ route }: any) {
+  const theme = useSelector((state: RootState) => state.user.theme);
 
   const dispatch = useAppDispatch();
 
   const [reviews, setReviews] = useState([]);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<any>({});
   const [rating, setRating] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -40,7 +43,6 @@ function reviewsScreen({ route }: any) {
     setReviews(allReviews.data);
   };
 
-  console.log (route, '<=============== Route');
 
   const getReviews = async () => {
     const hotel = route.params.hotelId;
@@ -59,17 +61,17 @@ function reviewsScreen({ route }: any) {
     retrieveStorage();
   }, []);
 
-  function finishRating(e) {
+  function finishRating(e:any) {
     setRating(e);
     modalStatusChange();
   }
 
   return (
-    <SafeAreaView style={styles.containerAll}>
+    <SafeAreaView style={[styles.containerAll, !theme && tema.darkCard]}>
       <Divider style={styles.divider} />
       <View style={styles.ratingView}>
-        <Text style={styles.title}>Rate and give your opinion</Text>
-        <Text style={styles.secondLine}>
+        <Text style={[styles.title, !theme && tema.darkText]}>Rate and give your opinion</Text>
+        <Text style={[styles.secondLine, !theme && tema.darkText]}>
           Share your experience and help other users get a clearer idea about
           the place.
         </Text>
@@ -82,9 +84,13 @@ function reviewsScreen({ route }: any) {
               borderRadius: 50,
               marginRight: 25,
             }}
-            source={{
-              uri: `${user?.photo}`,
-            }}
+            source={
+              user?.photo
+                ? user.photo[0] === "h"
+                  ? { uri: `${user.photo}` }
+                  : { uri: `data:image/jpeg;base64,${user?.photo}` }
+                : require("../../images/logo.png")
+            }
           />
           <Rating
             onFinishRating={(e) => finishRating(e)}

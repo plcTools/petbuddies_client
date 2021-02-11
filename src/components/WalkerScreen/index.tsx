@@ -50,7 +50,7 @@ const WalkerScreen = () => {
   const userFavorites = useSelector(
     (state: RootState) => state.user.userFavorites
   );
-  const theme = useSelector((state) => state.user.theme);
+  const theme = useSelector((state: RootState) => state.user.theme);
   const [id, setId] = React.useState<string>("");
   const dispatch = useAppDispatch();
   let [fonts] = useFonts({

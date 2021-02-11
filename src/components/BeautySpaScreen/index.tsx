@@ -28,7 +28,7 @@ function BeautySpaScreen() {
   const [checked, setChecked] = React.useState<string | boolean>(false);
   const [check, setCheck] = React.useState<boolean>(false);
   const [list, setList] = React.useState<string[]>([]);
-  const theme = useSelector((state) => state.user.theme);
+  const theme = useSelector((state:RootState) => state.user.theme);
   interface ModalChecks {
     [key: string]: boolean;
   }
