@@ -8,20 +8,26 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
-  Modal
+  Modal,
 } from "react-native";
 import { RouteStackParamList } from "../../../NavigationConfig/types";
-import { Icon, Divider } from "react-native-elements";
+import { Icon, Divider, Overlay } from "react-native-elements";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
+import { tema } from "../../../Theme/theme";
+import { useSelector } from "react-redux";
 import InfoModal from "../../InfoModal";
-import {styles} from './styles'
+import { styles } from "./styles";
 const { width } = Dimensions.get("screen");
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
 
-const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile">) => {
-  const [state, setState] = React.useState<any>('');
+const HotelProfile = ({
+  navigation,
+  route,
+}: RouteStackParamList<"HotelProfile">) => {
+  const theme = useSelector((state) => state.user.theme);
+  const [state, setState] = React.useState<any>("");
   const [thisRegion, setThisRegion] = React.useState<any>({
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
@@ -46,29 +52,38 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
 
   if (!state) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
-          source={require('../../../images/loader.gif')}
+          source={require("../../../images/loader.gif")}
           style={{ width: 200, height: 150 }}
         />
       </View>
-    )
+    );
   }
 
   return (
-    <ScrollView style={styles.scroll}>
+    <ScrollView style={[styles.scroll, !theme && tema.darkCard]}>
       <View style={styles.container}>
         <View style={{ flex: 1, justifyContent: "center" }}>
           <View style={styles.cardContainer}>
             {/* Main Info Box */}
-            <View style={styles.headerContainer}>
+            <View
+              style={[
+                styles.headerContainer,
+                { borderColor: !theme ? "rgba(256,256,256, 0.4)" : "#ccc" },
+              ]}
+            >
               <View style={styles.userRow}>
                 <Image style={styles.userImage} source={{ uri: state.logo }} />
                 <View style={styles.userNameRow}>
-                  <Text style={styles.userNameText}>{state.name}</Text>
+                  <Text style={[styles.userNameText, !theme && tema.darkText]}>
+                    {state.name}
+                  </Text>
                 </View>
                 <View style={styles.userBioRow}>
-                  <Text style={styles.userBioText}>{state.description}</Text>
+                  <Text style={[styles.userBioText, !theme && tema.darkText]}>
+                    {state.description}
+                  </Text>
                 </View>
               </View>
               <View style={styles.socialRow}>
@@ -78,15 +93,14 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                   startingValue={state.rating}
                   imageSize={30}
                 />
-                <Text style={styles.ratingText}>
+                <Text style={[styles.ratingText, !theme && tema.darkText]}>
                   {state.reviewsReceived} califications
                 </Text>
               </View>
             </View>
             <Divider />
             {/* Fotos */}
-            {
-              state.adsPics &&
+            {state.adsPics && (
               <View style={{ maxHeight: 300 }}>
                 <FlatList
                   data={state.adsPics}
@@ -124,14 +138,13 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                           },
                           shadowOpacity: 0.58,
                           shadowRadius: 16.0,
-
                         }}
                       />
                     </View>
                   )}
                 />
               </View>
-            }
+            )}
             <Divider />
             {/* Description items */}
             <View style={styles.descriptionRow}>
@@ -143,7 +156,9 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                   color="#6a2c70"
                 />
               </View>
-              <Text style={styles.userDescriptionText}>
+              <Text
+                style={[styles.userDescriptionText, !theme && tema.darkText]}
+              >
                 {`$${state.fee} per night`}
               </Text>
             </View>
@@ -156,7 +171,9 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                   color="#6a2c70"
                 />
               </View>
-              <Text style={styles.userDescriptionText}>
+              <Text
+                style={[styles.userDescriptionText, !theme && tema.darkText]}
+              >
                 {`${state.workDays} : ${state.workHours} `}
               </Text>
             </View>
@@ -169,7 +186,9 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                   color="#6a2c70"
                 />
               </View>
-              <Text style={styles.userDescriptionText}>
+              <Text
+                style={[styles.userDescriptionText, !theme && tema.darkText]}
+              >
                 {state?.address + ", " + state?.zone}
               </Text>
             </View>
@@ -182,13 +201,20 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                   color="#6a2c70"
                 />
               </View>
-              {state.allowedPets?.length > 0 &&
-                <Text style={styles.userDescriptionText}>
-                  {`We accept:`}
-                </Text>}
+              {state.allowedPets?.length > 0 && (
+                <Text
+                  style={[styles.userDescriptionText, !theme && tema.darkText]}
+                >{`We accept:`}</Text>
+              )}
               {state.allowedPets?.length > 0 &&
                 state.allowedPets.map((item: string, index: number) => (
-                  <Text style={styles.userDescriptionText} key={index}>
+                  <Text
+                    style={[
+                      styles.userDescriptionText,
+                      !theme && tema.darkText,
+                    ]}
+                    key={index}
+                  >
                     {`${`- ${item}  -`}`}
                   </Text>
                 ))}
@@ -203,7 +229,11 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                     color="#6a2c70"
                   />
                 </View>
-                <Text style={styles.userDescriptionText}>Comida incluida</Text>
+                <Text
+                  style={[styles.userDescriptionText, !theme && tema.darkText]}
+                >
+                  Comida incluida
+                </Text>
               </View>
             )}
             {state.requirement?.length > 0 && (
@@ -216,7 +246,9 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                     color="#6a2c70"
                   />
                 </View>
-                <Text style={styles.userDescriptionText}>
+                <Text
+                  style={[styles.userDescriptionText, !theme && tema.darkText]}
+                >
                   Requisitos: {state.requirement}
                 </Text>
               </View>
@@ -234,11 +266,17 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
                         color="#6a2c70"
                       />
                     </View>
-                    <Text style={styles.userDescriptionText}>{item}</Text>
+                    <Text
+                      style={[
+                        styles.userDescriptionText,
+                        !theme && tema.darkText,
+                      ]}
+                    >
+                      {item}
+                    </Text>
                   </View>
                 );
-              })
-            }
+              })}
             <TouchableOpacity
               style={styles.messageRow}
               onPress={modalStatusChange}
@@ -252,14 +290,23 @@ const HotelProfile = ({ navigation, route, }: RouteStackParamList<"HotelProfile"
           animationType="slide"
           transparent={true}
           visible={modalVisible}
-          onRequestClose={() => {
-            modalStatusChange();
-          }}
+          onRequestClose={modalStatusChange}
         >
-          <InfoModal
-            modalStatusChange={modalStatusChange}
-            data={state}
-          />
+          <View
+            style={[
+              {
+                height: "100%",
+              },
+              {
+                backgroundColor: !theme
+                  ? "rgba(0,0,0, 0.7)"
+                  : "rgba(0,0,0,0.2)",
+              },
+            ]}
+            // onPress={modalStatusChange}
+          >
+            <InfoModal modalStatusChange={modalStatusChange} data={state} />
+          </View>
         </Modal>
       </View>
     </ScrollView>

@@ -77,6 +77,7 @@ interface GetOwner {
 
 interface ChangeTheme {
   type: typeof THEME;
+  // payload: boolean;
 }
 
 export type OwnerActionsTypes =

@@ -17,6 +17,8 @@ import { walker } from "../../NavigationConfig/types";
 import { useAppDispatch, RootState } from "../../redux/store";
 import { getUserFavorites } from "../../redux/owner/actions";
 import { getData } from "../../AsyncStorage/index";
+import { tema } from "../../Theme/theme";
+import { useSelector } from "react-redux";
 interface Props {
   walker: walker;
   userFavorites: walker[];
@@ -30,6 +32,7 @@ const WalkerCard: React.FC<Props> = ({
   const [id, setId] = useState<string>("");
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const theme = useSelector((state) => state.user.theme);
   const retrieveStorage = async () => {
     const user: string = await getData();
     setId(user);
@@ -56,7 +59,13 @@ const WalkerCard: React.FC<Props> = ({
   /* if (!fonts) return <View><Icon name="spinner" reverse type="font-awesome-5" /></View>; */
 
   return (
-    <Card containerStyle={styles.container}>
+    <Card
+      containerStyle={[
+        styles.container,
+        !theme && tema.darkContainer,
+        !theme && { borderColor: "rgba(256,256,256,0.4)", borderWidth: 1 },
+      ]}
+    >
       <TouchableOpacity
         style={styles.cardContainer}
         onPress={() => navigation.navigate("WalkerProfile", { id: walker._id })}
@@ -71,22 +80,38 @@ const WalkerCard: React.FC<Props> = ({
               marginTop: 3,
               marginBottom: 7,
             }}
-            source={walker?.photo ? {uri:`${walker.photo}`} : require("../../images/logo.png")}
+            source={
+              walker?.photo
+                ? { uri: `${walker.photo}` }
+                : require("../../images/logo.png")
+            }
           />
           <View style={styles.headerContainer}>
-            <Text style={styles.headerTitle}>
+            <Text style={[styles.headerTitle, !theme && tema.darkText]}>
               {`${walker.name} ${walker.lastname}`}
             </Text>
 
             <Text style={styles.text}>
               <Text style={styles.pricing}>${walker.fee}</Text>
-              <Text style={{ fontFamily: "NunitoSans_400Regular" }}>/walk</Text>
+              <Text
+                style={[
+                  { fontFamily: "NunitoSans_400Regular" },
+                  !theme && tema.darkText,
+                ]}
+              >
+                /walk
+              </Text>
             </Text>
           </View>
         </View>
         <View>
           <Card.Divider />
-          <Text style={{ fontFamily: "NunitoSans_600SemiBold", fontSize: 20 }}>
+          <Text
+            style={[
+              { fontFamily: "NunitoSans_600SemiBold", fontSize: 20 },
+              !theme && tema.darkText,
+            ]}
+          >
             {walker.description}
           </Text>
           <View style={styles.workZone}>
@@ -102,18 +127,26 @@ const WalkerCard: React.FC<Props> = ({
 
               <Text
                 key={i}
-                style={{
-                  textTransform: "capitalize",
-                  marginLeft: 6,
-                  fontFamily: "NunitoSans_600SemiBold",
-                }}
+                style={[
+                  {
+                    textTransform: "capitalize",
+                    marginLeft: 6,
+                    fontFamily: "NunitoSans_600SemiBold",
+                  },
+                  !theme && tema.darkText,
+                ]}
               >
                 {z}
               </Text>
             ))}
           </View>
           <View style={styles.cardHeaderRate}>
-            <Text style={{ marginRight: 5, fontSize: 15 }}>
+            <Text
+              style={[
+                { marginRight: 5, fontSize: 15 },
+                !theme && tema.darkText,
+              ]}
+            >
               {walker.rating}
             </Text>
             <Icon
@@ -131,20 +164,18 @@ const WalkerCard: React.FC<Props> = ({
         <CheckBox
           uncheckedIcon={
             <Icon
-              raised
               name="heart-o"
               type="font-awesome"
-              size={15}
-              color="black"
+              size={19}
+              color={!theme ? "white" : "black"}
             />
           }
           checkedIcon={
             <Icon
-              raised
               name="heart"
               type="font-awesome"
-              size={15}
-              color={"red"}
+              size={19}
+              color={"#E13E50"}
             />
           }
           checked={checked}

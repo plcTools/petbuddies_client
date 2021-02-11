@@ -1,17 +1,27 @@
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
-  themeDark: {
-    backgroundColor: "#2E3440",
-    color: "#ECEFF4",
+export const tema = StyleSheet.create({
+  darkCard: {
+    backgroundColor: "#0A0E14",
+    flex: 1,
+  },
+  darkContainer: {
+    backgroundColor: "#0D1117",
     //  border: "#575c66",
     //  backgroundAlt: "#575c66",
     //  borderAlt: "#2E3440",
   },
-  themeLight: {
+  darkText: {
+    color: "#ffff",
+  },
+  lightContainer: {
+    flex: 1,
     backgroundColor: "#FFFFFF",
     // primary: "#512DA8",
-    color: "#121212",
+
     // error: "#D32F2F",
+  },
+  lightText: {
+    color: "#121212",
   },
 });

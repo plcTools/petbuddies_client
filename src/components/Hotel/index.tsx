@@ -7,14 +7,14 @@ import {
   SafeAreaView,
   Modal,
   TouchableOpacity,
-  Image
+  Image,
 } from "react-native";
 import { Icon, Divider } from "react-native-elements";
 import { styles } from "../WalkerScreen/styles";
 import HotelCard from "./HotelCard/index";
 import { useSelector } from "react-redux";
 import { useAppDispatch, RootState } from "../../redux/store";
-import { getData } from '../../AsyncStorage/index';
+import { getData } from "../../AsyncStorage/index";
 import { getHotels } from "../../redux/hotels/actions";
 import { getOwnerFavHotels } from "../../redux/owner/actions";
 import { Hotel } from "../../redux/hotels/types";
@@ -27,6 +27,7 @@ import {
   NunitoSans_300Light_Italic,
   NunitoSans_300Light,
 } from "@expo-google-fonts/nunito-sans";
+import { tema } from "../../Theme/theme";
 
 interface ModalChecks {
   [key: string]: boolean;
@@ -39,20 +40,22 @@ const HotelScreen = () => {
   const [input, setInput] = React.useState<ModalChecks>({});
   const [icon, setIcon] = React.useState<ModalChecks>({ hotels: true });
   const [list, setList] = React.useState<string[]>([]);
-
+  const theme = useSelector((state) => state.user.theme);
   const hotels = useSelector((state: RootState) => state.hotels.hotels);
-  const [id, setId] = React.useState<string>('');
+  const [id, setId] = React.useState<string>("");
 
   const handleList = (hotels: Hotel[]) => {
-    const arr: string[] = hotels.map(item => item.zone)
-    const uniqueZones = arr.filter((item, index) => arr.indexOf(item) === index);
-    return setList(uniqueZones)
-  }
+    const arr: string[] = hotels.map((item) => item.zone);
+    const uniqueZones = arr.filter(
+      (item, index) => arr.indexOf(item) === index
+    );
+    return setList(uniqueZones);
+  };
 
   const retrieveStorage = async () => {
-    const user: string = await getData()
-    setId(user)
-  }
+    const user: string = await getData();
+    setId(user);
+  };
 
   const userFavHotels = useSelector(
     (state: RootState) => state.user.userFavHotels
@@ -70,11 +73,11 @@ const HotelScreen = () => {
   React.useEffect(() => {
     retrieveStorage();
     if (Object.keys(hotels).length === 0) {
-      dispatch(getHotels())
+      dispatch(getHotels());
     }
-    dispatch(getOwnerFavHotels(id))
-    handleList(hotels)
-    setState(hotels)
+    dispatch(getOwnerFavHotels(id));
+    handleList(hotels);
+    setState(hotels);
   }, [dispatch, hotels]);
 
   const handleInput = (name: string) => {
@@ -112,23 +115,23 @@ const HotelScreen = () => {
     );
   };
 
-  if (!fonts) {
+  if (hotels.length === 0) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
-          source={require('../../images/loader.gif')}
+          source={require("../../images/loader.gif")}
           style={{ width: 200, height: 150 }}
         />
       </View>
-    )
+    );
   }
   return (
-    <>
-      <View><Divider /></View>
+    <View style={[!theme ? tema.darkCard : tema.lightContainer]}>
+      <Divider />
       <View style={styles.viewIcons}>
         <Icon
-          name='list-ul'
-          type='font-awesome'
+          name="list-ul"
+          type="font-awesome"
           color={icon?.hotels ? "#07689f" : "grey"}
           onPress={() => {
             setState(hotels);
@@ -170,7 +173,6 @@ const HotelScreen = () => {
             handleIcon("house");
           }}
         />
-
       </View>
       <Divider />
       {checked ? (
@@ -200,110 +202,142 @@ const HotelScreen = () => {
       <View>
         <Modal animationType="slide" transparent={true} visible={check}>
           <View
-            style={{
-              backgroundColor: "#f1f1f1",
-              margin: 15,
-              marginTop: 100,
-              padding: 20,
-              marginBottom: 50,
-              borderRadius: 25,
-              alignItems: "center",
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
+            style={[
+              {
+                height: "100%",
               },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-            }}
+              {
+                backgroundColor: !theme
+                  ? "rgba(0,0,0, 0.7)"
+                  : "rgba(0,0,0,0.2)",
+              },
+            ]}
           >
-            <View style={{ width: "100%", alignItems: "flex-end" }}>
-              <Icon
-                name="times"
-                type="font-awesome-5"
-                onPress={() => {
-                  setCheck(false);
-                  setIcon({});
-                }}
-                color="red"
-                size={15}
-              />
-            </View>
-            <Text
-              style={{
-                fontWeight: "bold",
-                fontSize: 20,
-                marginBottom: 10,
-                width: 300,
-                textAlign: "center",
-              }}
+            <View
+              style={[
+                {
+                  backgroundColor: "#f1f1f1",
+                  marginVertical: "30%",
+                  padding: 20,
+                  marginHorizontal: 15,
+                  borderRadius: 25,
+                  alignItems: "center",
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 5,
+                },
+                !theme && tema.darkContainer,
+              ]}
             >
-              Select your neighborhood
-            </Text>
-            {list &&
-              list.map((item, i) => (
-                <TouchableOpacity
-                  key={i}
-                  style={{
-                    width: "100%",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    borderRadius: 10,
-                    marginBottom: 5,
-                    marginTop: 5,
-                    padding: 7,
-                    backgroundColor: "#fff",
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 2,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 5,
-                    elevation: 3,
+              <View style={{ width: "100%", alignItems: "flex-end" }}>
+                <Icon
+                  name="times"
+                  type="font-awesome-5"
+                  onPress={() => {
+                    setCheck(false);
+                    setIcon({});
                   }}
-                  onPress={() => handleInput(item)}
-                >
-                  <Text style={{ marginLeft: 10, textTransform: "capitalize" }}>
-                    {item}
-                  </Text>
-                  <Icon
-                    name={input[item] ? "check" : "plus"}
-                    type="font-awesome-5"
-                    size={13}
-                    color={input[item] ? "green" : "gray"}
-                  />
-                </TouchableOpacity>
-              ))}
+                  color="red"
+                  size={15}
+                />
+              </View>
+              <Text
+                style={[
+                  {
+                    fontWeight: "bold",
+                    fontSize: 20,
+                    marginBottom: 10,
+                    width: 300,
+                    textAlign: "center",
+                  },
+                  !theme && tema.darkText,
+                ]}
+              >
+                Select your neighborhood
+              </Text>
+              {list &&
+                list.map((item, i) => (
+                  <TouchableOpacity
+                    key={i}
+                    style={[
+                      {
+                        width: "100%",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        borderRadius: 10,
+                        marginBottom: 5,
+                        marginTop: 5,
+                        padding: 7,
+                        backgroundColor: "#fff",
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 5,
+                        elevation: 3,
+                      },
+                      !theme && { backgroundColor: "#303841" },
+                    ]}
+                    onPress={() => handleInput(item)}
+                  >
+                    <Text
+                      style={[
+                        { marginLeft: 10, textTransform: "capitalize" },
+                        !theme && tema.darkText,
+                      ]}
+                    >
+                      {item}
+                    </Text>
+                    <Icon
+                      name={input[item] ? "check" : "plus"}
+                      type="font-awesome-5"
+                      size={13}
+                      color={input[item] ? "green" : "gray"}
+                    />
+                  </TouchableOpacity>
+                ))}
 
-            <TouchableOpacity
-              style={{
-                marginTop: 10,
-                backgroundColor: "#ccc",
-                borderRadius: 8,
-                padding: 5,
-                width: "70%",
-              }}
-              onPress={() => {
-                for (const prop in input) {
-                  if (input[prop]) {
-                    setCheck(!check);
-                    setChecked(prop);
-                    return setState(
-                      hotels.filter((h) => h.zone.toLowerCase() === prop.toLowerCase())
-                    );
+              <TouchableOpacity
+                style={{
+                  marginTop: 10,
+                  backgroundColor: !theme ? "#303851" : "#ffff",
+                  borderRadius: 8,
+                  padding: 5,
+                  width: "70%",
+                }}
+                onPress={() => {
+                  for (const prop in input) {
+                    if (input[prop]) {
+                      setCheck(!check);
+                      setChecked(prop);
+                      return setState(
+                        hotels.filter(
+                          (h) => h.zone.toLowerCase() === prop.toLowerCase()
+                        )
+                      );
+                    }
                   }
-                }
-              }}
-            >
-              <Text style={{ textAlign: "center" }}>Select</Text>
-            </TouchableOpacity>
+                }}
+              >
+                <Text
+                  style={[{ textAlign: "center" }, !theme && tema.darkText]}
+                >
+                  Select
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </Modal>
       </View>
-    </>
+    </View>
   );
 };
 

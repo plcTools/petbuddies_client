@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
   container: {
     marginBottom: 10,
     shadowColor: "#000",
-    opacity: 0.9,
+    opacity: 0.8,
     shadowOffset: {
       width: 0,
       height: 10,
@@ -27,8 +27,8 @@ export const styles = StyleSheet.create({
   },
   fav: {
     position: "absolute",
-    right: -30,
-    top: -30,
+    right: -20,
+    top: -20,
   },
   cardHeaderRate: {
     flex: 1,

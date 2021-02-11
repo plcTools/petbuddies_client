@@ -45,8 +45,22 @@ export const getOwner = (id: string): any => async (dispatch: DispatchType) => {
   return dispatch({ type: GET_OWNER, payload: owner });
 };
 
+// export const changeTheme = (id: string): any => async (
+//   dispatch: DispatchType
+// ) => {
+//   const { data } = await axios.patch(`/owners/dark/${id}`);
+//   return dispatch({ type: THEME, payload: data });
+// };
+
 export const changeTheme = () => {
   return {
     type: THEME,
   };
 };
+
+// export const getTheme = (payload: boolean) => {
+//   return {
+//     type: THEME,
+//     payload,
+//   };
+// };

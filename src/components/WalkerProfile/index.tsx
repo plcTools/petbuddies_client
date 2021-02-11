@@ -1,7 +1,6 @@
 import "react-native-gesture-handler";
 import React, { useState } from "react";
 import {
-  Animated,
   View,
   Text,
   Image,
@@ -10,14 +9,16 @@ import {
   Dimensions,
   Modal,
   SafeAreaView,
-  Linking
+  Linking,
 } from "react-native";
 import { RouteStackParamList } from "../../NavigationConfig/types";
-import { styles } from './styles'
-import { Icon, Divider, Overlay, } from "react-native-elements";
+import { styles } from "./styles";
+import { Icon, Divider, Overlay } from "react-native-elements";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
 import InfoModal from "../InfoModal";
+import { tema } from "../../Theme/theme";
+import { useSelector } from "react-redux";
 const { width, height } = Dimensions.get("screen");
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
@@ -26,7 +27,8 @@ const WalkerProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"WalkerProfile">) => {
-  const [state, setState] = React.useState<any>('');
+  const [state, setState] = React.useState<any>("");
+  const theme = useSelector((state) => state.user.theme);
   React.useEffect(() => {
     axios
       .get(`/walkers/${route.params.id}`)
@@ -42,35 +44,25 @@ const WalkerProfile = ({
     return (
       <View style={[styles.tabBar, styles.tabContainer]}>
         <View>
-          <Animated.Text style={styles.tabLabelText}>
-            $ {state.fee}
-          </Animated.Text>
-          <Animated.Text style={styles.tabLabelNumber}>Per Walk</Animated.Text>
+          <Text style={styles.tabLabelText}>$ {state.fee}</Text>
+          <Text style={styles.tabLabelNumber}>Per Walk</Text>
         </View>
         <View>
-          <Animated.Text style={styles.tabLabelText}>
-            {state.workHours}
-          </Animated.Text>
-          <Animated.Text style={styles.tabLabelNumber}>
-            Working Hours
-          </Animated.Text>
+          <Text style={styles.tabLabelText}>{state.workHours}</Text>
+          <Text style={styles.tabLabelNumber}>Working Hours</Text>
         </View>
         <View>
-          <Animated.Text style={styles.tabLabelText}>
-            {state.walks || 0}
-          </Animated.Text>
-          <Animated.Text style={styles.tabLabelNumber}>
-            Walks completed
-          </Animated.Text>
+          <Text style={styles.tabLabelText}>{state.walks || 0}</Text>
+          <Text style={styles.tabLabelNumber}>Walks completed</Text>
         </View>
         {/* <View>
-        <Animated.Text style={styles.tabLabelText}>
+        <Text style={styles.tabLabelText}>
           100%
-        </Animated.Text>
-        <Animated.Text style={styles.tabLabelNumber}>
+        </Text>
+        <Text style={styles.tabLabelNumber}>
         Respuesta <br/>
         a mensajes
-        </Animated.Text>
+        </Text>
         </View> */}
       </View>
     );
@@ -78,13 +70,13 @@ const WalkerProfile = ({
 
   if (!state) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
-          source={require('../../images/loader.gif')}
+          source={require("../../images/loader.gif")}
           style={{ width: 200, height: 150 }}
         />
       </View>
-    )
+    );
   }
 
   return (
@@ -94,24 +86,40 @@ const WalkerProfile = ({
         display: "flex",
         justifyContent: "center",
         flex: 1,
-        height: '100%'
-      }}>
-      <ScrollView style={styles.scroll}>
+        height: "100%",
+      }}
+    >
+      <ScrollView style={[styles.scroll, !theme && tema.darkCard]}>
         <View>
-          <View style={{ flex: 1, justifyContent: 'center' }}>
+          <View style={{ flex: 1, justifyContent: "center" }}>
             {/* Main container */}
             <View style={styles.cardContainer}>
-              <View style={styles.headerContainer}>
+              <View
+                style={[
+                  styles.headerContainer,
+                  { borderColor: !theme ? "rgba(256,256,256,0.4)" : "#ccc" },
+                ]}
+              >
                 <View style={styles.userRow}>
-                  <Image style={styles.userImage} source={state?.photo ? { uri: `${state.photo}` } : require("../../images/logo.png")}
+                  <Image
+                    style={styles.userImage}
+                    source={
+                      state?.photo
+                        ? { uri: `${state.photo}` }
+                        : require("../../images/logo.png")
+                    }
                   />
                   <View style={styles.userNameRow}>
-                    <Text style={styles.userNameText}>
+                    <Text
+                      style={[styles.userNameText, !theme && tema.darkText]}
+                    >
                       {state.name + " " + state.lastname}
                     </Text>
                   </View>
                   <View style={styles.userBioRow}>
-                    <Text style={styles.userBioText}>{state.description}</Text>
+                    <Text style={[styles.userBioText, !theme && tema.darkText]}>
+                      {state.description}
+                    </Text>
                   </View>
                 </View>
                 <View style={styles.socialRow}>
@@ -121,9 +129,9 @@ const WalkerProfile = ({
                     startingValue={state.rating}
                     imageSize={30}
                   />
-                  <Text style={styles.ratingText}>
+                  <Text style={[styles.ratingText, !theme && tema.darkText]}>
                     {state.reveiewsReceived} califications
-                </Text>
+                  </Text>
                 </View>
               </View>
               <Divider />
@@ -137,7 +145,9 @@ const WalkerProfile = ({
                     color="#6a2c70"
                   />
                 </View>
-                <Text style={styles.userDescriptionText}>
+                <Text
+                  style={[styles.userDescriptionText, !theme && tema.darkText]}
+                >
                   {`$${state.fee} average per walk `}
                 </Text>
               </View>
@@ -150,70 +160,105 @@ const WalkerProfile = ({
                     color="#6a2c70"
                   />
                 </View>
-                <Text style={styles.userDescriptionText}>
+                <Text
+                  style={[styles.userDescriptionText, !theme && tema.darkText]}
+                >
                   {`${state.workHours} `}
                 </Text>
               </View>
               <View style={styles.descriptionRow}>
                 <View style={{ justifyContent: "center", width: 30 }}>
-                  <Icon name="map-marker" type="font-awesome" size={25} color="#6a2c70" />
+                  <Icon
+                    name="map-marker"
+                    type="font-awesome"
+                    size={25}
+                    color="#6a2c70"
+                  />
                 </View>
-                <View style={{ flexWrap: 'wrap', flexDirection: 'row', }}>
+                <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
                   {state.workZone?.length > 0 &&
                     state.workZone.map((item: string, index: number) => (
-                      <Text style={styles.userDescriptionText} key={index}>
+                      <Text
+                        style={[
+                          styles.userDescriptionText,
+                          !theme && tema.darkText,
+                        ]}
+                        key={index}
+                      >
                         {item}
                       </Text>
                     ))}
                 </View>
               </View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.messageRow}
                 onPress={modalStatusChange}
-              >
-                <Text style={styles.messageText}>Get Contact Info</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <Overlay
-            isVisible={modalVisible}
-            onBackdropPress={modalStatusChange}
-            style={styles.overlay}
-          >
-            <View>
-              <View style={styles.overlay}>
-                <View>
-                  <Image
-                    style={styles.fotoverlay}
-                    source={{ uri: `${state.photo}` }}
-                  />
-
+                >
+                </TouchableOpacity> }
                 </View>
-                <Text style={styles.titleOverlay}>{state.name + ' ' + state.lastname}</Text>
+                </View>
+                {/* <Overlay
+                  isVisible={modalVisible}
+                  onBackdropPress={modalStatusChange}
+                  style={styles.overlay}
+                > */}
+            </View>
+            {/* <View style={styles.overlay}>
+              <View>
+              <Image
+              style={styles.fotoverlay}
+              source={{ uri: `${state.photo}` }}
+              />
               </View>
+              <Text style={styles.titleOverlay}>
+              {state.name + " " + state.lastname}
+              </Text>
+            </View> */}
 
-              <View style={styles.socialOverlay}>
+            <View
+              style={[
+                styles.socialOverlay,
+                { borderColor: !theme ? "#fff" : "#ccc" },
+              ]}
+            >
+              <Text style={[styles.messageText, !theme && tema.darkText]}>
+                {" "}
+                Contact Info
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginVertical: 10,
+                  justifyContent: "space-around",
+                  width: "100%",
+                }}
+              >
                 <Icon
-                  name='phone'
-                  type='font-awesome-5'
-                  color='blue'
+                  name="phone"
+                  type="font-awesome-5"
+                  color="blue"
                   onPress={() => Linking.openURL(`tel:${state?.phone}`)}
                 />
                 <Icon
-                  name='whatsapp'
-                  type='font-awesome-5'
-                  color='green'
-                  onPress={() => Linking.openURL(`https://wa.me/${state?.phone}?text=Quiero mas Información`)}
+                  name="whatsapp"
+                  type="font-awesome-5"
+                  color="green"
+                  onPress={() =>
+                    Linking.openURL(
+                      `https://wa.me/${state?.phone}?text=Quiero mas Información`
+                    )
+                  }
                 />
                 <Icon
-                  name='envelope'
-                  type='font-awesome-5'
-                  color='#ef4f4f'
+                  name="envelope"
+                  type="font-awesome-5"
+                  color="#ef4f4f"
                   onPress={() => Linking.openURL(`mailto:${state?.email}`)}
                 />
               </View>
             </View>
-          </Overlay>
+          </View>
+          {/* </Overlay> */}
         </View>
       </ScrollView>
     </SafeAreaView>

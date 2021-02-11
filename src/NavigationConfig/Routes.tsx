@@ -44,7 +44,7 @@ export const Routes: React.FC = () => {
           inactiveTintColor: "#fdfafa",
           activeTintColor: "#008891",
           style: {
-            backgroundColor: "#c98c70",
+            backgroundColor: !theme ? "#303841" : "#c98c70",
           },
           showLabel: false,
         }}
@@ -92,7 +92,7 @@ export const Routes: React.FC = () => {
         screenOptions={({ navigation }) => ({
           title: "PetBuddies",
           headerStyle: {
-            backgroundColor: "#c98c70",
+            backgroundColor: !theme ? "#303841" : "#c98c70",
           },
           headerTintColor: "#fff",
           headerTitleStyle: {
@@ -103,7 +103,7 @@ export const Routes: React.FC = () => {
               reverse
               name="user"
               type="font-awesome"
-              color="#c98c70"
+              color={!theme ? "#0A0E14" : "#c98c70"}
               size={20}
               onPress={() => navigation.navigate("Profile")}
             />
