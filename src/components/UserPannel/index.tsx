@@ -23,7 +23,6 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
   useEffect(() => {
     retrieveStorage();
   }, [owners]);
-  console.log(owners.serviceType)
 
   const logout = async () => {
     try {
@@ -72,7 +71,7 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
           <ListItem.Subtitle>{state?.zona} </ListItem.Subtitle>
         </ListItem.Content>
       </ListItem>
-      <ListItem bottomDivider onPress={() => owners.service ? navigation.navigate("ServiceForm", {service: owners.serviceType}) : navigation.navigate("WalkerForm")}>
+      <ListItem bottomDivider onPress={() => state?.service ? navigation.navigate("ServiceForm", {service: state?.serviceType}) : navigation.navigate("WalkerForm")}>
         <Icon raised name="user-cog" type="font-awesome-5" size={20} />
         <ListItem.Content>
           <ListItem.Title>Edit Account</ListItem.Title>

@@ -64,7 +64,7 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
     dispatch(getOwner(idData));
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     dataStore();
     (async () => {
       if (Platform.OS !== "web") {
@@ -78,7 +78,7 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
     })();
   }, []);
 
-  React.useEffect(()=>{
+  useEffect(()=>{
       setData(user)
       if(route.params.service){
         axios.get(`/${route.params.service}/${user?.service}`)
@@ -90,15 +90,14 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
   },[user])
 
   const handleSubmit = async () => {
-
     const results:any = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${data.address},${data.zone},${data.provincia},${data.pais},+CA&key=AIzaSyCe-UKS_dF_ixRKNh28jFypTZXcpMyVeFQ`)
     const { lng, lat } = results.data.results[0].geometry.location
     if (user.service) {
-      axios.put(`/hotels/${user.service}`, { ...data, adsPics: pics, logo: image, latitude: lat, longitude: lng});
+      axios.put(`/${route.params.service}/${user.service}`, { ...data, adsPics: pics, logo: image, latitude: lat, longitude: lng});
       await axios.put(`/walkers/${id}`, {photo: image});
     } else {
-      const response = await axios.post(`/${service}`, { ...data, adsPics: pics, logo: image, latitude: lat, longitude: lng, serviceType: service});
-      await axios.put(`/walkers/${id}`, {photo: image, service: response.data._id});
+      const response = await axios.post(`/${service}`, { ...data, adsPics: pics, logo: image, latitude: lat, longitude: lng });
+      await axios.put(`/walkers/${id}`, {photo: image, service: response.data._id, serviceType: service});
     }
     setData({})
     setPics([])
@@ -119,6 +118,7 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
         if (type === "profile") {
           setImage(result.base64);
         } else {
+          if(route.params.service){
             setPics(oldpics => {
               return oldpics?.map((item,i) => {
                 if(index === i ){
@@ -128,15 +128,19 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
                 }
               })
             });
+          } else {
+            setPics([...pics, result.base64]);
           }
         }
+      }
     };
+
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.formGroup}>
         <View style={styles.formImage}>
-          <Text style={styles.labelImage}>SERVICE / change profile pic</Text>
+          <Text style={styles.labelImage}>Change profile pic</Text>
           <View>
             <Avatar
               rounded
@@ -153,14 +157,14 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
             />
           </View>
         </View>
-        {!servicio ? (<View
+        { !route.params.service ? (<View
           style={{
             flex: 1,
             marginTop: 20,
             flexDirection: "row",
             justifyContent: "space-between",
           }}
-        >
+          >
           <CheckBox
             center
             title="Hotel"
@@ -208,7 +212,7 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
       <View>
         <Text style={styles.label}>Cellphone</Text>
         <TextInput
-          defaultValue={servicio?.phone || ""}
+          defaultValue={servicio && String(servicio?.phone) || ""}
           onChangeText={(value) => handleChange("phone", value)}
           style={styles.input}
           maxLength={50}
@@ -254,7 +258,6 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
           style={styles.input}
           maxLength={50}
           autoCapitalize="none"
-          placeholder="E.g. : street, city"
         />
       </View>
       <View>
@@ -290,18 +293,68 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
           placeholder="E.g. : Monday to Friday"
         />
       </View>
+      { (pics?.length === 0 && service === 'hotels') ||  route.params.service === "hotels"  ? 
+        <View>
+          <Text style={styles.label}>Allowed Pets</Text>
+          <TextInput
+            defaultValue={servicio && String(servicio?.allowedPets) || ""} //ARRAY
+            style={styles.input}
+            onChangeText={(value) => {
+              let result = value.toLowerCase().trim().split(", ");
+              return setData({ ...data, allowedPets: result });
+            }}
+            maxLength={50}
+            autoCapitalize="none"
+            placeholder="E.g. : Dogs, cats"
+          />
+        </View>
+        : null
+      }
+
+    { (pics?.length === 0 && service === 'hotels') || route.params.service === "hotels" ? 
+      <View>
+        <Text style={styles.label}>Requirements</Text>
+        <TextInput
+          defaultValue={servicio?.requirement || ""}
+          style={styles.input}
+          onChangeText={(value) => handleChange("requirement", value)}
+          maxLength={50}
+          autoCapitalize="none"
+          placeholder="E.g. : Vaccines..."
+        />
+      </View>
+      : null
+    }
+
+    { (pics?.length === 0 && service === 'hotels') || route.params.service === "hotels" ? 
+      <View>
+        <Text style={styles.label}>Extras</Text> 
+        <TextInput
+          defaultValue={servicio && String(servicio?.extras) || ""} //ARRAY
+          style={styles.input}
+          onChangeText={(value) => {
+            let result = value.toLowerCase().trim().split(", ");
+            return setData({ ...data, extras: result });
+          }}
+          maxLength={50}
+          autoCapitalize="none"
+          placeholder="E.g. : Spa, training..."
+        />
+      </View>
+      : null
+    }
       <Text style={styles.label}>Business photos</Text>
       <View
         style={{
           flex: 1,
-          marginTop: 20,
+          marginTop: 5,
           flexDirection: "row",
           justifyContent: "space-between",
         }}
       >
           <TouchableOpacity onPress={() => pickImage("pic", 0)}>
             <Image
-              style={{ width: 90, height: 90 }}
+              style={{ width: 90, height: 90, borderRadius: 4 }}
               source={
                 pics && pics[0]
                   ? { uri: `data:image/jpeg;base64,${pics[0]}` } : (servicio?.adsPics[0] ? { uri: `data:image/jpeg;base64,${servicio?.adsPics[0]}` } : require("../../images/placeholder.jpg") ) 
@@ -310,7 +363,7 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
           </TouchableOpacity>
           <TouchableOpacity onPress={() => pickImage("pic", 1)}>
             <Image
-              style={{ width: 90, height: 90 }}
+              style={{ width: 90, height: 90, borderRadius: 4 }}
               source={
                 pics && pics[1]
                   ? { uri: `data:image/jpeg;base64,${pics[1]}` } : (servicio?.adsPics[1] ? { uri: `data:image/jpeg;base64,${servicio?.adsPics[1]}` } : require("../../images/placeholder.jpg") )
@@ -319,7 +372,7 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
           </TouchableOpacity>
           <TouchableOpacity onPress={() => pickImage("pic", 2)}>
             <Image
-              style={{ width: 90, height: 90 }}
+              style={{ width: 90, height: 90, borderRadius: 4 }}
               source={
                 pics && pics[2]
                   ? { uri: `data:image/jpeg;base64,${pics[2]}` } : (servicio?.adsPics[2] ? { uri: `data:image/jpeg;base64,${servicio?.adsPics[2]}` } : require("../../images/placeholder.jpg") )
@@ -347,12 +400,13 @@ const styles = StyleSheet.create({
   label: {
     color: "#c98c70",
     fontSize: 19,
-    textShadowColor: "#fff",
-    textShadowOffset: {
-      width: 0.4,
-      height: -1,
-    },
-    textShadowRadius: 1,
+    // textShadowColor: "#fff",
+    // textShadowOffset: {
+    //   width: 0.4,
+    //   height: -1,
+    // },
+    // textShadowRadius: 1,
+    fontWeight: 'bold' //agregado
   },
   button: {
     backgroundColor: "#c98c70",
@@ -366,6 +420,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#fff",
     textAlign: "center",
+    fontWeight: 'bold' //agregado
   },
   textArea: {},
   description: {
@@ -396,12 +451,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "#c98c70",
     fontSize: 19,
-    textShadowColor: "#fff",
-    textShadowOffset: {
-      width: 0.4,
-      height: -1,
-    },
-    textShadowRadius: 1,
+    width: 170,//agregado
+    textAlign: 'center',//agregado
+    fontWeight: 'bold'//agregado
+    // textShadowColor: "#fff",
+    // textShadowOffset: {
+    //   width: 0.4,
+    //   height: -1,
+    // },
+    // textShadowRadius: 1,
   },
   formImage: {
     borderColor: "#fff",

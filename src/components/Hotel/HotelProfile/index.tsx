@@ -24,7 +24,7 @@ const HotelProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"HotelProfile">) => {
-  const [reviews, setReviews] = useState(route.params.reviews);
+  const [reviews, setReviews] = useState();
   const [state, setState] = React.useState<any>("");
   const [thisRegion, setThisRegion] = React.useState<any>({
     latitudeDelta: 0.005,
@@ -95,11 +95,11 @@ const HotelProfile = ({
                   <Rating
                     readonly
                     type="custom"
-                    startingValue={reviews.prom} //aca pido reviews
+                    startingValue={reviews?.prom} //aca pido reviews
                     imageSize={30}
                   />
                   <Text style={styles.ratingText}>
-                    {reviews.review.length} califications
+                    {reviews?.review.length} califications
                   </Text>
                 </View>
               </TouchableOpacity>

@@ -112,6 +112,8 @@ export const styles = StyleSheet.create({
       color: "#fff",
       fontSize: 20,
       fontWeight: "bold",
+      textAlign: 'center', //agregado
+      width: 180 //agregado
       // marginLeft: 5,
     },
     userImage: {
