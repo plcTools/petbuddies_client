@@ -17,13 +17,14 @@ import axios from "axios";
 import { Rating } from "react-native-ratings";
 import styles from "./styles";
 import PostReview from "./PostReview/PostReview";
+import { getHotels } from "../../redux/hotels/actions";
+import { useAppDispatch } from "../../redux/store";
+import { getWalkers } from "../../redux/walker/actions";
+import { getHairdressers } from "../../redux/Hairdressers/actions";
 
 function reviewsScreen({ route }: any) {
 
-  // hotelId: state._id,
-  //                   photo: state.logo,
-  //                   reviews: reviews,
-  //                   service: "Hotel",
+  const dispatch = useAppDispatch();
 
   const [reviews, setReviews] = useState([]);
   const [user, setUser] = useState({});
@@ -44,6 +45,9 @@ function reviewsScreen({ route }: any) {
   const getReviews = async () => {
     const hotel = route.params.hotelId;
     const allReviews = await axios.get(`/reviews/${route.params.service}/${hotel}`);
+    dispatch (getHotels ());
+    dispatch (getWalkers ());
+    dispatch (getHairdressers ());
     setReviews(allReviews.data);
   };
 

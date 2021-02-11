@@ -131,7 +131,7 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
 
           <View style={styles.cardHeaderRate}>
             <Text style={{ marginRight: 5, fontSize: 15 }}>
-              {reviews.prom > 0 && reviews.prom}
+              {reviews.prom ? reviews.prom : hotel.rating}
             </Text>
             <Icon
               name={(reviews.prom && "star") || "star-o"}

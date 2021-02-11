@@ -47,13 +47,17 @@ const styles = StyleSheet.create({
   },
   name: {
     fontWeight: "bold",
-    marginRight: 25,
+    marginBottom: 15,
   },
   textInput: {
     width: "100%",
     fontSize: 16,
     marginTop: 25
   },
+  ratingView: {
+    flexDirection: "column",
+    alignItems: "flex-start"
+  }
 });
 
 export default styles;

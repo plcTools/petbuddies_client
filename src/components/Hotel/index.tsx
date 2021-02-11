@@ -72,6 +72,7 @@ const HotelScreen = () => {
     if (Object.keys(hotels).length === 0) {
       dispatch(getHotels())
     }
+    console.log('rendericeeeee')
     dispatch(getOwnerFavHotels(id))
     handleList(hotels)
     setState(hotels)

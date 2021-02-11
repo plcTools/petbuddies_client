@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
+import {Alert,
   View,
   Text,
   SafeAreaView,
@@ -11,6 +11,10 @@ import { Icon } from "react-native-elements";
 import styles from "./styles";
 import axios from "axios";
 import { Rating } from "react-native-ratings";
+import { useAppDispatch } from "../../../redux/store";
+import { getWalkers } from "../../../redux/walker/actions";
+import { getHairdressers } from "../../../redux/Hairdressers/actions";
+import { getHotels } from "../../../redux/hotels/actions";
 
 function PostReview({
   service,
@@ -19,10 +23,13 @@ function PostReview({
   companyName,
   user,
   preRating,
+  navigation,
 }) {
   const [hotel, setHotel] = useState({});
   const [input, setInput] = useState("");
   const [rating, setRating] = useState(preRating);
+
+  const dispatch = useAppDispatch();
 
   console.log("---POSTREVIEW---", service);
 
@@ -47,7 +54,11 @@ function PostReview({
       .then((res) => {
         getReviews();
         modalStatusChange();
+        if (service === "Hotel") dispatch(getHotels());
+        else if (service === "DogGroomer") dispatch(getHairdressers());
+        else if (service === "Walker") dispatch(getWalkers());
       })
+      .then(Alert.alert("PetBuddies","Gracias por su comentario"))
       .catch((err) => console.log(err));
   }
 
@@ -61,6 +72,7 @@ function PostReview({
               type="font-awesome-5"
               size={25}
               color="#a3a3a3"
+              onPress={() => modalStatusChange ()}
             />
           </View>
           <View style={{ alignContent: "center" }}>
@@ -87,13 +99,15 @@ function PostReview({
               uri: `${user.photo}`,
             }}
           />
-          <Text style={styles.name}>{`${user.name} ${user.lastname}`}</Text>
-          <Rating
-            onFinishRating={(e) => setRating(e)}
-            type="custom"
-            startingValue={5}
-            imageSize={30}
-          />
+          <View style={styles.ratingView}>
+            <Text style={styles.name}>{`${user.name} ${user.lastname}`}</Text>
+            <Rating
+              onFinishRating={(e) => setRating(e)}
+              type="custom"
+              startingValue={preRating}
+              imageSize={30}
+            />
+          </View>
         </View>
         <TextInput
           onChangeText={(e) => setInput(e)}
