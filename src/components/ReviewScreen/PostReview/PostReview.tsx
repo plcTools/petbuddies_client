@@ -84,7 +84,7 @@ function PostReview({
               marginRight: 25,
             }}
             source={{
-              uri: `${user.photo}`,
+              uri: `${user?.photo}`,
             }}
           />
           <Text style={styles.name}>{`${user.name} ${user.lastname}`}</Text>

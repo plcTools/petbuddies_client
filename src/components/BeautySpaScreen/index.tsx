@@ -1,4 +1,4 @@
-import * as React from "react";
+  import * as React from "react";
 import { useState } from "react";
 import {
   View,
@@ -97,7 +97,7 @@ function BeautySpaScreen() {
       </SafeAreaView>
     );
   };
-  if (peluquerias.length === 0) {
+  if (!id) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image

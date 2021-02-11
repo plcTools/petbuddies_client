@@ -11,19 +11,19 @@ import { Switch } from "react-native-switch";
 import { changeTheme } from "../../redux/owner/actions";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { tema } from "../../Theme/theme";
-
+import {RootState} from '../../redux/store'
 import { getOwner } from "../../redux/owner/actions";
 
 
 const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
-  const theme = useSelector((state) => state.user.theme);
+  const theme = useSelector((state: RootState) => state.user.theme);
   const [state, setState] = React.useState<any>();
   const [enabled, setEnabled] = React.useState<boolean>(false);
-  const owners = useSelector((state) => state.user.owner);
+  const owners = useSelector((state: RootState) => state.user.owner);
   const dispatch = useDispatch();
 
   const toggleSwitch = async () => {
-    const id = await getData();
+    /* const id = await getData(); */
     dispatch(changeTheme());
     // setEnabled((enabled) => !enabled);
   };
@@ -31,15 +31,15 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
   const retrieveStorage = async () => {
     const id = await getData();
     axios.get(`/walkers/${id}`).then((result) => setState(result.data));
-    dispatch(getWalkers());
+    /* dispatch(getWalkers()); */
   };
   useEffect(() => {
     setEnabled(theme);
   }, [theme]);
 
   useEffect(() => {
-    LogBox.ignoreLogs(["Animated: `useNativeDriver`"]);
-    retrieveStorage();
+    LogBox.ignoreLogs(["Animated: `useNativeDriver`"]); // Para quitar un error de log que salia en la pantalla
+    if(!state) retrieveStorage();
   }, [owners]);
 
   const logout = async () => {
@@ -114,7 +114,7 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
               switchLeftPx={6}
               switchRightPx={6}
               circleActiveColor={"#fdd400"}
-              circleInActiveColor={"#ccc"}
+              circleInActiveColor={"#fff3e6"}
             />
           </View>
         </View>
@@ -149,11 +149,11 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
         </Text>
       </TouchableOpacity>
 
-      <Divider />
+      {/* <Divider />
       <TouchableOpacity style={[styles.box, !theme && tema.darkContainer]}>
         <Icon raised name="cog" type="font-awesome" size={20} />
         <Text style={[styles.text, !theme && tema.darkText]}>Settings</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <Divider />
       <TouchableOpacity

@@ -9,7 +9,7 @@ const dimensions = {
 
 export const styles = StyleSheet.create({
   containerAll: {
-    marginVertical: "50%",
+    marginVertical: "40%",
     marginHorizontal: 19,
     justifyContent: "center",
     alignItems: "center",

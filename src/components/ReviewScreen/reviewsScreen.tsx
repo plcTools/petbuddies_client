@@ -79,7 +79,7 @@ function reviewsScreen({ route }: any) {
               marginRight: 25,
             }}
             source={{
-              uri: `${user.photo}`,
+              uri: `${user?.photo}`,
             }}
           />
           <Rating

@@ -153,17 +153,13 @@ function SpaCard(props: any) {
             color="green"
             underlayColor="red"
           />
-
         </View>
-        
       </TouchableOpacity>
       <View style={styles.fav}>
         <CheckBox
           uncheckedIcon={
             <Icon
-
               name="heart-o"
-
               type="font-awesome"
               size={19}
               color={!theme ? "white" : "black"}
@@ -173,7 +169,6 @@ function SpaCard(props: any) {
             <Icon
               name="heart"
               type="font-awesome"
-
               size={19}
               color={"#E13E50"}
             />
