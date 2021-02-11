@@ -8,27 +8,25 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
-  Modal
+  Modal,
 } from "react-native";
-import { styles } from './styles';
+import { styles } from "./styles";
 import { RouteStackParamList } from "../../../NavigationConfig/types";
 import { Icon, Divider } from "react-native-elements";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
-import InfoModal from '../../InfoModal';
+import InfoModal from "../../InfoModal";
 const { width } = Dimensions.get("screen");
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
 
-const SpaProfile = ({ navigation, route }: RouteStackParamList<"SpaProfile">) => {
-  const [state, setState] = React.useState<any>('');
-  const [thisRegion, setThisRegion] = React.useState<any>({
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005,
-    latitude: 0,
-    longitude: 0,
-  });
+const SpaProfile = ({
+  navigation,
+  route,
+}: RouteStackParamList<"SpaProfile">) => {
+  const [state, setState] = React.useState<any>("");
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [reviews, setReviews] = React.useState(route.params.reviews);
 
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
@@ -37,23 +35,18 @@ const SpaProfile = ({ navigation, route }: RouteStackParamList<"SpaProfile">) =>
   React.useEffect(() => {
     axios.get(`/groomer/${route.params.id}`).then((result) => {
       setState(result.data);
-      setThisRegion({
-        ...thisRegion,
-        latitude: result.data.latitude,
-        longitude: result.data.longitude,
-      });
     });
   }, []);
 
   if (!state) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
-          source={require('../../../images/loader.gif')}
+          source={require("../../../images/loader.gif")}
           style={{ width: 200, height: 150 }}
         />
       </View>
-    )
+    );
   }
 
   return (
@@ -63,7 +56,7 @@ const SpaProfile = ({ navigation, route }: RouteStackParamList<"SpaProfile">) =>
           <View style={styles.cardContainer}>
             <View style={styles.headerContainer}>
               <View style={styles.userRow}>
-                <Image style={styles.userImage}             
+                <Image style={styles.userImage}
                   source={state?.logo ? state.logo[0] === 'h' ? { uri: `${state.logo}` } : { uri: `data:image/jpeg;base64,${state.logo}` } : require("../../../images/logo.png")}
                 />
                 <View style={styles.userNameRow}>
@@ -73,17 +66,27 @@ const SpaProfile = ({ navigation, route }: RouteStackParamList<"SpaProfile">) =>
                   <Text style={styles.userBioText}>{state?.description}</Text>
                 </View>
               </View>
-              <View style={styles.socialRow}>
-                <Rating
-                  readonly
-                  type="custom"
-                  startingValue={state?.rating}
-                  imageSize={30}
-                />
-                <Text style={styles.ratingText}>
-                  {state?.reviewsReceived} califications
-                </Text>
-              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("ReviewsScreen", {
+                    hotelId: state._id,
+                    photo: state.logo,
+                    service: "DogGroomer",
+                  })
+                }
+              >
+                <View style={styles.socialRow}>
+                  <Rating
+                    readonly
+                    type="custom"
+                    startingValue={reviews.prom ? reviews.prom : 0}
+                    imageSize={30}
+                  />
+                  <Text style={styles.ratingText}>
+                    {reviews.review.length} califications
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
             <Divider />
             <View style={{ maxHeight: 300 }}>
@@ -123,7 +126,6 @@ const SpaProfile = ({ navigation, route }: RouteStackParamList<"SpaProfile">) =>
                         },
                         shadowOpacity: 0.58,
                         shadowRadius: 16.0,
-
                       }}
                     />
                   </View>
@@ -172,23 +174,22 @@ const SpaProfile = ({ navigation, route }: RouteStackParamList<"SpaProfile">) =>
               </Text>
             </View>
             {state.extras?.length > 0 && (
-                state.extras?.map((item: string, index: number) => {
-                  return (
-                    <View style={styles.descriptionRow} key={index}>
-                      <View style={{ justifyContent: "center", width: 30 }}>
+              state.extras?.map((item: string, index: number) => {
+                return (
+                  <View style={styles.descriptionRow} key={index}>
+                    <View style={{ justifyContent: "center", width: 30 }}>
                       <Icon
                         name="plus"
                         size={25}
                         type="font-awesome-5"
                         color="#6a2c70"
                       />
-                      </View>
-                      <Text style={styles.userDescriptionText}>{item}</Text>
                     </View>
-                  );
-                })
+                    <Text style={styles.userDescriptionText}>{item}</Text>
+                  </View>
+                );
+              })
             )}
-
             <TouchableOpacity
               style={styles.messageRow}
               onPress={modalStatusChange}
@@ -204,18 +205,12 @@ const SpaProfile = ({ navigation, route }: RouteStackParamList<"SpaProfile">) =>
               modalStatusChange();
             }}
           >
-            <InfoModal
-              modalStatusChange={modalStatusChange}
-              data={state}
-            />
+            <InfoModal modalStatusChange={modalStatusChange} data={state} />
           </Modal>
         </View>
       </View>
     </ScrollView>
-
   );
 };
-
-
 
 export default SpaProfile;

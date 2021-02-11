@@ -26,33 +26,15 @@ const HotelProfile = ({
 }: RouteStackParamList<"HotelProfile">) => {
   const [reviews, setReviews] = useState();
   const [state, setState] = React.useState<any>("");
-  const [thisRegion, setThisRegion] = React.useState<any>({
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005,
-    latitude: 0,
-    longitude: 0,
-  });
   const [modalVisible, setModalVisible] = React.useState(false);
 
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
   };
 
-  interface Region {
-    latitude?: number;
-    longitude?: number;
-    longitudeDelta: number;
-    latitudeDelta: number;
-  }
-
   React.useEffect(() => {
     axios.get(`/hotels/${route.params.id}`).then((result) => {
       setState(result.data);
-      setThisRegion({
-        ...thisRegion,
-        latitude: result.data.latitude,
-        longitude: result.data.longitude,
-      });
     });
   }, []);
 
@@ -71,7 +53,6 @@ const HotelProfile = ({
       <View style={styles.container}>
         <View style={{ flex: 1, justifyContent: "center" }}>
           <View style={styles.cardContainer}>
-            {/* Main Info Box */}
             <View style={styles.headerContainer}>
               <View style={styles.userRow}>
                 <Image style={styles.userImage} source={state?.logo ? state.logo[0] === 'h' ? { uri: `${state.logo}` } : { uri: `data:image/jpeg;base64,${state.logo}` } : require("../../../images/logo.png")} />
@@ -86,8 +67,9 @@ const HotelProfile = ({
                 onPress={() =>
                   navigation.navigate("ReviewsScreen", {
                     hotelId: state._id,
-                    photo: state.photo,
+                    photo: state.logo,
                     reviews: reviews,
+                    service: "Hotel",
                   })
                 }
               >
@@ -95,7 +77,7 @@ const HotelProfile = ({
                   <Rating
                     readonly
                     type="custom"
-                    startingValue={reviews?.prom} //aca pido reviews
+                    startingValue={reviews.prom ? reviews.prom : 0}
                     imageSize={30}
                   />
                   <Text style={styles.ratingText}>
@@ -105,7 +87,6 @@ const HotelProfile = ({
               </TouchableOpacity>
             </View>
             <Divider />
-            {/* Fotos */}
             {state.adsPics && (
               <View style={{ maxHeight: 300 }}>
                 <FlatList
@@ -151,7 +132,6 @@ const HotelProfile = ({
               </View>
             )}
             <Divider />
-            {/* Description items */}
             <View style={styles.descriptionRow}>
               <View style={{ justifyContent: "center", width: 30 }}>
                 <Icon
@@ -263,7 +243,6 @@ const HotelProfile = ({
             </TouchableOpacity>
           </View>
         </View>
-        {/* InfoModal */}
         <Modal
           animationType="slide"
           transparent={true}
