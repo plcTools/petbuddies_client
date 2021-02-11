@@ -7,19 +7,32 @@ import { getData } from "../../AsyncStorage/index";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { getWalkers } from "../../redux/walker/actions";
+import { Switch } from "react-native-switch";
+import { changeTheme } from "../../redux/owner/actions";
 
 const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
+  const theme = useSelector((state) => state.user.theme);
   const [state, setState] = React.useState<any>();
+  const [enabled, setEnabled] = React.useState<boolean>(false);
+  const owners = useSelector((state) => state.user.owner);
+  const dispatch = useDispatch();
+
+  const toggleSwitch = async () => {
+    dispatch(changeTheme());
+    // setEnabled((enabled) => !enabled);
+  };
 
   const retrieveStorage = async () => {
     const id = await getData();
     axios.get(`/walkers/${id}`).then((result) => setState(result.data));
     dispatch(getWalkers());
   };
-  const owners = useSelector((state) => state.user.owner);
-  const dispatch = useDispatch();
+  useEffect(() => {
+    setEnabled(theme);
+  }, [theme]);
 
   useEffect(() => {
+    // LogBox.ignoreAllLogs(true);
     retrieveStorage();
   }, [owners]);
 
@@ -53,20 +66,50 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
   };
 
   return (
-    <View>
+    <View
+      style={{
+        position: "relative",
+        backgroundColor: theme ? "black" : "yellow",
+      }}
+    >
       <ListItem bottomDivider>
         <Avatar /* onPress debería poder modificar la foto de perfil*/
           rounded
           size="large"
-          source={state?.photo ? { uri: `data:image/jpeg;base64,${state?.photo}` } : require("../../images/logo.png")}
+          source={
+            state?.photo
+              ? state.photo[0] === "h"
+                ? { uri: `${state.photo}` }
+                : { uri: `data:image/jpeg;base64,${state?.photo}` }
+              : require("../../images/logo.png")
+          }
           overlayContainerStyle={{ backgroundColor: "orange" }}
           onPress={() => alert("ir a editar perfil")}
         />
         <ListItem.Content>
           <ListItem.Title>
-          {state?.name ? state?.name + ' ' + state?.lastname : state?.email}
+            {state?.name ? state?.name + " " + state?.lastname : state?.email}
           </ListItem.Title>
           <ListItem.Subtitle>{state?.zona} </ListItem.Subtitle>
+          <View style={styles.luna}>
+            {/* <Text style={styles.sol}>🌞</Text>
+            <Text style={styles.luni}>🌜</Text> */}
+            <Switch
+              changeValueImmediately={true}
+              circleBorderWidth={0}
+              activeText={"🌞"}
+              backgroundActive={"rgba(0,0,0,0.3)"}
+              inActiveText={"🌜"}
+              value={enabled}
+              onValueChange={toggleSwitch}
+              circleSize={28}
+              barHeight={32}
+              switchLeftPx={6}
+              switchRightPx={6}
+              circleActiveColor={"#fdd400"}
+              circleInActiveColor={"#ccc"}
+            />
+          </View>
         </ListItem.Content>
       </ListItem>
 
@@ -120,44 +163,30 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
   );
 };
 const styles = StyleSheet.create({
-  cardHeaderContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  cardHeaderMain: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  headerTitle: {
+  text: {
     fontSize: 20,
-    fontWeight: "bold",
-    marginRight: 10,
   },
-  cardHeaderRate: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
+  textDark: {
+    backgroundColor: "black",
+    color: "white",
   },
-  rateStar: {
-    marginRight: 10,
+  textLight: {
+    color: "black",
+    backgroundColor: "white",
   },
-  cardContainer: {
-    flexDirection: "row",
+  luna: {
+    position: "absolute",
+    right: 9,
+    top: -5,
   },
-  infoContainer: {
-    width: 200,
-    marginLeft: 20,
+  darkContainer: {
+    position: "relative",
   },
-  btnContainer: {
-    justifyContent: "center",
-    alignItems: "center",
+  sol: {
+    position: "absolute",
   },
-  btn: {
-    width: 50,
-    height: 30,
-  },
-  btnText: {
-    fontSize: 12,
+  luni: {
+    position: "absolute",
   },
 });
 export default UserPannel;
