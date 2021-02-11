@@ -38,12 +38,12 @@ export const getOwnerFavGroomers = (userId: string): any => async (
   return dispatch({ type: GET_USER_FAV_GROOMERS, payload: favoritesGroomers });
 };
 
-export const getOwner = (id: string): any => async (dispatch: DispatchType) => {
-  const {
-    data: { owner },
-  } = await axios.get(`/owners/${id}`);
-  return dispatch({ type: GET_OWNER, payload: owner });
-};
+// export const getOwner = (id: string): any => async (dispatch: DispatchType) => {
+//   const {
+//     data: { owner },
+//   } = await axios.get(`/owners/${id}`);
+//   return dispatch({ type: GET_OWNER, payload: owner });
+// };
 
 // export const changeTheme = (id: string): any => async (
 //   dispatch: DispatchType
@@ -58,7 +58,6 @@ export const changeTheme = () => {
   };
 };
 
-
 // export const getTheme = (payload: boolean) => {
 //   return {
 //     type: THEME,
@@ -66,12 +65,13 @@ export const changeTheme = () => {
 //   };
 // };
 
-export const getOwner = (id:string):any => async (dispatch: DispatchType) => {
-  if(id) {
-    const {data: {owner}} = await axios.get(`/owners/${id}`)
-    return dispatch({ type: GET_OWNER, payload: owner})
+export const getOwner = (id: string): any => async (dispatch: DispatchType) => {
+  if (id) {
+    const {
+      data: { owner },
+    } = await axios.get(`/owners/${id}`);
+    return dispatch({ type: GET_OWNER, payload: owner });
   } else {
-    return dispatch({type: GET_OWNER, payload: []})
+    return dispatch({ type: GET_OWNER, payload: [] });
   }
-}
-
+};

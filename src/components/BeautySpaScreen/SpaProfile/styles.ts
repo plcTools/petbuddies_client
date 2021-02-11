@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
   container: {
     /* alignItems: "center",
         flex: 1, */
-
   },
   headerContainer: {
     alignItems: "center",
@@ -19,6 +18,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     width: "90%",
     marginBottom: 10,
+    borderColor: "#fff",
     marginTop: 30,
   },
   indicatorTab: {
@@ -137,5 +137,4 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 12,
   },
-
 });

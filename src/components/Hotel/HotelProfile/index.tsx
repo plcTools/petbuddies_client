@@ -26,7 +26,6 @@ const HotelProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"HotelProfile">) => {
-
   const theme = useSelector((state) => state.user.theme);
   const [state, setState] = React.useState<any>("");
   const [thisRegion, setThisRegion] = React.useState<any>({
@@ -37,7 +36,6 @@ const HotelProfile = ({
   });
 
   const [reviews, setReviews] = useState();
-
 
   const [modalVisible, setModalVisible] = React.useState(false);
 
@@ -66,7 +64,6 @@ const HotelProfile = ({
       <View style={styles.container}>
         <View style={{ flex: 1, justifyContent: "center" }}>
           <View style={styles.cardContainer}>
-
             {/* Main Info Box */}
             <View
               style={[
@@ -74,9 +71,17 @@ const HotelProfile = ({
                 { borderColor: !theme ? "rgba(256,256,256, 0.4)" : "#ccc" },
               ]}
             >
-
               <View style={styles.userRow}>
-                <Image style={styles.userImage} source={state?.logo ? state.logo[0] === 'h' ? { uri: `${state.logo}` } : { uri: `data:image/jpeg;base64,${state.logo}` } : require("../../../images/logo.png")} />
+                <Image
+                  style={styles.userImage}
+                  source={
+                    state?.logo
+                      ? state.logo[0] === "h"
+                        ? { uri: `${state.logo}` }
+                        : { uri: `data:image/jpeg;base64,${state.logo}` }
+                      : require("../../../images/logo.png")
+                  }
+                />
                 <View style={styles.userNameRow}>
                   <Text style={[styles.userNameText, !theme && tema.darkText]}>
                     {state.name}
@@ -102,10 +107,10 @@ const HotelProfile = ({
                   <Rating
                     readonly
                     type="custom"
-                    startingValue={reviews.prom ? reviews.prom : 0}
+                    startingValue={reviews?.prom ? reviews.prom : 0}
                     imageSize={30}
                   />
-                   <Text style={[styles.ratingText, !theme && tema.darkText]}>
+                  <Text style={[styles.ratingText, !theme && tema.darkText]}>
                     {reviews?.review.length} califications
                   </Text>
                 </View>
@@ -137,7 +142,11 @@ const HotelProfile = ({
                       }}
                     >
                       <Image
-                        source={item[0] === 'h' ? { uri: item } : { uri: `data:image/jpeg;base64,${item}` }}
+                        source={
+                          item[0] === "h"
+                            ? { uri: item }
+                            : { uri: `data:image/jpeg;base64,${item}` }
+                        }
                         style={{
                           width: imageW,
                           height: imageH,
@@ -216,7 +225,6 @@ const HotelProfile = ({
                 <Text
                   style={[styles.userDescriptionText, !theme && tema.darkText]}
                 >{`We accept:`}</Text>
-
               )}
               {state.allowedPets?.length > 0 &&
                 state.allowedPets.map((item: string, index: number) => (
@@ -303,7 +311,6 @@ const HotelProfile = ({
           visible={modalVisible}
           onRequestClose={modalStatusChange}
         >
-
           <View
             style={[
               {
@@ -319,7 +326,6 @@ const HotelProfile = ({
           >
             <InfoModal modalStatusChange={modalStatusChange} data={state} />
           </View>
-
         </Modal>
       </View>
     </ScrollView>
