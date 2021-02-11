@@ -26,6 +26,7 @@ const SpaProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"SpaProfile">) => {
+
   const theme = useSelector((state) => state.user.theme);
   const [state, setState] = React.useState<any>("");
   const [thisRegion, setThisRegion] = React.useState<any>({
@@ -34,7 +35,9 @@ const SpaProfile = ({
     latitude: 0,
     longitude: 0,
   });
+
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [reviews, setReviews] = React.useState(route.params.reviews);
 
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
@@ -43,11 +46,6 @@ const SpaProfile = ({
   React.useEffect(() => {
     axios.get(`/groomer/${route.params.id}`).then((result) => {
       setState(result.data);
-      setThisRegion({
-        ...thisRegion,
-        latitude: result.data.latitude,
-        longitude: result.data.longitude,
-      });
     });
   }, []);
 
@@ -74,7 +72,9 @@ const SpaProfile = ({
               ]}
             >
               <View style={styles.userRow}>
-                <Image style={styles.userImage} source={{ uri: state.logo }} />
+                <Image style={styles.userImage}
+                  source={state?.logo ? state.logo[0] === 'h' ? { uri: `${state.logo}` } : { uri: `data:image/jpeg;base64,${state.logo}` } : require("../../../images/logo.png")}
+                />
                 <View style={styles.userNameRow}>
                   <Text style={[styles.userNameText, !theme && tema.darkText]}>
                     {state?.name}
@@ -86,28 +86,55 @@ const SpaProfile = ({
                   </Text>
                 </View>
               </View>
-              <View style={styles.socialRow}>
-                <Rating
-                  readonly
-                  type="custom"
-                  startingValue={state?.rating}
-                  imageSize={30}
-                />
+
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("ReviewsScreen", {
+                    hotelId: state._id,
+                    photo: state.logo,
+                    service: "DogGroomer",
+                  })
+                }
+              >
+                <View style={styles.socialRow}>
+                  <Rating
+                    readonly
+                    type="custom"
+                    startingValue={reviews.prom ? reviews.prom : 0}
+                    imageSize={30}
+                  />
                 <Text style={[styles.ratingText, !theme && tema.darkText]}>
-                  {state?.reviewsReceived} califications
-                </Text>
-              </View>
+                    {reviews.review.length} califications
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
             <Divider />
-            {state.adsPics && (
-              <View style={{ maxHeight: 300 }}>
-                <FlatList
-                  data={state.adsPics}
-                  keyExtractor={(_, index) => index.toString()}
-                  horizontal
-                  pagingEnabled
-                  renderItem={({ item }) => (
-                    <View
+            <View style={{ maxHeight: 300 }}>
+              <FlatList
+                data={state.adsPics}
+                keyExtractor={(_, index) => index.toString()}
+                horizontal
+                pagingEnabled
+                renderItem={({ item }) => (
+                  <View
+                    style={{
+                      width,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 12,
+                      },
+                      shadowOpacity: 0.58,
+                      shadowRadius: 16.0,
+
+                      elevation: 24,
+                    }}
+                  >
+                    <Image
+                      source={item[0] === 'h' ? { uri: item } : { uri: `data:image/jpeg;base64,${item}` }}
                       style={{
                         width,
                         justifyContent: "center",
@@ -121,6 +148,7 @@ const SpaProfile = ({
                         shadowRadius: 16.0,
 
                         elevation: 24,
+
                       }}
                     >
                       <Image
@@ -191,8 +219,9 @@ const SpaProfile = ({
                 {state.address + ", " + state.zone}
               </Text>
             </View>
-            {state.services?.length > 0 &&
-              state.services?.map((item: string, index: number) => {
+
+            {state.extras?.length > 0 && (
+              state.extras?.map((item: string, index: number) => {
                 return (
                   <View style={styles.descriptionRow} key={index}>
                     <View style={{ justifyContent: "center", width: 30 }}>
@@ -215,6 +244,7 @@ const SpaProfile = ({
                 );
               })}
 
+
             <TouchableOpacity
               style={styles.messageRow}
               onPress={modalStatusChange}
@@ -230,6 +260,7 @@ const SpaProfile = ({
               modalStatusChange();
             }}
           >
+
             <View
               style={[
                 {
@@ -245,6 +276,7 @@ const SpaProfile = ({
             >
               <InfoModal modalStatusChange={modalStatusChange} data={state} />
             </View>
+
           </Modal>
         </View>
       </View>

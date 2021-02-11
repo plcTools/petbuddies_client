@@ -1,10 +1,12 @@
 import React from "react";
+
 import { useSelector } from "react-redux";
 import {
   NavigationContainer,
   DarkTheme,
   DefaultTheme,
 } from "@react-navigation/native";
+
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import WalkerCard from "../components/WalkerCard";
@@ -27,6 +29,8 @@ import SelectRol from "../components/SelectRol";
 import WalkerForm from "../components/WalkerForm";
 import { Image, View } from "react-native";
 import SpaProfile from "../components/BeautySpaScreen/SpaProfile/";
+import ReviewsScreen from "../components/ReviewScreen/reviewsScreen";
+
 import ServiceForm from "../components/ServiceForm/";
 
 export const Routes: React.FC = () => {
@@ -87,12 +91,16 @@ export const Routes: React.FC = () => {
     );
   }
   return (
+
     <NavigationContainer theme={!theme ? DarkTheme : DefaultTheme}>
+
       <Navigator
         screenOptions={({ navigation }) => ({
           title: "PetBuddies",
           headerStyle: {
+
             backgroundColor: !theme ? "#303841" : "#c98c70",
+
           },
           headerTintColor: "#fff",
           headerTitleStyle: {
@@ -103,7 +111,9 @@ export const Routes: React.FC = () => {
               reverse
               name="user"
               type="font-awesome"
+
               color={!theme ? "#0A0E14" : "#c98c70"}
+
               size={20}
               onPress={() => navigation.navigate("Profile")}
             />
@@ -145,6 +155,8 @@ export const Routes: React.FC = () => {
         <Screen name="HotelCard" component={HotelCard} />
         <Screen name="HotelProfile" component={HotelProfile} />
         <Screen name="Profile" component={UserPannel} />
+
+        <Screen name="ReviewsScreen" component={ReviewsScreen} />
         <Screen name="SpaProfile" component={SpaProfile} />
       </Navigator>
     </NavigationContainer>

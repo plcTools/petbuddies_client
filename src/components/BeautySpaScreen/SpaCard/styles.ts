@@ -49,6 +49,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     right: -4,
     bottom: -4,
+    alignItems:'center',
   },
   workZone: {
     width: "80%",

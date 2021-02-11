@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -26,6 +26,7 @@ const HotelProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"HotelProfile">) => {
+
   const theme = useSelector((state) => state.user.theme);
   const [state, setState] = React.useState<any>("");
   const [thisRegion, setThisRegion] = React.useState<any>({
@@ -34,19 +35,19 @@ const HotelProfile = ({
     latitude: 0,
     longitude: 0,
   });
+
+  const [reviews, setReviews] = useState();
+
+
   const [modalVisible, setModalVisible] = React.useState(false);
 
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
   };
+
   React.useEffect(() => {
     axios.get(`/hotels/${route.params.id}`).then((result) => {
       setState(result.data);
-      setThisRegion({
-        ...thisRegion,
-        latitude: result.data.latitude,
-        longitude: result.data.longitude,
-      });
     });
   }, []);
 
@@ -60,12 +61,12 @@ const HotelProfile = ({
       </View>
     );
   }
-
   return (
     <ScrollView style={[styles.scroll, !theme && tema.darkCard]}>
       <View style={styles.container}>
         <View style={{ flex: 1, justifyContent: "center" }}>
           <View style={styles.cardContainer}>
+
             {/* Main Info Box */}
             <View
               style={[
@@ -73,8 +74,9 @@ const HotelProfile = ({
                 { borderColor: !theme ? "rgba(256,256,256, 0.4)" : "#ccc" },
               ]}
             >
+
               <View style={styles.userRow}>
-                <Image style={styles.userImage} source={{ uri: state.logo }} />
+                <Image style={styles.userImage} source={state?.logo ? state.logo[0] === 'h' ? { uri: `${state.logo}` } : { uri: `data:image/jpeg;base64,${state.logo}` } : require("../../../images/logo.png")} />
                 <View style={styles.userNameRow}>
                   <Text style={[styles.userNameText, !theme && tema.darkText]}>
                     {state.name}
@@ -86,20 +88,31 @@ const HotelProfile = ({
                   </Text>
                 </View>
               </View>
-              <View style={styles.socialRow}>
-                <Rating
-                  readonly
-                  type="custom"
-                  startingValue={state.rating}
-                  imageSize={30}
-                />
-                <Text style={[styles.ratingText, !theme && tema.darkText]}>
-                  {state.reviewsReceived} califications
-                </Text>
-              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("ReviewsScreen", {
+                    hotelId: state._id,
+                    photo: state.logo,
+                    reviews: reviews,
+                    service: "Hotel",
+                  })
+                }
+              >
+                <View style={styles.socialRow}>
+                  <Rating
+                    readonly
+                    type="custom"
+                    startingValue={reviews.prom ? reviews.prom : 0}
+                    imageSize={30}
+                  />
+                   <Text style={[styles.ratingText, !theme && tema.darkText]}>
+                    {reviews?.review.length} califications
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
             <Divider />
-            {/* Fotos */}
+
             {state.adsPics && (
               <View style={{ maxHeight: 300 }}>
                 <FlatList
@@ -120,12 +133,11 @@ const HotelProfile = ({
                         },
                         shadowOpacity: 0.58,
                         shadowRadius: 16.0,
-
                         elevation: 24,
                       }}
                     >
                       <Image
-                        source={{ uri: item }}
+                        source={item[0] === 'h' ? { uri: item } : { uri: `data:image/jpeg;base64,${item}` }}
                         style={{
                           width: imageW,
                           height: imageH,
@@ -146,7 +158,6 @@ const HotelProfile = ({
               </View>
             )}
             <Divider />
-            {/* Description items */}
             <View style={styles.descriptionRow}>
               <View style={{ justifyContent: "center", width: 30 }}>
                 <Icon
@@ -205,6 +216,7 @@ const HotelProfile = ({
                 <Text
                   style={[styles.userDescriptionText, !theme && tema.darkText]}
                 >{`We accept:`}</Text>
+
               )}
               {state.allowedPets?.length > 0 &&
                 state.allowedPets.map((item: string, index: number) => (
@@ -285,13 +297,13 @@ const HotelProfile = ({
             </TouchableOpacity>
           </View>
         </View>
-        {/* InfoModal */}
         <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
           onRequestClose={modalStatusChange}
         >
+
           <View
             style={[
               {
@@ -307,6 +319,7 @@ const HotelProfile = ({
           >
             <InfoModal modalStatusChange={modalStatusChange} data={state} />
           </View>
+
         </Modal>
       </View>
     </ScrollView>

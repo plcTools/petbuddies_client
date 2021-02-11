@@ -29,6 +29,7 @@ const WalkerProfile = ({
 }: RouteStackParamList<"WalkerProfile">) => {
   const [state, setState] = React.useState<any>("");
   const theme = useSelector((state) => state.user.theme);
+
   React.useEffect(() => {
     axios
       .get(`/walkers/${route.params.id}`)
@@ -89,7 +90,9 @@ const WalkerProfile = ({
         height: "100%",
       }}
     >
+
       <ScrollView style={[styles.scroll, !theme && tema.darkCard]}>
+
         <View>
           <View style={{ flex: 1, justifyContent: "center" }}>
             {/* Main container */}
@@ -101,13 +104,9 @@ const WalkerProfile = ({
                 ]}
               >
                 <View style={styles.userRow}>
-                  <Image
-                    style={styles.userImage}
-                    source={
-                      state?.photo
-                        ? { uri: `${state.photo}` }
-                        : require("../../images/logo.png")
-                    }
+
+                  <Image style={styles.userImage} source={state?.photo ? state.photo[0] === 'h' ? { uri: `${state.photo}` } : { uri: `data:image/jpeg;base64,${state.photo}` } : require("../../images/logo.png")}
+
                   />
                   <View style={styles.userNameRow}>
                     <Text
@@ -209,6 +208,7 @@ const WalkerProfile = ({
               style={styles.fotoverlay}
               source={{ uri: `${state.photo}` }}
               />
+
               </View>
               <Text style={styles.titleOverlay}>
               {state.name + " " + state.lastname}

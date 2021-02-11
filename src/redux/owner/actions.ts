@@ -58,9 +58,20 @@ export const changeTheme = () => {
   };
 };
 
+
 // export const getTheme = (payload: boolean) => {
 //   return {
 //     type: THEME,
 //     payload,
 //   };
 // };
+
+export const getOwner = (id:string):any => async (dispatch: DispatchType) => {
+  if(id) {
+    const {data: {owner}} = await axios.get(`/owners/${id}`)
+    return dispatch({ type: GET_OWNER, payload: owner})
+  } else {
+    return dispatch({type: GET_OWNER, payload: []})
+  }
+}
+

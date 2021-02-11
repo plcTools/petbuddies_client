@@ -66,6 +66,24 @@ export const styles = StyleSheet.create({
     marginTop: 1,
     width: "100%",
   },
+  socialRow: {
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    width: "100%",
+    padding: 5,
+    borderRadius: 15,
+  },
+  ratingText: {
+    color: "white",
+    fontSize: 13.5,
+    textAlign: "center",
+    marginLeft: 14,
+    margin: 10,
+    backgroundColor: "gray",
+    padding: 3,
+    borderRadius: 5,
+  },
 
   dataContainer: {
     justifyContent: "space-around",
@@ -76,6 +94,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     color: "white",
     marginBottom: 10,
+
   },
 
   dataright: {

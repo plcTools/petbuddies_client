@@ -12,6 +12,9 @@ import { changeTheme } from "../../redux/owner/actions";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { tema } from "../../Theme/theme";
 
+import { getOwner } from "../../redux/owner/actions";
+
+
 const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
   const theme = useSelector((state) => state.user.theme);
   const [state, setState] = React.useState<any>();
@@ -42,6 +45,7 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
   const logout = async () => {
     try {
       await AsyncStorage.removeItem("@id");
+      // dispatch(getOwner(""))
       navigation.navigate("LoginScreen");
     } catch (e) {
       console.log(e);

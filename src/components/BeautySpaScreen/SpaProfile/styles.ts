@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
   container: {
     /* alignItems: "center",
         flex: 1, */
+
   },
   headerContainer: {
     alignItems: "center",
@@ -136,4 +137,5 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 12,
   },
+
 });

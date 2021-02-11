@@ -35,7 +35,7 @@ const SelectRol = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
     const serviceSubmit = async() => {
         // await axios.post(`/owners/${state}`, { role: 'Service' })
         //Falta agregar funcionalidad
-        navigation.navigate('ServiceForm')
+        navigation.navigate('ServiceForm', {service: ""})
     };
 
   return (

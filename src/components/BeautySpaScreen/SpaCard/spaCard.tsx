@@ -21,13 +21,13 @@ import InfoModal from "../../InfoModal";
 import { tema } from "../../../Theme/theme";
 
 function SpaCard(props: any) {
+
   const theme = useSelector((state) => state.user.theme);
+
   const [checked, setChecked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [reviews, setReviews] = useState([]);
 
-  const modalStatusChange = () => {
-    setModalVisible(!modalVisible);
-  };
 
   const userFavGroomers = useSelector(
     (state: RootState) => state.user.userFavGroomers
@@ -53,7 +53,29 @@ function SpaCard(props: any) {
 
   const dispatch = useAppDispatch();
 
+
+  /* Para Mostrar las reviews, Get a reviews
+    y posteriormente se pasan por props a los childs */
+
+    React.useEffect(() => {
+      axios
+        .get(`/reviews/DogGroomer/${props.peluqueria._id}`)
+        .then((reviewsData) => {
+          const sum = reviewsData.data
+            .map((e: any) => e.rating)
+            .reduce((a: any, c: any) => a + c, 0);
+          const prom = Number (String (sum / reviewsData.data.length).slice (0,3));
+          setReviews({ review: reviewsData.data, prom })
+        })
+        .catch((err) => console.log(err));
+    }, []);
+    /* console.log(1111111111,navigator.geolocation.getCurrentPosition((p) => p.coords )); */
+
+     
+
+
   return (
+
     <Card
       containerStyle={[
         styles.container,
@@ -65,6 +87,7 @@ function SpaCard(props: any) {
         style={styles.cardContainer}
         onPress={() => navigation.navigate("SpaProfile", { id: props.id })}
       >
+
         <View style={styles.cardHeader}>
           <Image
             style={{
@@ -75,9 +98,8 @@ function SpaCard(props: any) {
               marginTop: 3,
               marginBottom: 7,
             }}
-            source={{
-              uri: `${props.peluqueria.logo}`,
-            }}
+            source={props.peluqueria?.logo ? props.peluqueria.logo[0] === 'h' ? { uri: `${props.peluqueria.logo}` } : { uri: `data:image/jpeg;base64,${props.peluqueria.logo}` } : require("../../../images/logo.png")}
+
           />
           <View style={styles.headerContainer}>
             <Text style={[styles.headerTitle, !theme && tema.darkText]}>
@@ -118,6 +140,7 @@ function SpaCard(props: any) {
           </View>
         </View>
         <View style={styles.cardHeaderRate}>
+
           <Text
             style={[{ marginRight: 5, fontSize: 15 }, !theme && tema.darkText]}
           >
@@ -130,13 +153,17 @@ function SpaCard(props: any) {
             color="green"
             underlayColor="red"
           />
+
         </View>
+        
       </TouchableOpacity>
       <View style={styles.fav}>
         <CheckBox
           uncheckedIcon={
             <Icon
+
               name="heart-o"
+
               type="font-awesome"
               size={19}
               color={!theme ? "white" : "black"}
@@ -146,6 +173,7 @@ function SpaCard(props: any) {
             <Icon
               name="heart"
               type="font-awesome"
+
               size={19}
               color={"#E13E50"}
             />
@@ -167,19 +195,7 @@ function SpaCard(props: any) {
             }
           }}
         />
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            modalStatusChange();
-          }}
-        >
-          <InfoModal
-            modalStatusChange={modalStatusChange}
-            data={props.peluqueria}
-          />
-        </Modal>
+  
       </View>
     </Card>
   );

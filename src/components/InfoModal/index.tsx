@@ -109,7 +109,7 @@ function InfoModal(props: any) {
                             width: 75,
                             borderRadius: 50,
                         }}
-                        source={data.logo ? { uri: `${data.logo}`} : { uri:`${data.photo}` }}
+                        source={data.logo ? data.logo[0] === 'h' ? { uri: `${data.logo}`} : { uri: `data:image/jpeg;base64,${data.logo}` } : require('../../images/logo.png')}
                     />
                     <Text style={styles.textTitle}>{data.name}</Text>
                 </View> */}

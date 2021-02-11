@@ -1,25 +1,18 @@
-import "react-native-gesture-handler";
-import React from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  SafeAreaView,
-  Modal,
-  TouchableOpacity,
-  StyleSheet,
-  ImageBackground,
-  Image,
-} from "react-native";
-import { Icon, Divider, CheckBox } from "react-native-elements";
-import { styles } from "./styles";
-import WalkerCard from "../WalkerCard/index";
-import { useSelector } from "react-redux";
-import { useAppDispatch, RootState } from "../../redux/store";
-import { getWalkers } from "../../redux/walker/actions";
-import { getUserFavorites } from "../../redux/owner/actions";
-import { Walker } from "../../redux/walker/types";
-import { RouteStackParamList } from "../../NavigationConfig/types";
+
+import 'react-native-gesture-handler';
+import React from 'react';
+import { View, Text, FlatList, SafeAreaView, Modal, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
+import { Icon, Divider, CheckBox } from 'react-native-elements';
+import { styles } from './styles';
+import WalkerCard from '../WalkerCard/index';
+import { useSelector } from 'react-redux';
+import { useAppDispatch, RootState } from '../../redux/store';
+import { getWalkers } from '../../redux/walker/actions';
+import { getHairdressers } from '../../redux/Hairdressers/actions';
+import { getHotels } from '../../redux/hotels/actions';
+import { getUserFavorites } from '../../redux/owner/actions';
+import { Walker } from '../../redux/walker/types';
+import { RouteStackParamList } from '../../NavigationConfig/types';
 import {
   useFonts,
   NunitoSans_400Regular,
@@ -75,7 +68,20 @@ const WalkerScreen = () => {
       dispatch(getUserFavorites(id));
       dispatch(getWalkers());
     }
-  }, [dispatch, walkers]);
+
+    React.useLayoutEffect(() => {
+        retrieveStorage();
+        dispatch(getUserFavorites(id))
+        handleList(walkers);
+        if (Object.keys(walkers).length > 0) {
+            setState(walkers)
+            dispatch(getHotels());
+            dispatch(getHairdressers());
+        } else {
+            dispatch(getUserFavorites(id))
+            dispatch(getWalkers())
+        }
+    }, [dispatch, walkers]);
 
   const handleInput = (name: string) => {
     setInput({
