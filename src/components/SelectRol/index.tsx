@@ -4,11 +4,15 @@ import { Icon } from 'react-native-elements';
 import axios from 'axios';
 import { getData  } from '../../AsyncStorage/index';
 import { RouteStackParamList } from '../../NavigationConfig/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { tema } from "../../Theme/theme";
 
 export interface SelectRolProps {
    }
  
 const SelectRol = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
+    const theme = useSelector((state: RootState) => state.user.theme);
 
     const [ state, setState ] = useState<string>()
     const retrieveStorage = async () =>{
@@ -40,10 +44,10 @@ const SelectRol = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
 
   return (
     <View>
-      <Text style={styles.title}>Select your Role</Text>
+      <Text style={[styles.title, !theme && tema.darkText]}>Select your Role</Text>
       <View style={styles.container}>
          <View style={styles.buttons}> 
-              <Text style={styles.text}>Owner</Text>
+              <Text style={[styles.text, !theme && tema.darkText]}>Owner</Text>
               <Icon
                 reverse 
                 name='user'
@@ -54,7 +58,7 @@ const SelectRol = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
                 onPress={ownerSubmit} />
         </View>  
         <View style={styles.buttons}>
-          <Text style={styles.text}>Walker</Text>
+          <Text style={[styles.text, !theme && tema.darkText]}>Walker</Text>
             <Icon
                 reverse
                 name='walking'
@@ -65,7 +69,7 @@ const SelectRol = ({ navigation }: RouteStackParamList<'LoginScreen'>) => {
                 onPress={walkerSubmit} />
         </View>
         <View style={styles.buttons}>
-          <Text style={styles.text}>Service</Text>
+          <Text style={[styles.text, !theme && tema.darkText]}>Service</Text>
             <Icon
                 reverse
                 name='clinic-medical'

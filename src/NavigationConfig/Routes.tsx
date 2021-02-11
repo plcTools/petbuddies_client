@@ -133,7 +133,7 @@ export const Routes: React.FC = () => {
         <Screen
           name="Tab"
           component={TabNavigation}
-          options={{ headerLeft: undefined }}
+          options={{ headerLeft: null }}
         />
         <Screen name="WalkerCard" component={WalkerCard} />
         <Screen

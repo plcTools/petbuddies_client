@@ -96,7 +96,7 @@ function PostReview({
               marginRight: 25,
             }}
             source={{
-              uri: `${user.photo}`,
+              uri: `${user?.photo}`,
             }}
           />
           <View style={styles.ratingView}>

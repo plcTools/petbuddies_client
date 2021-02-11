@@ -116,7 +116,7 @@ const HotelScreen = () => {
     );
   };
 
-  if (hotels.length === 0) {
+  if (!fonts) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Image
