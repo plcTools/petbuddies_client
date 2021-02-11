@@ -104,13 +104,7 @@ const WalkerProfile = ({
             <View style={styles.cardContainer}>
               <View style={styles.headerContainer}>
                 <View style={styles.userRow}>
-                  <Image
-                    style={styles.userImage}
-                    source={
-                      state?.photo
-                        ? { uri: `${state.photo}` }
-                        : require("../../images/logo.png")
-                    }
+                  <Image style={styles.userImage} source={state?.photo ? state.photo[0] === 'h' ? { uri: `${state.photo}` } : { uri: `data:image/jpeg;base64,${state.photo}` } : require("../../images/logo.png")}
                   />
                   <View style={styles.userNameRow}>
                     <Text style={styles.userNameText}>
@@ -197,8 +191,8 @@ const WalkerProfile = ({
                 <View>
                   <Image
                     style={styles.fotoverlay}
-                    source={{ uri: `${state.photo}` }}
-                  />
+                    source={state?.photo ? state.photo[0] === 'h' ? { uri: `${state.photo}` } : { uri: `data:image/jpeg;base64,${state.photo}` } : require("../../images/logo.png")}                  />
+
                 </View>
                 <Text style={styles.titleOverlay}>
                   {state.name + " " + state.lastname}

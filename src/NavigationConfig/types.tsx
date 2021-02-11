@@ -22,7 +22,9 @@ export type RootStackParamList = {
   TabNavigation: undefined;
   WalkerForm: undefined;
   BeautySpaScreen:undefined;
-  ServiceForm:undefined;
+  ServiceForm: {
+    service: string;
+  };
   HotelCard: {
     hotel: hotel
   }

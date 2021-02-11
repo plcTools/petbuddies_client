@@ -55,7 +55,7 @@ const HotelProfile = ({
           <View style={styles.cardContainer}>
             <View style={styles.headerContainer}>
               <View style={styles.userRow}>
-                <Image style={styles.userImage} source={{ uri: state.logo }} />
+                <Image style={styles.userImage} source={state?.logo ? state.logo[0] === 'h' ? { uri: `${state.logo}` } : { uri: `data:image/jpeg;base64,${state.logo}` } : require("../../../images/logo.png")} />
                 <View style={styles.userNameRow}>
                   <Text style={styles.userNameText}>{state.name}</Text>
                 </View>
@@ -111,7 +111,7 @@ const HotelProfile = ({
                       }}
                     >
                       <Image
-                        source={{ uri: item }}
+                        source={item[0] === 'h' ? { uri: item } : { uri: `data:image/jpeg;base64,${item}` }}
                         style={{
                           width: imageW,
                           height: imageH,

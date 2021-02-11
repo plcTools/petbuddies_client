@@ -71,7 +71,7 @@ const WalkerCard: React.FC<Props> = ({
               marginTop: 3,
               marginBottom: 7,
             }}
-            source={walker?.photo ? {uri:`${walker.photo}`} : require("../../images/logo.png")}
+            source={walker?.photo ? walker.photo[0] === 'h' ? { uri: `${walker.photo}` } : { uri: `data:image/jpeg;base64,${walker.photo}` } : require("../../images/logo.png")}
           />
           <View style={styles.headerContainer}>
             <Text style={styles.headerTitle}>

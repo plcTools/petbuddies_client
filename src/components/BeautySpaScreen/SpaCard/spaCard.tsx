@@ -91,9 +91,8 @@ function SpaCard(props: any) {
               marginTop: 3,
               marginBottom: 7,
             }}
-            source={{
-              uri: `${props.peluqueria.logo}`,
-            }}
+            source={props.peluqueria?.logo ? props.peluqueria.logo[0] === 'h' ? { uri: `${props.peluqueria.logo}` } : { uri: `data:image/jpeg;base64,${props.peluqueria.logo}` } : require("../../../images/logo.png")}
+
           />
           <View style={styles.headerContainer}>
             <Text style={styles.headerTitle}>{props.peluqueria.name}</Text>

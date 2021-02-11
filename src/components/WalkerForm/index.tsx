@@ -28,7 +28,6 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
   const [data, setData] = useState<State>();
   const [id, setId] = useState<string>("");
   const [image, setImage] = useState<string | null>(null);
-  const storage = firebase.storage() 
 
   const handleChange = (name: string, value: string) => {
     setData({ ...data, [name]: value });
@@ -57,7 +56,7 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
   
   const handleSubmit = async () => {
       if(image){
-        await uploadImage(image, `profile-${id}`);
+        axios.put(`/walkers/${id}`, {photo: image});
       }
       axios.put(`/walkers/${id}`, data);
       navigation.navigate("Tab");
@@ -65,35 +64,20 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
       dispatch(getWalkers());
   };
 
-  const pickImage = async (type: string) => {
+  const pickImage = async () => {
      let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      base64: true,
     });
-
     if (!result.cancelled) {
-      if( type === 'profile'){
-        setImage(result.uri);
-      }   
+        setImage(result.base64);
     };
   }
 
-  const uploadImage = async (uri:any, imageName:any) => {
-      const response = await fetch(uri);
-      const blob = await response.blob();
-      const ref = await storage.ref().child('images/' + imageName);
-      // const url =  storage.refFromURL(`gs://${ref.bucket}/images/${imageName}`)
-      await ref.put(blob);
-        ref.getDownloadURL()
-        .then(function onSuccess(urlImg) {
-          axios.put(`/walkers/${id}`, {photo: urlImg});
-        })
-        .catch(function onError(err) {
-          console.log("Error occured..." + err);
-        })
-    }
+
 
   return (
     <ScrollView style={styles.container}>
@@ -104,9 +88,9 @@ const WalkerForm = ({ navigation }: RouteStackParamList<"WalkerForm">) => {
         <Avatar
           rounded
           size="large"
-          source={(image !== null ? {uri: image} : ( user?.photo ? {uri: user?.photo} : require("../../images/logo.png"))) }
+          source={(image !== null ? {uri: `data:image/jpeg;base64,${image}`} : ( user?.photo ? {uri: user?.photo} : require("../../images/logo.png"))) }
           overlayContainerStyle={{ backgroundColor: "white" }}
-          onPress={() => pickImage('profile')}
+          onPress={pickImage}
           />
           </View>
       </View>
