@@ -9,7 +9,6 @@ import { RouteStackParamList } from "../../NavigationConfig/types";
 import { getOwner } from "../../redux/owner/actions";
 import { getWalkers } from "../../redux/walker/actions";
 import * as ImagePicker from 'expo-image-picker';
-import firebase from 'firebase';
 interface State {
   name?: string;
   lastname?: string;
@@ -226,12 +225,13 @@ const styles = StyleSheet.create({
   label: {
     color: "#c98c70",
     fontSize: 19,
-    textShadowColor: "#fff",
-    textShadowOffset: {
-      width: 0.4,
-      height: -1,
-    },
-    textShadowRadius: 1,
+    fontWeight: 'bold'
+    // textShadowColor: "#fff",
+    // textShadowOffset: {
+    //   width: 0.4,
+    //   height: -1,
+    // },
+    // textShadowRadius: 1,
   },
   button: {
     backgroundColor: "#c98c70",
@@ -245,6 +245,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#fff",
     textAlign: "center",
+    fontWeight: 'bold'
   },
   textArea: {},
   description: {
@@ -275,12 +276,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "#c98c70",
     fontSize: 19,
-    textShadowColor: "#fff",
-    textShadowOffset: {
-      width: 0.4,
-      height: -1,
-    },
-    textShadowRadius: 1,
+    fontWeight: 'bold'
+    // textShadowColor: "#fff",
+    // textShadowOffset: {
+    //   width: 0.4,
+    //   height: -1,
+    // },
+    // textShadowRadius: 1,
   },
 formImage: {
     borderColor: "#fff",

@@ -11,9 +11,11 @@ import {
   Modal,
 } from "react-native";
 import { RouteStackParamList } from "../../../NavigationConfig/types";
-import { Icon, Divider } from "react-native-elements";
+import { Icon, Divider, Overlay } from "react-native-elements";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
+import { tema } from "../../../Theme/theme";
+import { useSelector } from "react-redux";
 import InfoModal from "../../InfoModal";
 import { styles } from "./styles";
 const { width } = Dimensions.get("screen");
@@ -24,8 +26,17 @@ const HotelProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"HotelProfile">) => {
-  const [reviews, setReviews] = useState(route.params.reviews);
+  const theme = useSelector((state) => state.user.theme);
   const [state, setState] = React.useState<any>("");
+  const [thisRegion, setThisRegion] = React.useState<any>({
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005,
+    latitude: 0,
+    longitude: 0,
+  });
+
+  const [reviews, setReviews] = useState();
+
   const [modalVisible, setModalVisible] = React.useState(false);
 
   const modalStatusChange = () => {
@@ -49,18 +60,37 @@ const HotelProfile = ({
     );
   }
   return (
-    <ScrollView style={styles.scroll}>
+    <ScrollView style={[styles.scroll, !theme && tema.darkCard]}>
       <View style={styles.container}>
         <View style={{ flex: 1, justifyContent: "center" }}>
           <View style={styles.cardContainer}>
-            <View style={styles.headerContainer}>
+            {/* Main Info Box */}
+            <View
+              style={[
+                styles.headerContainer,
+                { borderColor: !theme ? "rgba(256,256,256, 0.4)" : "#ccc" },
+              ]}
+            >
               <View style={styles.userRow}>
-                <Image style={styles.userImage} source={state?.logo ? state.logo[0] === 'h' ? { uri: `${state.logo}` } : { uri: `data:image/jpeg;base64,${state.logo}` } : require("../../../images/logo.png")} />
+                <Image
+                  style={styles.userImage}
+                  source={
+                    state?.logo
+                      ? state.logo[0] === "h"
+                        ? { uri: `${state.logo}` }
+                        : { uri: `data:image/jpeg;base64,${state.logo}` }
+                      : require("../../../images/logo.png")
+                  }
+                />
                 <View style={styles.userNameRow}>
-                  <Text style={styles.userNameText}>{state.name}</Text>
+                  <Text style={[styles.userNameText, !theme && tema.darkText]}>
+                    {state.name}
+                  </Text>
                 </View>
                 <View style={styles.userBioRow}>
-                  <Text style={styles.userBioText}>{state.description}</Text>
+                  <Text style={[styles.userBioText, !theme && tema.darkText]}>
+                    {state.description}
+                  </Text>
                 </View>
               </View>
               <TouchableOpacity
@@ -77,16 +107,17 @@ const HotelProfile = ({
                   <Rating
                     readonly
                     type="custom"
-                    startingValue={reviews.prom ? reviews.prom : 0}
+                    startingValue={reviews?.prom ? reviews.prom : 0}
                     imageSize={30}
                   />
-                  <Text style={styles.ratingText}>
-                    {reviews.review.length} califications
+                  <Text style={[styles.ratingText, !theme && tema.darkText]}>
+                    {reviews?.review.length} califications
                   </Text>
                 </View>
               </TouchableOpacity>
             </View>
             <Divider />
+
             {state.adsPics && (
               <View style={{ maxHeight: 300 }}>
                 <FlatList
@@ -111,7 +142,11 @@ const HotelProfile = ({
                       }}
                     >
                       <Image
-                        source={item[0] === 'h' ? { uri: item } : { uri: `data:image/jpeg;base64,${item}` }}
+                        source={
+                          item[0] === "h"
+                            ? { uri: item }
+                            : { uri: `data:image/jpeg;base64,${item}` }
+                        }
                         style={{
                           width: imageW,
                           height: imageH,
@@ -141,7 +176,9 @@ const HotelProfile = ({
                   color="#6a2c70"
                 />
               </View>
-              <Text style={styles.userDescriptionText}>
+              <Text
+                style={[styles.userDescriptionText, !theme && tema.darkText]}
+              >
                 {`$${state.fee} per night`}
               </Text>
             </View>
@@ -154,7 +191,9 @@ const HotelProfile = ({
                   color="#6a2c70"
                 />
               </View>
-              <Text style={styles.userDescriptionText}>
+              <Text
+                style={[styles.userDescriptionText, !theme && tema.darkText]}
+              >
                 {`${state.workDays} : ${state.workHours} `}
               </Text>
             </View>
@@ -167,7 +206,9 @@ const HotelProfile = ({
                   color="#6a2c70"
                 />
               </View>
-              <Text style={styles.userDescriptionText}>
+              <Text
+                style={[styles.userDescriptionText, !theme && tema.darkText]}
+              >
                 {state?.address + ", " + state?.zone}
               </Text>
             </View>
@@ -181,11 +222,19 @@ const HotelProfile = ({
                 />
               </View>
               {state.allowedPets?.length > 0 && (
-                <Text style={styles.userDescriptionText}>{`We accept:`}</Text>
+                <Text
+                  style={[styles.userDescriptionText, !theme && tema.darkText]}
+                >{`We accept:`}</Text>
               )}
               {state.allowedPets?.length > 0 &&
                 state.allowedPets.map((item: string, index: number) => (
-                  <Text style={styles.userDescriptionText} key={index}>
+                  <Text
+                    style={[
+                      styles.userDescriptionText,
+                      !theme && tema.darkText,
+                    ]}
+                    key={index}
+                  >
                     {`${`- ${item}  -`}`}
                   </Text>
                 ))}
@@ -200,7 +249,11 @@ const HotelProfile = ({
                     color="#6a2c70"
                   />
                 </View>
-                <Text style={styles.userDescriptionText}>Comida incluida</Text>
+                <Text
+                  style={[styles.userDescriptionText, !theme && tema.darkText]}
+                >
+                  Comida incluida
+                </Text>
               </View>
             )}
             {state.requirement?.length > 0 && (
@@ -213,7 +266,9 @@ const HotelProfile = ({
                     color="#6a2c70"
                   />
                 </View>
-                <Text style={styles.userDescriptionText}>
+                <Text
+                  style={[styles.userDescriptionText, !theme && tema.darkText]}
+                >
                   Requisitos: {state.requirement}
                 </Text>
               </View>
@@ -231,7 +286,14 @@ const HotelProfile = ({
                         color="#6a2c70"
                       />
                     </View>
-                    <Text style={styles.userDescriptionText}>{item}</Text>
+                    <Text
+                      style={[
+                        styles.userDescriptionText,
+                        !theme && tema.darkText,
+                      ]}
+                    >
+                      {item}
+                    </Text>
                   </View>
                 );
               })}
@@ -247,11 +309,23 @@ const HotelProfile = ({
           animationType="slide"
           transparent={true}
           visible={modalVisible}
-          onRequestClose={() => {
-            modalStatusChange();
-          }}
+          onRequestClose={modalStatusChange}
         >
-          <InfoModal modalStatusChange={modalStatusChange} data={state} />
+          <View
+            style={[
+              {
+                height: "100%",
+              },
+              {
+                backgroundColor: !theme
+                  ? "rgba(0,0,0, 0.7)"
+                  : "rgba(0,0,0,0.2)",
+              },
+            ]}
+            // onPress={modalStatusChange}
+          >
+            <InfoModal modalStatusChange={modalStatusChange} data={state} />
+          </View>
         </Modal>
       </View>
     </ScrollView>

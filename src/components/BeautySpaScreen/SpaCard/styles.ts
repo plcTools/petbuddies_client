@@ -61,7 +61,7 @@ export const styles = StyleSheet.create({
   },
   fav: {
     position: "absolute",
-    right: -30,
-    top: -30,
+    right: -20,
+    top: -20,
   },
 });

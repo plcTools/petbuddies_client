@@ -1,13 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { styles } from "./styles";
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  Text,
-  Modal,
-} from "react-native";
+import { View, Image, TouchableOpacity, Text, Modal } from "react-native";
 import { Icon, Card, CheckBox } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -24,25 +18,27 @@ import { RootState, useAppDispatch } from "../../../redux/store";
 import { getOwnerFavGroomers } from "../../../redux/owner/actions";
 import axios from "axios";
 import InfoModal from "../../InfoModal";
+import { tema } from "../../../Theme/theme";
 
 function SpaCard(props: any) {
-  
+
+  const theme = useSelector((state) => state.user.theme);
+
   const [checked, setChecked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [reviews, setReviews] = useState([]);
 
 
-  const modalStatusChange = () => {
-    setModalVisible(!modalVisible);
-  };
-
-  const userFavGroomers = useSelector((state: RootState) => state.user.userFavGroomers);
-
+  const userFavGroomers = useSelector(
+    (state: RootState) => state.user.userFavGroomers
+  );
 
   useEffect(() => {
-    const found = userFavGroomers && userFavGroomers.find(peluqueria => peluqueria._id == props.id);
+    const found =
+      userFavGroomers &&
+      userFavGroomers.find((peluqueria) => peluqueria._id == props.id);
     if (found) setChecked(true);
-  }, [])
+  }, []);
 
   const navigation = useNavigation();
 
@@ -79,8 +75,19 @@ function SpaCard(props: any) {
 
 
   return (
-    <Card containerStyle={styles.container} >
-      <TouchableOpacity style={styles.cardContainer} onPress={() => navigation.navigate('SpaProfile', {id: props.id,reviews})}>
+
+    <Card
+      containerStyle={[
+        styles.container,
+        !theme && tema.darkContainer,
+        !theme && { borderColor: "rgba(256,256,256,0.4)", borderWidth: 1 },
+      ]}
+    >
+      <TouchableOpacity
+        style={styles.cardContainer}
+        onPress={() => navigation.navigate("SpaProfile", { id: props.id })}
+      >
+
         <View style={styles.cardHeader}>
           <Image
             style={{
@@ -95,12 +102,19 @@ function SpaCard(props: any) {
 
           />
           <View style={styles.headerContainer}>
-            <Text style={styles.headerTitle}>{props.peluqueria.name}</Text>
+            <Text style={[styles.headerTitle, !theme && tema.darkText]}>
+              {props.peluqueria.name}
+            </Text>
           </View>
         </View>
         <View>
           <Card.Divider />
-          <Text style={{ fontFamily: "NunitoSans_600SemiBold", fontSize: 20 }}>
+          <Text
+            style={[
+              { fontFamily: "NunitoSans_600SemiBold", fontSize: 20 },
+              !theme && tema.darkText,
+            ]}
+          >
             {props.peluqueria.description}
           </Text>
           <View style={styles.workZone}>
@@ -112,11 +126,14 @@ function SpaCard(props: any) {
               color="#fc5185"
             />
             <Text
-              style={{
-                textTransform: "capitalize",
-                marginLeft: 6,
-                fontFamily: "NunitoSans_600SemiBold",
-              }}
+              style={[
+                {
+                  textTransform: "capitalize",
+                  marginLeft: 6,
+                  fontFamily: "NunitoSans_600SemiBold",
+                },
+                !theme && tema.darkText,
+              ]}
             >
               {props.peluqueria.zone}
             </Text>
@@ -124,17 +141,18 @@ function SpaCard(props: any) {
         </View>
         <View style={styles.cardHeaderRate}>
 
-            <Text style={{ marginRight: 5, fontSize: 15 }}>{
-              reviews.prom > 0 && reviews.prom
-
-            }</Text>
-            <Icon
-              name={reviews.prom && "star" || "star-o"}
-              type="font-awesome"
-              size={18}
-              color="green"
-              underlayColor="red"
-            />
+          <Text
+            style={[{ marginRight: 5, fontSize: 15 }, !theme && tema.darkText]}
+          >
+            {props.peluqueria.rating}
+          </Text>
+          <Icon
+            name="star-o"
+            type="font-awesome"
+            size={18}
+            color="green"
+            underlayColor="red"
+          />
 
         </View>
         
@@ -143,51 +161,41 @@ function SpaCard(props: any) {
         <CheckBox
           uncheckedIcon={
             <Icon
-            raised
-            name="heart-o"
+
+              name="heart-o"
+
               type="font-awesome"
-              size={15}
-              color="black"
+              size={19}
+              color={!theme ? "white" : "black"}
             />
           }
           checkedIcon={
             <Icon
-              raised
               name="heart"
               type="font-awesome"
-              size={15}
-              color={"red"}
-              />
+
+              size={19}
+              color={"#E13E50"}
+            />
+          }
+          checked={checked}
+          onPress={async () => {
+            if (!checked) {
+              const result = await axios.patch(
+                `/groomer/${props.userId}/favorites/${props.id}`
+              );
+              dispatch(getOwnerFavGroomers(props.userId));
+              return setChecked(true);
+            } else {
+              const result = await axios.delete(
+                `/groomer/${props.userId}/favorites/${props.id}`
+              );
+              dispatch(getOwnerFavGroomers(props.userId));
+              return setChecked(false);
             }
-            checked={checked}
-            onPress={async () => {
-              if (!checked) {
-                
-                const result = await axios.patch(`/groomer/${props.userId}/favourites/${props.id}`);
-                dispatch(getOwnerFavGroomers(props.userId));
-                return setChecked(true);
-              } else {
-                const result = await axios.delete(
-                  `/groomer/${props.userId}/favourites/${props.id}`
-                  );
-                  dispatch(getOwnerFavGroomers(props.userId));
-                  return setChecked(false);
-                }
-                
-              }} />
-          <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          modalStatusChange();
-        }}
-      >
-        {/* <DetailsSpaCard
-          modalStatusChange={modalStatusChange}
-          data={{peluqueria:props.peluqueria,reviews}}
-        /> */}
-      </Modal>
+          }}
+        />
+  
       </View>
     </Card>
   );

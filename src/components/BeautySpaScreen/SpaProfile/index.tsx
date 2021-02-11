@@ -13,6 +13,8 @@ import {
 import { styles } from "./styles";
 import { RouteStackParamList } from "../../../NavigationConfig/types";
 import { Icon, Divider } from "react-native-elements";
+import { useSelector } from "react-redux";
+import { tema } from "../../../Theme/theme";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
 import InfoModal from "../../InfoModal";
@@ -24,7 +26,15 @@ const SpaProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"SpaProfile">) => {
+  const theme = useSelector((state) => state.user.theme);
   const [state, setState] = React.useState<any>("");
+  const [thisRegion, setThisRegion] = React.useState<any>({
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005,
+    latitude: 0,
+    longitude: 0,
+  });
+
   const [modalVisible, setModalVisible] = React.useState(false);
   const [reviews, setReviews] = React.useState(route.params.reviews);
 
@@ -50,22 +60,39 @@ const SpaProfile = ({
   }
 
   return (
-    <ScrollView style={styles.scroll}>
+    <ScrollView style={[styles.scroll, !theme && tema.darkCard]}>
       <View style={styles.container}>
         <View style={{ flex: 1, justifyContent: "center" }}>
           <View style={styles.cardContainer}>
-            <View style={styles.headerContainer}>
+            <View
+              style={[
+                styles.headerContainer,
+                { borderColor: !theme ? "rgba(256,256,256, 0.4)" : "#ccc" },
+              ]}
+            >
               <View style={styles.userRow}>
-                <Image style={styles.userImage}
-                  source={state?.logo ? state.logo[0] === 'h' ? { uri: `${state.logo}` } : { uri: `data:image/jpeg;base64,${state.logo}` } : require("../../../images/logo.png")}
+                <Image
+                  style={styles.userImage}
+                  source={
+                    state?.logo
+                      ? state.logo[0] === "h"
+                        ? { uri: `${state.logo}` }
+                        : { uri: `data:image/jpeg;base64,${state.logo}` }
+                      : require("../../../images/logo.png")
+                  }
                 />
                 <View style={styles.userNameRow}>
-                  <Text style={styles.userNameText}>{state?.name}</Text>
+                  <Text style={[styles.userNameText, !theme && tema.darkText]}>
+                    {state?.name}
+                  </Text>
                 </View>
                 <View style={styles.userBioRow}>
-                  <Text style={styles.userBioText}>{state?.description}</Text>
+                  <Text style={[styles.userBioText, !theme && tema.darkText]}>
+                    {state?.description}
+                  </Text>
                 </View>
               </View>
+
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("ReviewsScreen", {
@@ -79,46 +106,29 @@ const SpaProfile = ({
                   <Rating
                     readonly
                     type="custom"
-                    startingValue={reviews.prom ? reviews.prom : 0}
+                    startingValue={reviews?.prom ? reviews.prom : 0}
                     imageSize={30}
                   />
-                  <Text style={styles.ratingText}>
-                    {reviews.review.length} califications
+                  <Text style={[styles.ratingText, !theme && tema.darkText]}>
+                    {reviews?.review.length} califications
                   </Text>
                 </View>
               </TouchableOpacity>
             </View>
             <Divider />
-            <View style={{ maxHeight: 300 }}>
-              <FlatList
-                data={state.adsPics}
-                keyExtractor={(_, index) => index.toString()}
-                horizontal
-                pagingEnabled
-                renderItem={({ item }) => (
-                  <View
-                    style={{
-                      width,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      shadowColor: "#000",
-                      shadowOffset: {
-                        width: 0,
-                        height: 12,
-                      },
-                      shadowOpacity: 0.58,
-                      shadowRadius: 16.0,
-
-                      elevation: 24,
-                    }}
-                  >
-                    <Image
-                      source={item[0] === 'h' ? { uri: item } : { uri: `data:image/jpeg;base64,${item}` }}
+            {state.adsPics && (
+              <View style={{ maxHeight: 300 }}>
+                <FlatList
+                  data={state.adsPics}
+                  keyExtractor={(_, index) => index.toString()}
+                  horizontal
+                  pagingEnabled
+                  renderItem={({ item }) => (
+                    <View
                       style={{
-                        width: imageW,
-                        height: imageH,
-                        resizeMode: "contain",
-                        borderRadius: 5,
+                        width,
+                        justifyContent: "center",
+                        alignItems: "center",
                         shadowColor: "#000",
                         shadowOffset: {
                           width: 0,
@@ -126,12 +136,37 @@ const SpaProfile = ({
                         },
                         shadowOpacity: 0.58,
                         shadowRadius: 16.0,
+
+                        elevation: 24,
                       }}
-                    />
-                  </View>
-                )}
-              />
-            </View>
+                    >
+                      <Image
+                        source={
+                          item[0] === "h"
+                            ? { uri: item }
+                            : { uri: `data:image/jpeg;base64,${item}` }
+                        }
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          shadowColor: "#000",
+                          shadowOffset: {
+                            width: 0,
+                            height: 12,
+                          },
+                          shadowOpacity: 0.58,
+                          resizeMode: "contain",
+                          shadowRadius: 16.0,
+                          width: imageW,
+                          height: imageH,
+                          borderRadius: 5,
+                        }}
+                      />
+                    </View>
+                  )}
+                />
+              </View>
+            )}
             <Divider />
             {/* Description items */}
             <View style={styles.descriptionRow}>
@@ -143,7 +178,9 @@ const SpaProfile = ({
                   color="#6a2c70"
                 />
               </View>
-              <Text style={styles.userDescriptionText}>
+              <Text
+                style={[styles.userDescriptionText, !theme && tema.darkText]}
+              >
                 {`$${state.fee} average per cut `}
               </Text>
             </View>
@@ -156,7 +193,9 @@ const SpaProfile = ({
                   color="#6a2c70"
                 />
               </View>
-              <Text style={styles.userDescriptionText}>
+              <Text
+                style={[styles.userDescriptionText, !theme && tema.darkText]}
+              >
                 {`${state.workDays} : ${state.workHours} `}
               </Text>
             </View>
@@ -169,11 +208,14 @@ const SpaProfile = ({
                   color="#6a2c70"
                 />
               </View>
-              <Text style={styles.userDescriptionText}>
+              <Text
+                style={[styles.userDescriptionText, !theme && tema.darkText]}
+              >
                 {state.address + ", " + state.zone}
               </Text>
             </View>
-            {state.extras?.length > 0 && (
+
+            {state.extras?.length > 0 &&
               state.extras?.map((item: string, index: number) => {
                 return (
                   <View style={styles.descriptionRow} key={index}>
@@ -185,11 +227,18 @@ const SpaProfile = ({
                         color="#6a2c70"
                       />
                     </View>
-                    <Text style={styles.userDescriptionText}>{item}</Text>
+                    <Text
+                      style={[
+                        styles.userDescriptionText,
+                        !theme && tema.darkText,
+                      ]}
+                    >
+                      {item}
+                    </Text>
                   </View>
                 );
-              })
-            )}
+              })}
+
             <TouchableOpacity
               style={styles.messageRow}
               onPress={modalStatusChange}
@@ -205,7 +254,21 @@ const SpaProfile = ({
               modalStatusChange();
             }}
           >
-            <InfoModal modalStatusChange={modalStatusChange} data={state} />
+            <View
+              style={[
+                {
+                  height: "100%",
+                },
+                {
+                  backgroundColor: !theme
+                    ? "rgba(0,0,0, 0.7)"
+                    : "rgba(0,0,0,0.2)",
+                },
+              ]}
+              // onPress={modalStatusChange}
+            >
+              <InfoModal modalStatusChange={modalStatusChange} data={state} />
+            </View>
           </Modal>
         </View>
       </View>

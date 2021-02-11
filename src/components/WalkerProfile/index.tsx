@@ -1,7 +1,6 @@
 import "react-native-gesture-handler";
 import React, { useState } from "react";
 import {
-  Animated,
   View,
   Text,
   Image,
@@ -18,6 +17,8 @@ import { Icon, Divider, Overlay } from "react-native-elements";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
 import InfoModal from "../InfoModal";
+import { tema } from "../../Theme/theme";
+import { useSelector } from "react-redux";
 const { width, height } = Dimensions.get("screen");
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
@@ -27,6 +28,8 @@ const WalkerProfile = ({
   route,
 }: RouteStackParamList<"WalkerProfile">) => {
   const [state, setState] = React.useState<any>("");
+  const theme = useSelector((state) => state.user.theme);
+
   React.useEffect(() => {
     axios
       .get(`/walkers/${route.params.id}`)
@@ -42,35 +45,25 @@ const WalkerProfile = ({
     return (
       <View style={[styles.tabBar, styles.tabContainer]}>
         <View>
-          <Animated.Text style={styles.tabLabelText}>
-            $ {state.fee}
-          </Animated.Text>
-          <Animated.Text style={styles.tabLabelNumber}>Per Walk</Animated.Text>
+          <Text style={styles.tabLabelText}>$ {state.fee}</Text>
+          <Text style={styles.tabLabelNumber}>Per Walk</Text>
         </View>
         <View>
-          <Animated.Text style={styles.tabLabelText}>
-            {state.workHours}
-          </Animated.Text>
-          <Animated.Text style={styles.tabLabelNumber}>
-            Working Hours
-          </Animated.Text>
+          <Text style={styles.tabLabelText}>{state.workHours}</Text>
+          <Text style={styles.tabLabelNumber}>Working Hours</Text>
         </View>
         <View>
-          <Animated.Text style={styles.tabLabelText}>
-            {state.walks || 0}
-          </Animated.Text>
-          <Animated.Text style={styles.tabLabelNumber}>
-            Walks completed
-          </Animated.Text>
+          <Text style={styles.tabLabelText}>{state.walks || 0}</Text>
+          <Text style={styles.tabLabelNumber}>Walks completed</Text>
         </View>
         {/* <View>
-        <Animated.Text style={styles.tabLabelText}>
+        <Text style={styles.tabLabelText}>
           100%
-        </Animated.Text>
-        <Animated.Text style={styles.tabLabelNumber}>
+        </Text>
+        <Text style={styles.tabLabelNumber}>
         Respuesta <br/>
         a mensajes
-        </Animated.Text>
+        </Text>
         </View> */}
       </View>
     );
@@ -97,30 +90,36 @@ const WalkerProfile = ({
         height: "100%",
       }}
     >
-      <ScrollView style={styles.scroll}>
+
+      <ScrollView style={[styles.scroll, !theme && tema.darkCard]}>
+
         <View>
           <View style={{ flex: 1, justifyContent: "center" }}>
             {/* Main container */}
             <View style={styles.cardContainer}>
-              <View style={styles.headerContainer}>
+              <View
+                style={[
+                  styles.headerContainer,
+                  { borderColor: !theme ? "rgba(256,256,256,0.4)" : "#ccc" },
+                ]}
+              >
                 <View style={styles.userRow}>
-                  <Image
-                    style={styles.userImage}
-                    source={
-                      state?.photo
-                        ? state.photo[0] === "h"
-                          ? { uri: `${state.photo}` }
-                          : { uri: `data:image/jpeg;base64,${state.photo}` }
-                        : require("../../images/logo.png")
-                    }
+
+
+                  <Image style={styles.userImage} source={state?.photo ? state.photo[0] === 'h' ? { uri: `${state.photo}` } : { uri: `data:image/jpeg;base64,${state.photo}` } : require("../../images/logo.png")}
+
                   />
                   <View style={styles.userNameRow}>
-                    <Text style={styles.userNameText}>
+                    <Text
+                      style={[styles.userNameText, !theme && tema.darkText]}
+                    >
                       {state.name + " " + state.lastname}
                     </Text>
                   </View>
                   <View style={styles.userBioRow}>
-                    <Text style={styles.userBioText}>{state.description}</Text>
+                    <Text style={[styles.userBioText, !theme && tema.darkText]}>
+                      {state.description}
+                    </Text>
                   </View>
                 </View>
                 <TouchableOpacity
@@ -157,7 +156,9 @@ const WalkerProfile = ({
                     color="#6a2c70"
                   />
                 </View>
-                <Text style={styles.userDescriptionText}>
+                <Text
+                  style={[styles.userDescriptionText, !theme && tema.darkText]}
+                >
                   {`$${state.fee} average per walk `}
                 </Text>
               </View>
@@ -170,7 +171,9 @@ const WalkerProfile = ({
                     color="#6a2c70"
                   />
                 </View>
-                <Text style={styles.userDescriptionText}>
+                <Text
+                  style={[styles.userDescriptionText, !theme && tema.darkText]}
+                >
                   {`${state.workHours} `}
                 </Text>
               </View>
@@ -186,18 +189,30 @@ const WalkerProfile = ({
                 <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
                   {state.workZone?.length > 0 &&
                     state.workZone.map((item: string, index: number) => (
-                      <Text style={styles.userDescriptionText} key={index}>
+                      <Text
+                        style={[
+                          styles.userDescriptionText,
+                          !theme && tema.darkText,
+                        ]}
+                        key={index}
+                      >
                         {item}
                       </Text>
                     ))}
                 </View>
               </View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.messageRow}
                 onPress={modalStatusChange}
-              >
-                <Text style={styles.messageText}>Get Contact Info</Text>
-              </TouchableOpacity>
+                >
+                </TouchableOpacity> }
+                </View>
+                </View>
+                {/* <Overlay
+                  isVisible={modalVisible}
+                  onBackdropPress={modalStatusChange}
+                  style={styles.overlay}
+                > */}
             </View>
           </View>
           <Overlay
@@ -222,9 +237,31 @@ const WalkerProfile = ({
                 <Text style={styles.titleOverlay}>
                   {state.name + " " + state.lastname}
                 </Text>
-              </View>
 
-              <View style={styles.socialOverlay}>
+              </View>
+              <Text style={styles.titleOverlay}>
+              {state.name + " " + state.lastname}
+              </Text>
+            </View> */}
+
+            <View
+              style={[
+                styles.socialOverlay,
+                { borderColor: !theme ? "#fff" : "#ccc" },
+              ]}
+            >
+              <Text style={[styles.messageText, !theme && tema.darkText]}>
+                {" "}
+                Contact Info
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginVertical: 10,
+                  justifyContent: "space-around",
+                  width: "100%",
+                }}
+              >
                 <Icon
                   name="phone"
                   type="font-awesome-5"
@@ -249,7 +286,8 @@ const WalkerProfile = ({
                 />
               </View>
             </View>
-          </Overlay>
+          </View>
+          {/* </Overlay> */}
         </View>
       </ScrollView>
     </SafeAreaView>

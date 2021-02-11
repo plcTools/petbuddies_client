@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
   container: {
     marginBottom: 10,
     shadowColor: "#000",
-    opacity: 0.9,
+    opacity: 0.8,
     shadowOffset: {
       width: 0,
       height: 10,
@@ -21,14 +21,14 @@ export const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 17,
     fontWeight: "bold",
-    textTransform: 'capitalize',
-    textAlign: 'center',
-    width: 110
+    textTransform: "capitalize",
+    textAlign: "center",
+    width: 110,
   },
   fav: {
     position: "absolute",
-    right: -30,
-    top: -30,
+    right: -20,
+    top: -20,
   },
   cardHeaderRate: {
     flex: 1,
@@ -68,8 +68,8 @@ export const styles = StyleSheet.create({
     flexBasis: 4,
   },
   text: {
-    textAlign: 'center',
-    width: 110
+    textAlign: "center",
+    width: 110,
   },
   infoContainer: {
     maxWidth: "84%",

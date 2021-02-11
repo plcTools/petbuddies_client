@@ -3,77 +3,68 @@ import { StatusBar, Dimensions } from "react-native";
 import { withTheme } from "react-native-elements";
 
 const dimensions = {
-  width: Dimensions.get('window').width,
-  height: Dimensions.get('window').height,
-}
+  width: Dimensions.get("window").width,
+  height: Dimensions.get("window").height,
+};
 
 export const styles = StyleSheet.create({
   containerAll: {
-      margin: 10,
-      alignItems: "center",
-      height: dimensions.height - 100,
-      width: dimensions.width - 20,
-      backgroundColor: "#fff",
-      borderRadius: 10,
-      padding: 5,
-      shadowColor: "#000",
-      shadowOffset: {
-          width: 0,
-          height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5,
+    marginVertical: "50%",
+    marginHorizontal: 19,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    maxHeight: "100%",
+    borderRadius: 10,
+    padding: 10,
+    position: "relative",
   },
   headersContainer: {
-      flexDirection: "row",
-      justifyContent: "space-around",
-      alignItems: "center",
-      marginTop: 10,
-      maxHeight: 150,
-      marginBottom: 15,
-      width: "100%",
-      height: 'auto',
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "100%",
+    height: "auto",
   },
 
   buttonsContainer: {
-      flexDirection: "row",
-      width: "100%",
-      justifyContent: "space-around",
-      alignItems: "center",
-      height: 50,
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginTop: -15,
+    marginBottom: 10,
   },
   textTitle: {
-      fontSize: 25,
-      fontWeight: "bold",
-      color: '#000',
-      marginLeft: 15
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "#000",
+    marginLeft: 15,
   },
   closeButton: {
-      backgroundColor: "#c98c70",
-      justifyContent: "center",
-      borderRadius: 70,
-      height: 40,
-      width: 40,
-      elevation: 1,
+    justifyContent: "center",
+    width: 15,
+    height: 15,
+    position: "absolute",
+    right: 2,
+    top: 2,
   },
   button: {
-      backgroundColor: "#c75643",
-      justifyContent: "center",
-      borderRadius: 5,
-      height: 40,
-      width: 200,
-      elevation: 1,
+    backgroundColor: "#c75643",
+    justifyContent: "center",
+    borderRadius: 5,
+    height: 40,
+    width: 200,
+    elevation: 1,
   },
   textButton: {
-      textAlign: "center",
-      color: "#fff",
-      fontSize: 15,
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 15,
   },
   bodyContainer: {
-      marginTop: 1,
-      height: "60%",
-      width: "100%",
+    marginTop: 1,
+    width: "100%",
   },
   socialRow: {
     justifyContent: "space-evenly",
@@ -95,80 +86,53 @@ export const styles = StyleSheet.create({
   },
 
   dataContainer: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      alignItems: 'center',
-      height: '100%',
-      width: '100%',
-      padding: 50
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   dataLeft: {
-      justifyContent: 'center',
-      alignItems: "center",
-      height: 100,
-      color: 'white',
-      padding:10
+    justifyContent: "center",
+    alignItems: "center",
+    color: "white",
+    marginBottom: 10,
+
   },
 
   dataright: {
-      justifyContent: 'center',
-      alignItems: "center",
-      height: 100,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   textData: {
-      fontSize: 12,
-      padding: 0,
-      color: '#000'
+    fontSize: 16,
+    padding: 0,
+    color: "rgba(0,0,0,0.7)",
   },
 
   mapContainer: {
-      alignItems: "center",
-      padding: 1,
-      marginTop: 15,
+    alignItems: "center",
+    padding: 1,
+    marginTop: 15,
   },
 
   map: {
-      width: "100%",
-      height: "90%"
+    width: "100%",
+    height: "90%",
   },
 
   alignC: {
-      textAlign: "center",
+    textAlign: "center",
   },
 
   footerContainer: {
-    marginTop: 120,
     padding: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center'
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center",
-      marginBottom: 5
-  }
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 5,
+  },
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

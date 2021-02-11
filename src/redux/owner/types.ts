@@ -1,4 +1,4 @@
-import {Hotel} from '../hotels/types'
+import { Hotel } from "../hotels/types";
 export interface Owner {
   _id?: string;
   name: string;
@@ -41,37 +41,49 @@ export interface Groomer {
   description?: string;
 }
 
-  export interface OwnerState {
-    userFavorites: Owner[]
-    owner:  Owner[]
-    userFavHotels: Hotel[] 
-    userFavGroomers: Groomer[]
-  }
-  
-  export const GET_OWNER_FAVORITES:string = 'GET_OWNER_FAVORITES';
-  export const GET_OWNER:string = 'GET_OWNER'
-  export const GET_OWNER_FAV_HOTELS: string = "GET_OWNER_FAV_HOTELS";
-  export const GET_USER_FAV_GROOMERS: string = "GET_USER_FAV_GROOMERS";
+export interface OwnerState {
+  userFavorites: Owner[];
+  owner: Owner[];
+  userFavHotels: Hotel[];
+  userFavGroomers: Groomer[];
+  theme: boolean;
+}
 
-  interface GetOwnerFavHotels {
-    type: typeof GET_OWNER_FAV_HOTELS;
-    payload: Hotel[];
-  };
+export const GET_OWNER_FAVORITES: string = "GET_OWNER_FAVORITES";
+export const GET_OWNER: string = "GET_OWNER";
+export const GET_OWNER_FAV_HOTELS: string = "GET_OWNER_FAV_HOTELS";
+export const GET_USER_FAV_GROOMERS: string = "GET_USER_FAV_GROOMERS";
+export const THEME: string = "THEME";
 
-  interface GetUserFavGroomers {
-    type: typeof GET_USER_FAV_GROOMERS;
-    payload: Groomer[];
-  }
-  
-  interface GetOwnerFavorites {
-    type: typeof GET_OWNER_FAVORITES;
-    payload: Owner[]
-  }
+interface GetOwnerFavHotels {
+  type: typeof GET_OWNER_FAV_HOTELS;
+  payload: Hotel[];
+}
 
-  interface GetOwner {
-    type: typeof GET_OWNER;
-    payload: Owner
-  }
-  
-  export type OwnerActionsTypes = GetOwnerFavorites | GetOwner | GetOwnerFavHotels | GetUserFavGroomers;
-  // export type OwnerAction = GetOwner;
+interface GetUserFavGroomers {
+  type: typeof GET_USER_FAV_GROOMERS;
+  payload: Groomer[];
+}
+
+interface GetOwnerFavorites {
+  type: typeof GET_OWNER_FAVORITES;
+  payload: Owner[];
+}
+
+interface GetOwner {
+  type: typeof GET_OWNER;
+  payload: Owner;
+}
+
+interface ChangeTheme {
+  type: typeof THEME;
+  // payload: boolean;
+}
+
+export type OwnerActionsTypes =
+  | GetOwnerFavorites
+  | GetOwner
+  | GetOwnerFavHotels
+  | GetUserFavGroomers
+  | ChangeTheme;
+// export type OwnerAction = GetOwner;

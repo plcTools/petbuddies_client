@@ -28,10 +28,11 @@ const LoginScreen = ({ navigation }: RouteStackParamList<"LoginScreen">) => {
     password: "",
   });
 
-  const retrieveStorage = async () =>{
-    const id:string = await getData()
-     if(id) navigation.navigate('Tab')
-  }
+
+  const retrieveStorage = async () => {
+    const id: string = await getData();
+    if (id) navigation.navigate("Tab");
+  };
 
   React.useEffect(() => {
     retrieveStorage();

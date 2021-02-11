@@ -1,29 +1,46 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { View, StyleSheet, Linking, Share } from "react-native";
-import { ListItem, Avatar, Icon } from "react-native-elements";
+import { View, StyleSheet, Linking, Share, Text, LogBox } from "react-native";
+import { Avatar, Divider, Icon } from "react-native-elements";
 import { RouteStackParamList } from "../../NavigationConfig/types";
 import { getData } from "../../AsyncStorage/index";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { getWalkers } from "../../redux/walker/actions";
+import { Switch } from "react-native-switch";
+import { changeTheme } from "../../redux/owner/actions";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { tema } from "../../Theme/theme";
+
 import { getOwner } from "../../redux/owner/actions";
 
+
 const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
+  const theme = useSelector((state) => state.user.theme);
   const [state, setState] = React.useState<any>();
+  const [enabled, setEnabled] = React.useState<boolean>(false);
+  const owners = useSelector((state) => state.user.owner);
+  const dispatch = useDispatch();
+
+  const toggleSwitch = async () => {
+    const id = await getData();
+    dispatch(changeTheme());
+    // setEnabled((enabled) => !enabled);
+  };
 
   const retrieveStorage = async () => {
     const id = await getData();
     axios.get(`/walkers/${id}`).then((result) => setState(result.data));
     dispatch(getWalkers());
   };
-  const owners = useSelector((state) => state.user.owner);
-  const dispatch = useDispatch();
+  useEffect(() => {
+    setEnabled(theme);
+  }, [theme]);
 
   useEffect(() => {
+    LogBox.ignoreLogs(["Animated: `useNativeDriver`"]);
     retrieveStorage();
   }, [owners]);
-  console.log(owners.serviceType)
 
   const logout = async () => {
     try {
@@ -56,102 +73,129 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
   };
 
   return (
-    <View>
-      <ListItem bottomDivider>
+    <View style={!theme && tema.darkCard}>
+      <View style={styles.boxHeader}>
         <Avatar /* onPress debería poder modificar la foto de perfil*/
           rounded
           size="large"
-          source={state?.photo ? state.photo[0] === 'h' ? { uri: `${state.photo}` } : { uri: `data:image/jpeg;base64,${state?.photo}` } : require("../../images/logo.png")}
+          containerStyle={{ borderColor: "black", borderWidth: 1 }}
+          source={
+            state?.photo
+              ? state.photo[0] === "h"
+                ? { uri: `${state.photo}` }
+                : { uri: `data:image/jpeg;base64,${state?.photo}` }
+              : require("../../images/logo.png")
+          }
           overlayContainerStyle={{ backgroundColor: "orange" }}
           onPress={() => alert("ir a editar perfil")}
         />
-        <ListItem.Content>
-          <ListItem.Title>
-          {state?.name ? state?.name + ' ' + state?.lastname : state?.email}
-          </ListItem.Title>
-          <ListItem.Subtitle>{state?.zona} </ListItem.Subtitle>
-        </ListItem.Content>
-      </ListItem>
-      <ListItem bottomDivider onPress={() => owners.service ? navigation.navigate("ServiceForm", {service: owners.serviceType}) : navigation.navigate("WalkerForm")}>
+        <View>
+          <Text
+            style={[styles.textHeader, !theme ? tema.darkText : tema.lightText]}
+          >
+            {state?.name ? state?.name + " " + state?.lastname : state?.email}
+          </Text>
+          <Text
+            style={[styles.textHeader, !theme ? tema.darkText : tema.lightText]}
+          >
+            {state?.zona}{" "}
+          </Text>
+          <View style={styles.luna}>
+            <Switch
+              changeValueImmediately={true}
+              circleBorderWidth={0}
+              activeText={"🌞"}
+              backgroundActive={"rgba(0,0,0,0.3)"}
+              inActiveText={"🌜"}
+              value={enabled}
+              onValueChange={toggleSwitch}
+              circleSize={28}
+              barHeight={32}
+              switchLeftPx={6}
+              switchRightPx={6}
+              circleActiveColor={"#fdd400"}
+              circleInActiveColor={"#ccc"}
+            />
+          </View>
+        </View>
+      </View>
+      <Divider />
+
+      <TouchableOpacity
+        style={[styles.box, !theme && tema.darkContainer]}
+        onPress={() => navigation.navigate("WalkerForm")}
+      >
         <Icon raised name="user-cog" type="font-awesome-5" size={20} />
-        <ListItem.Content>
-          <ListItem.Title>Edit Account</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
-      <ListItem
-        bottomDivider
+        <Text style={[styles.text, !theme && tema.darkText]}>Edit Account</Text>
+      </TouchableOpacity>
+
+      <Divider />
+      <TouchableOpacity
+        style={[styles.box, !theme && tema.darkContainer]}
         onPress={() => Linking.openURL("mailto:petBuddies@support.com")}
       >
         <Icon raised name="envelope" type="font-awesome" size={20} />
-        <ListItem.Content>
-          <ListItem.Title>Support</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
-      <ListItem bottomDivider onPress={onShare}>
+        <Text style={[styles.text, !theme && tema.darkText]}>Support</Text>
+      </TouchableOpacity>
+
+      <Divider />
+      <TouchableOpacity
+        style={[styles.box, !theme && tema.darkContainer]}
+        onPress={onShare}
+      >
         <Icon raised name="user-plus" type="font-awesome" size={20} />
-        <ListItem.Content>
-          <ListItem.Title>Invite a friend</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
-      <ListItem bottomDivider>
+        <Text style={[styles.text, !theme && tema.darkText]}>
+          Invite a friend
+        </Text>
+      </TouchableOpacity>
+
+      <Divider />
+      <TouchableOpacity style={[styles.box, !theme && tema.darkContainer]}>
         <Icon raised name="cog" type="font-awesome" size={20} />
-        <ListItem.Content>
-          <ListItem.Title>Settings</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
-      <ListItem bottomDivider>
+        <Text style={[styles.text, !theme && tema.darkText]}>Settings</Text>
+      </TouchableOpacity>
+
+      <Divider />
+      <TouchableOpacity
+        style={[styles.box, !theme && tema.darkContainer]}
+        onPress={() => logout()}
+      >
         <Icon raised name="sign-out" type="font-awesome" size={20} />
-        <ListItem.Content>
-          <ListItem.Title onPress={() => logout()}>Logout</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
+        <Text style={[styles.text, !theme && tema.darkText]}>Logout</Text>
+      </TouchableOpacity>
+      <Divider />
     </View>
   );
 };
 const styles = StyleSheet.create({
-  cardHeaderContainer: {
+  box: {
+    padding: 10,
     flexDirection: "row",
+    alignItems: "center",
+  },
+  boxHeader: {
+    flexDirection: "row",
+    position: "relative",
+    padding: 35,
     justifyContent: "space-between",
-  },
-  cardHeaderMain: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
     alignItems: "center",
+    maxWidth: 320,
+    width: "100%",
   },
-  headerTitle: {
+  text: {
+    fontSize: 18,
+    marginLeft: 10,
+    color: "#000",
+  },
+  textHeader: {
+    textAlign: "center",
     fontSize: 20,
-    fontWeight: "bold",
-    marginRight: 10,
   },
-  cardHeaderRate: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-  },
-  rateStar: {
-    marginRight: 10,
-  },
-  cardContainer: {
-    flexDirection: "row",
-  },
-  infoContainer: {
-    width: 200,
-    marginLeft: 20,
-  },
-  btnContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  btn: {
-    width: 50,
-    height: 30,
-  },
-  btnText: {
-    fontSize: 12,
+
+  luna: {
+    position: "absolute",
+    right: -95,
+    top: -27,
   },
 });
 export default UserPannel;

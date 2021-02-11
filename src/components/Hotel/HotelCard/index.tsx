@@ -18,6 +18,8 @@ import {
 import { useAppDispatch, RootState } from "../../../redux/store";
 import { getOwnerFavHotels } from "../../../redux/owner/actions";
 import { getData } from "../../../AsyncStorage/index";
+import { useSelector } from "react-redux";
+import { tema } from "../../../Theme/theme";
 
 interface Props {
   hotel: hotel;
@@ -27,7 +29,7 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
   const [checked, setChecked] = React.useState<boolean>(false);
   const dispatch = useAppDispatch();
   const [id, setId] = React.useState<string>("");
-
+  const theme = useSelector((state) => state.user.theme);
   const retrieveStorage = async () => {
     const user: string = await getData();
     setId(user);
@@ -52,6 +54,7 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
     NunitoSans_300Light,
   });
 
+
   /* Para Mostrar las reviews, Get a reviews
     y posteriormente se pasan por props a los childs */
 
@@ -71,8 +74,15 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
 
 
 
+
   return (
-    <Card containerStyle={styles.container}>
+    <Card
+      containerStyle={[
+        styles.container,
+        !theme && tema.darkContainer,
+        !theme && { borderColor: "rgba(256,256,256,0.4)", borderWidth: 1 },
+      ]}
+    >
       <TouchableOpacity
         style={styles.cardContainer}
         onPress={() =>
@@ -93,11 +103,18 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
           />
 
           <View style={styles.headerContainer}>
-            <Text style={styles.headerTitle}>{`${hotel.name}`}</Text>
+            <Text
+              style={[styles.headerTitle, !theme && tema.darkText]}
+            >{`${hotel.name}`}</Text>
 
             <Text style={styles.text}>
               <Text style={styles.pricing}>${hotel.fee}</Text>
-              <Text style={{ fontFamily: "NunitoSans_400Regular" }}>
+              <Text
+                style={[
+                  { fontFamily: "NunitoSans_400Regular" },
+                  !theme && tema.darkText,
+                ]}
+              >
                 /night
               </Text>
             </Text>
@@ -106,7 +123,12 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
 
         <View>
           <Card.Divider />
-          <Text style={{ fontFamily: "NunitoSans_600SemiBold", fontSize: 20 }}>
+          <Text
+            style={[
+              { fontFamily: "NunitoSans_600SemiBold", fontSize: 20 },
+              !theme && tema.darkText,
+            ]}
+          >
             {hotel.description}
           </Text>
           <View style={styles.workZone}>
@@ -119,19 +141,28 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
             />
 
             <Text
-              style={{
-                textTransform: "capitalize",
-                marginLeft: 6,
-                fontFamily: "NunitoSans_600SemiBold",
-              }}
+              style={[
+                {
+                  textTransform: "capitalize",
+                  marginLeft: 6,
+                  fontFamily: "NunitoSans_600SemiBold",
+                },
+                !theme && tema.darkText,
+              ]}
             >
               {hotel.zone}
             </Text>
           </View>
 
           <View style={styles.cardHeaderRate}>
-            <Text style={{ marginRight: 5, fontSize: 15 }}>
+
+
+            <Text   style={[
+                { marginRight: 5, fontSize: 15 },
+                !theme && tema.darkText,
+              ]}>
               {reviews.prom ? reviews.prom : hotel.rating}
+
             </Text>
             <Icon
               name={(reviews.prom && "star") || "star-o"}
@@ -148,20 +179,18 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
         <CheckBox
           uncheckedIcon={
             <Icon
-              raised
               name="heart-o"
               type="font-awesome"
-              size={15}
-              color="black"
+              size={19}
+              color={!theme ? "white" : "black"}
             />
           }
           checkedIcon={
             <Icon
-              raised
               name="heart"
               type="font-awesome"
-              size={15}
-              color={"red"}
+              size={19}
+              color={"#E13E50"}
             />
           }
           checked={checked}
