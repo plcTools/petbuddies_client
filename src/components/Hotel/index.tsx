@@ -9,7 +9,6 @@ import {
   Modal,
   TouchableOpacity,
   Image,
-  Alert
 } from "react-native";
 import { Icon, Divider } from "react-native-elements";
 import { styles } from "../WalkerScreen/styles";
@@ -36,34 +35,20 @@ interface ModalChecks {
 }
 
 const HotelScreen = () => {
+
+  const dispatch = useAppDispatch();
   const [state, setState] = React.useState<any | typeof hotels>(null);
   const [check, setCheck] = React.useState<boolean>(false);
   const [checked, setChecked] = React.useState<string | boolean>(false);
   const [input, setInput] = React.useState<ModalChecks>({});
   const [icon, setIcon] = React.useState<ModalChecks>({ hotels: true });
   const [list, setList] = React.useState<string[]>([]);
-  const theme = useSelector((state) => state.user.theme);
+  const theme = useSelector((state: RootState) => state.user.theme);
   const hotels = useSelector((state: RootState) => state.hotels.hotels);
   const [id, setId] = React.useState<string>("");
-  
-
-  const handleList = (hotels: Hotel[]) => {
-    const arr: string[] = hotels.map((item) => item.zone);
-    const uniqueZones = arr.filter(
-      (item, index) => arr.indexOf(item) === index
-    );
-    return setList(uniqueZones);
-  };
-
-  const retrieveStorage = async () => {
-    const user: string = await getData();
-    setId(user);
-  };
-
   const userFavHotels = useSelector(
     (state: RootState) => state.user.userFavHotels
   );
-  const dispatch = useAppDispatch();
   let [fonts] = useFonts({
     NunitoSans_400Regular,
     NunitoSans_900Black_Italic,
@@ -73,49 +58,17 @@ const HotelScreen = () => {
     NunitoSans_300Light,
   });
 
-  React.useEffect(() => {
-    retrieveStorage();
-    if (Object.keys(hotels).length === 0) {
-      dispatch(getHotels());
-    }
-
-    dispatch(getOwnerFavHotels(id));
-    handleList(hotels);
-    setState(hotels);
-    const fetchUser = async () => {
-      try {
-        await dispatch(getHotels());
-        const hotel = useSelector(
-          (state: RootState) => state.hotels.hotels
-        );
-        setState(hotel);
-      } catch (err) {
-        console.log (err);
-      }
-    };
-
-    fetchUser();
-  }, [dispatch, hotels]);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      const fetchUser = async () => {
-        try {
-          await dispatch(getHotels());
-          const hotel = useSelector(
-            (state: RootState) => state.hotels.hotels
-          );
-          setState(hotel);
-        } catch (err) {
-          console.log (err);
-        }
-      };
-
-      fetchUser();
-
-      return () => {};
-    }, [])
-  );
+  const handleList = (hotels: Hotel[]) => {
+    const arr: string[] = hotels.map((item) => item.zone);
+    const uniqueZones = arr.filter(
+      (item, index) => arr.indexOf(item) === index
+    );
+    return setList(uniqueZones);
+  };
+  const retrieveStorage = async () => {
+    const user: string = await getData();
+    setId(user);
+  };
 
   const handleInput = (name: string) => {
     setInput({
@@ -151,6 +104,30 @@ const HotelScreen = () => {
       </SafeAreaView>
     );
   };
+
+  React.useEffect(() => {
+    retrieveStorage();
+    if (Object.keys(hotels).length === 0) {
+      dispatch(getHotels());
+    }
+    dispatch(getOwnerFavHotels(id));
+    handleList(hotels);
+    setState(hotels);
+  }, [dispatch, hotels]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchUser = async () => {
+        try {
+          await dispatch(getHotels());
+          setState(hotels);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fetchUser();
+    }, [])
+  );
 
   if (!fonts) {
     return (

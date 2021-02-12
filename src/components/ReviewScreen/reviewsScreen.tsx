@@ -2,12 +2,8 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   ScrollView,
-  TouchableOpacityComponent,
   Text,
-  FlatList,
   SafeAreaView,
-  StyleSheet,
-  Alert,
   Modal,
 } from "react-native";
 import ReviewCard from "./reviewCard";
@@ -17,10 +13,7 @@ import axios from "axios";
 import { Rating } from "react-native-ratings";
 import styles from "./styles";
 import PostReview from "./PostReview/PostReview";
-import { getHotels } from "../../redux/hotels/actions";
 import { RootState, useAppDispatch } from "../../redux/store";
-import { getWalkers } from "../../redux/walker/actions";
-import { getHairdressers } from "../../redux/Hairdressers/actions";
 import { tema } from "../../Theme/theme";
 import { useSelector } from "react-redux";
 import { Review } from "./types";
@@ -77,39 +70,47 @@ function reviewsScreen({ route, navigation }: any) {
       <Divider style={styles.divider} />
       <View style={styles.ratingView}>
         {!alreadyCommented && (
-        <View>
-          <Text style={[styles.title, !theme && tema.darkText]}>
-            Rate and give your opinion
+          <View>
+            <Text style={[styles.title, !theme && tema.darkText]}>
+              Rate and give your opinion
           </Text>
-          <Text style={[styles.secondLine, !theme && tema.darkText]}>
-            Share your experience and help other users get a clearer idea about
-            the place.
+            <Text style={[styles.secondLine, !theme && tema.darkText]}>
+              Share your experience and help other users get a clearer idea about
+              the place.
           </Text>
-          <View style={styles.imageView}>
-            <Image
-              style={{
-                marginTop: 10,
-                height: 60,
-                width: 60,
-                borderRadius: 50,
-                marginRight: 25,
-              }}
-              source={
-                user?.photo
-                  ? user.photo[0] === "h"
-                    ? { uri: `${user.photo}` }
-                    : { uri: `data:image/jpeg;base64,${user?.photo}` }
-                  : require("../../images/logo.png")
-              }
-            />
-            <Rating
-              onFinishRating={(e) => finishRating(e)}
-              type="custom"
-              startingValue={5}
-              imageSize={30}
-            />
+            <View style={[styles.imageView, !theme && tema.darkView]}>
+              <Image
+                style={{
+                  marginTop: 10,
+                  height: 60,
+                  width: 60,
+                  borderRadius: 50,
+                  marginRight: 25,
+                }}
+                source={
+                  user?.photo
+                    ? user.photo[0] === "h"
+                      ? { uri: `${user.photo}` }
+                      : { uri: `data:image/jpeg;base64,${user?.photo}` }
+                    : require("../../images/logo.png")
+                }
+              />
+              <View style={!theme && {
+                flexDirection: 'row',
+                justifyContent: 'center',
+                backgroundColor: "#fff",
+                padding: 5,
+                borderRadius: 15,
+              }}>
+                <Rating
+                  onFinishRating={(e) => finishRating(e)}
+                  type="custom"
+                  startingValue={5}
+                  imageSize={30}
+                />
+              </View>
+            </View>
           </View>
-        </View>
         )}
       </View>
       <Divider style={styles.divider} />
@@ -128,15 +129,27 @@ function reviewsScreen({ route, navigation }: any) {
           modalStatusChange();
         }}
       >
-        <PostReview
-          service={route.params.service}
-          getReviews={getReviews}
-          preRating={rating}
-          user={user}
-          companyName={route.params}
-          modalStatusChange={modalStatusChange}
-          navigation={navigation}
-        />
+        <View
+          style={[
+            {
+              height: "100%",
+            },
+            {
+              backgroundColor: !theme
+                ? "rgba(0,0,0, 0.7)"
+                : "rgba(0,0,0,0.2)",
+            },
+          ]}
+        >
+          <PostReview
+            service={route.params.service}
+            getReviews={getReviews}
+            preRating={rating}
+            user={user}
+            companyName={route.params}
+            modalStatusChange={modalStatusChange}
+          />
+          </View>
       </Modal>
     </SafeAreaView>
   );

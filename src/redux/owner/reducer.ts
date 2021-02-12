@@ -6,6 +6,7 @@ import {
   OwnerState,
   GET_USER_FAV_GROOMERS,
   THEME,
+  GET_THEME,
 } from "./types";
 
 const initialState: OwnerState = {
@@ -45,7 +46,12 @@ export function userReducer(
       return {
         ...state,
         theme: !state.theme,
-      };
+      }; 
+    case GET_THEME:
+      return {
+        ...state,
+        theme: action.payload
+      }
     default:
       return state;
   }

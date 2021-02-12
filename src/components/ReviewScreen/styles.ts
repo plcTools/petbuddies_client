@@ -43,6 +43,8 @@ const styles = StyleSheet.create({
   imageView: {
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'center',
+      padding: 8
   }
 });
 

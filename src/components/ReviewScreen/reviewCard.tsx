@@ -18,7 +18,7 @@ function reviewCard(props: any) {
   return (
     <View style={[styles.container, !theme && tema.darkContainer]}>
       <View style={[styles.detailUp, !theme && tema.darkView]}>
-        <Text style={{ color: "white" }}>{props.data.userName}</Text>
+        <Text style={{ color: "white" }}>{props.data.userName || props.data.userEmail}</Text>
         <Text style={{ color: "white" }}>{props.data.date.split()}</Text>
       </View>
       <View style={styles.detailDown}>

@@ -32,69 +32,12 @@ const WalkerProfile = ({
 }: RouteStackParamList<"WalkerProfile">) => {
   const [state, setState] = React.useState<any>("");
   const theme = useSelector((state: RootState) => state.user.theme);
-  
-  const dispatch = useAppDispatch ();
 
   React.useEffect(() => {
     axios
       .get(`/walkers/${route.params.id}`)
       .then((result) => setState(result.data));
   }, []);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      const fetchUser = async () => {
-        try {
-          await dispatch(getWalkers());
-          const paseadores = useSelector(
-            (state: RootState) => state.paseadores.walkers
-          );
-          setState(paseadores);
-        } catch (err) {
-          console.log (err);
-        }
-      };
-
-      fetchUser();
-
-      return () => {};
-    }, [])
-  ); 
-
-
-  const [modalVisible, setModalVisible] = React.useState(false);
-
-  const modalStatusChange = () => {
-    setModalVisible(!modalVisible);
-  };
-
-  const renderLabel = () => {
-    return (
-      <View style={[styles.tabBar, styles.tabContainer]}>
-        <View>
-          <Text style={styles.tabLabelText}>$ {state.fee}</Text>
-          <Text style={styles.tabLabelNumber}>Per Walk</Text>
-        </View>
-        <View>
-          <Text style={styles.tabLabelText}>{state.workHours}</Text>
-          <Text style={styles.tabLabelNumber}>Working Hours</Text>
-        </View>
-        <View>
-          <Text style={styles.tabLabelText}>{state.walks || 0}</Text>
-          <Text style={styles.tabLabelNumber}>Walks completed</Text>
-        </View>
-        {/* <View>
-        <Text style={styles.tabLabelText}>
-          100%
-        </Text>
-        <Text style={styles.tabLabelNumber}>
-        Respuesta <br/>
-        a mensajes
-        </Text>
-        </View> */}
-      </View>
-    );
-  };
 
   if (!state) {
     return (
@@ -269,13 +212,13 @@ const WalkerProfile = ({
                 <Icon
                   name="phone"
                   type="font-awesome-5"
-                  color="blue"
+                  color="#11698e"
                   onPress={() => Linking.openURL(`tel:${state?.phone}`)}
                 />
                 <Icon
                   name="whatsapp"
                   type="font-awesome-5"
-                  color="green"
+                  color="#16c79a"
                   onPress={() =>
                     Linking.openURL(
                       `https://wa.me/${state?.phone}?text=Quiero mas Información`
@@ -285,7 +228,7 @@ const WalkerProfile = ({
                 <Icon
                   name="envelope"
                   type="font-awesome-5"
-                  color="#ef4f4f"
+                  color="#f05454"
                   onPress={() => Linking.openURL(`mailto:${state?.email}`)}
                 />
               </View>

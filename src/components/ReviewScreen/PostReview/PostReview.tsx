@@ -11,11 +11,23 @@ import { Icon } from "react-native-elements";
 import styles from "./styles";
 import axios from "axios";
 import { Rating } from "react-native-ratings";
-import { useAppDispatch } from "../../../redux/store";
+import { RootState, useAppDispatch } from "../../../redux/store";
 import { getWalkers } from "../../../redux/walker/actions";
 import { getHairdressers } from "../../../redux/Hairdressers/actions";
 import { getHotels } from "../../../redux/hotels/actions";
+import { useSelector } from "react-redux";
+import { tema } from "../../../Theme/theme";
+import { useNavigation } from "@react-navigation/native";
 
+interface Props {
+  service: string;
+  getReviews: any
+  modalStatusChange: any
+  companyName: any
+  user: any;
+  preRating: any;
+  /* esto hay que cambiarlo jajaj */
+}
 function PostReview({
   service,
   getReviews,
@@ -23,11 +35,12 @@ function PostReview({
   companyName,
   user,
   preRating,
-  navigation,
-}) {
-  const [hotel, setHotel] = useState({});
+}:Props) {
+  const [hotel, setHotel] = useState<any>({});
   const [input, setInput] = useState("");
   const [rating, setRating] = useState(preRating);
+  const theme = useSelector((state: RootState) => state.user.theme);
+  const navigation = useNavigation();
 
   const dispatch = useAppDispatch();
 
@@ -42,7 +55,7 @@ function PostReview({
     const body = {
       serviceType: service,
       userId: user._id,
-      userName: `${user.name} ${user.lastname}`,
+      userName: `${user.name? user.name : user.email} ${user.lastname ? user.lastname : ""}`,
       reviewedId: companyName.hotelId,
       rating: rating,
       reviewText: input,
@@ -61,8 +74,7 @@ function PostReview({
   }
 
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
+      <View style={[styles.container, !theme && tema.darkCard]}>
         <View style={styles.upView}>
           <View>
             <Icon
@@ -74,17 +86,17 @@ function PostReview({
             />
           </View>
           <View style={{ alignContent: "center" }}>
-            <Text style={styles.hotelName}>{hotel.name}</Text>
+            <Text style={[styles.hotelName, !theme && tema.darkText]}>{hotel.name}</Text>
           </View>
           <View>
             <TouchableOpacity>
-              <Text onPress={handleSubmit} style={styles.publishBtn}>
+              <Text onPress={handleSubmit} style={[styles.publishBtn, !theme && tema.darkText]}>
                 Publish
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.userView}>
+        <View style={[styles.userView, !theme && tema.darkView]}>
           <Image
             style={{
               marginTop: 10,
@@ -102,23 +114,32 @@ function PostReview({
             }
           />
           <View style={styles.ratingView}>
-            <Text style={styles.name}>{`${user.name} ${user.lastname}`}</Text>
+            <Text style={[styles.name, !theme && tema.darkText]}>{user.name ? `${user.name}` : `${user.email}`}</Text>
+            <View style={!theme && {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        backgroundColor: "#fff",
+        width: "90%",
+        padding: 5,
+        borderRadius: 15,
+      }}>
             <Rating
               onFinishRating={(e) => setRating(e)}
               type="custom"
               startingValue={preRating}
               imageSize={30}
-            />
+              />
+            </View>
           </View>
         </View>
         <TextInput
           onChangeText={(e) => setInput(e)}
           multiline
           placeholder="Share details about your experience here"
-          style={styles.textInput}
+          placeholderTextColor={!theme ? '#fff' : '#121212'}
+          style={[styles.textInput, !theme && tema.darkText]}
         />
       </View>
-    </SafeAreaView>
   );
 }
 

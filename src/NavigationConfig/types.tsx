@@ -7,9 +7,9 @@ export type RootStackParamList = {
     userFavorites: walker[]
   };
   Prueba: undefined;
-  WalkerProfile: { id: number };
+  WalkerProfile: { id: number, mainData: any };
   HotelProfile: { id: number };
-  SpaProfile: { id: number };
+  SpaProfile: { id: number, mainData: any};
   UserPannel: undefined;
   UserFormScreen: undefined;
   WalkerScreen: undefined;

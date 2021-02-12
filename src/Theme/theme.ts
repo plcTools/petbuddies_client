@@ -14,7 +14,8 @@ export const tema = StyleSheet.create({
   darkView: {
     backgroundColor: '#121212',
     borderColor: 'rgba(256,256,256,0.4)',
-    borderWidth: 1
+    borderWidth: 1,
+    borderRadius: 10
   },
   darkText: {
     color: "#ffff",

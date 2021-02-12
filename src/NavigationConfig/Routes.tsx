@@ -43,7 +43,7 @@ export const Routes: React.FC = () => {
   const TabNavigation = () => {
     return (
       <Tab.Navigator
-        initialRouteName="Walker"
+        initialRouteName="Home"
         tabBarOptions={{
           inactiveTintColor: "#fdfafa",
           activeTintColor: "#008891",

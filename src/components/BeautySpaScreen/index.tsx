@@ -83,18 +83,13 @@ function BeautySpaScreen() {
       const fetchUser = async () => {
         try {
           await dispatch(getHairdressers());
-          const pelus = useSelector(
-            (state: RootState) => state.peluqueros.peluquerias
-          );
-          setState(pelus);
+          setState(peluquerias);
         } catch (err) {
           console.log (err);
         }
       };
 
       fetchUser();
-
-      return () => {};
     }, [])
   );
 

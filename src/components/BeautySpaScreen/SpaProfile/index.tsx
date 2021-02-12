@@ -29,20 +29,12 @@ const SpaProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"SpaProfile">) => {
-  const theme = useSelector((state) => state.user.theme);
+  const theme = useSelector((state: RootState) => state.user.theme);
   const [state, setState] = React.useState<any>("");
-  const [thisRegion, setThisRegion] = React.useState<any>({
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005,
-    latitude: 0,
-    longitude: 0,
-  });
-
-  console.log ('NAVIGATIONNNNNNNNNNN', route, 'NAVIGATIONNNNNNNNNNN');
-
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [reviews, setReviews] = React.useState(route.params.reviews);
-
+  const pelus = useSelector(
+    (state: RootState) => state.peluqueros.peluquerias
+  );
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
   };
@@ -54,21 +46,17 @@ const SpaProfile = ({
       setState(result.data);
     });
 
-    const fetchUser = async () => {
+    /* const fetchUser = async () => {
       try {
         await dispatch(getHairdressers());
-        const pelus = useSelector(
-          (state: RootState) => state.peluqueros.peluquerias
-        );
         setState(pelus);
       } catch (err) {
         console.log(err);
       }
     };
 
-    fetchUser();
+    fetchUser(); */
   }, []);
-
   if (!state) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

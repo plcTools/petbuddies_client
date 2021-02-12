@@ -40,10 +40,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   userView: {
-    marginTop: 25,
+    width: '100%',
     flexDirection: "row",
+    marginTop: 20,
     alignItems: "center",
-    alignSelf: "flex-start",
+    justifyContent: "space-evenly",
+    padding: 10
   },
   name: {
     fontWeight: "bold",
@@ -51,12 +53,13 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: "100%",
-    fontSize: 16,
+    fontSize: 20,
     marginTop: 25
   },
   ratingView: {
     flexDirection: "column",
-    alignItems: "flex-start"
+    alignItems: "center",
+    justifyContent: 'center'
   }
 });
 

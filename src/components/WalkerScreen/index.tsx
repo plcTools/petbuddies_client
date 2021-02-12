@@ -68,7 +68,7 @@ const WalkerScreen = () => {
     setId(idData);
   };
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     retrieveStorage();
     dispatch(getUserFavorites(id));
     handleList(walkers);
@@ -87,9 +87,6 @@ const WalkerScreen = () => {
       const fetchUser = async () => {
         try {
           await dispatch(getWalkers());
-          const walkers = useSelector(
-            (state: RootState) => state.paseadores.walkers
-          );
           setState(walkers);
         } catch (err) {
           console.log (err);
@@ -97,8 +94,6 @@ const WalkerScreen = () => {
       };
 
       fetchUser();
-
-      return () => {};
     }, [])
   );
 

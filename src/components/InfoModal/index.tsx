@@ -84,7 +84,6 @@ function InfoModal(props: any) {
   }
   return (
     <View style={[styles.containerAll, !theme && tema.darkCard]}>
-      <View style={styles.headersContainer}>
         <View style={styles.closeButton}>
           <Icon
             name="times"
@@ -95,7 +94,6 @@ function InfoModal(props: any) {
               modalStatusChange();
             }}
           />
-        </View>
       </View>
 
       <View style={styles.bodyContainer}>
@@ -163,18 +161,18 @@ function InfoModal(props: any) {
       <Divider />
       <View style={styles.buttonsContainer}>
         <TouchableOpacity onPress={() => openTel()}>
-          <Icon name="phone" type="font-awesome-5" color="blue" size={25} />
+          <Icon name="phone" type="font-awesome-5" color="#11698e" size={25} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => openWhatsApp()}>
-          <Icon name="whatsapp" type="font-awesome-5" color="green" size={25} />
+          <Icon name="whatsapp" type="font-awesome-5" color="#16c79a" size={25} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => openMail()}>
           <Icon
             name="envelope"
             type="font-awesome-5"
-            color="#ef4f4f"
+            color="#f05454"
             size={25}
           />
         </TouchableOpacity>
