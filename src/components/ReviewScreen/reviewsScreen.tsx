@@ -23,8 +23,9 @@ import { getWalkers } from "../../redux/walker/actions";
 import { getHairdressers } from "../../redux/Hairdressers/actions";
 import { tema } from "../../Theme/theme";
 import { useSelector } from "react-redux";
+import { Review } from "./types";
 
-function reviewsScreen({ route }: any) {
+function reviewsScreen({ route, navigation }: any) {
   const theme = useSelector((state: RootState) => state.user.theme);
 
   const dispatch = useAppDispatch();
@@ -33,23 +34,28 @@ function reviewsScreen({ route }: any) {
   const [user, setUser] = useState<any>({});
   const [rating, setRating] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
+  const [alreadyCommented, setAlreadyCommented] = useState(false);
 
   const retrieveStorage = async () => {
     const user: string = await getData();
-    const usuario = await axios.get(`/owners/${user}`);
+    const usuario: any = await axios.get(`/owners/${user}`);
     setUser(usuario.data.owner);
     const hotel = route.params.hotelId;
-    const allReviews = await axios.get(`/reviews/${route.params.service}/${hotel}`);
+    const allReviews: any = await axios.get(
+      `/reviews/${route.params.service}/${hotel}`
+    );
+    const found = allReviews.data.find(
+      (review: Review) => review.userId == usuario.data.owner._id
+    );
+    if (found) setAlreadyCommented(true);
     setReviews(allReviews.data);
   };
 
-
   const getReviews = async () => {
     const hotel = route.params.hotelId;
-    const allReviews = await axios.get(`/reviews/${route.params.service}/${hotel}`);
-    dispatch (getHotels ());
-    dispatch (getWalkers ());
-    dispatch (getHairdressers ());
+    const allReviews = await axios.get(
+      `/reviews/${route.params.service}/${hotel}`
+    );
     setReviews(allReviews.data);
   };
 
@@ -61,7 +67,7 @@ function reviewsScreen({ route }: any) {
     retrieveStorage();
   }, []);
 
-  function finishRating(e:any) {
+  function finishRating(e: any) {
     setRating(e);
     modalStatusChange();
   }
@@ -70,35 +76,41 @@ function reviewsScreen({ route }: any) {
     <SafeAreaView style={[styles.containerAll, !theme && tema.darkCard]}>
       <Divider style={styles.divider} />
       <View style={styles.ratingView}>
-        <Text style={[styles.title, !theme && tema.darkText]}>Rate and give your opinion</Text>
-        <Text style={[styles.secondLine, !theme && tema.darkText]}>
-          Share your experience and help other users get a clearer idea about
-          the place.
-        </Text>
-        <View style={styles.imageView}>
-          <Image
-            style={{
-              marginTop: 10,
-              height: 60,
-              width: 60,
-              borderRadius: 50,
-              marginRight: 25,
-            }}
-            source={
-              user?.photo
-                ? user.photo[0] === "h"
-                  ? { uri: `${user.photo}` }
-                  : { uri: `data:image/jpeg;base64,${user?.photo}` }
-                : require("../../images/logo.png")
-            }
-          />
-          <Rating
-            onFinishRating={(e) => finishRating(e)}
-            type="custom"
-            startingValue={5}
-            imageSize={30}
-          />
+        {!alreadyCommented && (
+        <View>
+          <Text style={[styles.title, !theme && tema.darkText]}>
+            Rate and give your opinion
+          </Text>
+          <Text style={[styles.secondLine, !theme && tema.darkText]}>
+            Share your experience and help other users get a clearer idea about
+            the place.
+          </Text>
+          <View style={styles.imageView}>
+            <Image
+              style={{
+                marginTop: 10,
+                height: 60,
+                width: 60,
+                borderRadius: 50,
+                marginRight: 25,
+              }}
+              source={
+                user?.photo
+                  ? user.photo[0] === "h"
+                    ? { uri: `${user.photo}` }
+                    : { uri: `data:image/jpeg;base64,${user?.photo}` }
+                  : require("../../images/logo.png")
+              }
+            />
+            <Rating
+              onFinishRating={(e) => finishRating(e)}
+              type="custom"
+              startingValue={5}
+              imageSize={30}
+            />
+          </View>
         </View>
+        )}
       </View>
       <Divider style={styles.divider} />
       <ScrollView style={styles.body}>
@@ -123,6 +135,7 @@ function reviewsScreen({ route }: any) {
           user={user}
           companyName={route.params}
           modalStatusChange={modalStatusChange}
+          navigation={navigation}
         />
       </Modal>
     </SafeAreaView>

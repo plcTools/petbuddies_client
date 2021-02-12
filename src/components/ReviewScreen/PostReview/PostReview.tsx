@@ -49,14 +49,14 @@ function PostReview({
     };
     axios
       .post("/reviews/", body)
+      .then(()=> Alert.alert("PetBuddies","Gracias por su comentario"))
       .then((res) => {
         getReviews();
         modalStatusChange();
-        if (service === "Hotel") dispatch(getHotels());
-        else if (service === "DogGroomer") dispatch(getHairdressers());
-        else if (service === "Walker") dispatch(getWalkers());
+        if (service === "Hotel") navigation.navigate("Hotel");
+        else if (service === "DogGroomer") navigation.navigate ("BeautySpaScreen")
+        else if (service === "Walker") navigation.navigate("Home");
       })
-      .then(()=> Alert.alert("PetBuddies","Gracias por su comentario"))
       .catch((err) => alert(err));
   }
 

@@ -54,7 +54,6 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
     NunitoSans_300Light,
   });
 
-
   /* Para Mostrar las reviews, Get a reviews
     y posteriormente se pasan por props a los childs */
 
@@ -66,14 +65,11 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
         const sum = reviewsData.data
           .map((e: any) => e.rating)
           .reduce((a: any, c: any) => a + c, 0);
-        const prom = Number (String (sum / reviewsData.data.length).slice (0,3));
-        setReviews({ review: reviewsData.data, prom })
+        const prom = Number(String(sum / reviewsData.data.length).slice(0, 3));
+        setReviews({ review: reviewsData.data, prom });
       })
       .catch((err) => alert(err));
   }, []);
-
-
-
 
   return (
     <Card
@@ -86,7 +82,11 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
       <TouchableOpacity
         style={styles.cardContainer}
         onPress={() =>
-          navigation.navigate("HotelProfile", { id: hotel._id, reviews })
+          navigation.navigate("HotelProfile", {
+            id: hotel._id,
+            reviews,
+            mainData: hotel,
+          })
         }
       >
         <View style={styles.cardHeader}>
@@ -99,7 +99,13 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
               marginTop: 3,
               marginBottom: 7,
             }}
-            source={hotel?.logo ? hotel.logo[0] === 'h' ? { uri: `${hotel.logo}` } : { uri: `data:image/jpeg;base64,${hotel.logo}` } : require("../../../images/logo.png")}
+            source={
+              hotel?.logo
+                ? hotel.logo[0] === "h"
+                  ? { uri: `${hotel.logo}` }
+                  : { uri: `data:image/jpeg;base64,${hotel.logo}` }
+                : require("../../../images/logo.png")
+            }
           />
 
           <View style={styles.headerContainer}>
@@ -155,14 +161,13 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
           </View>
 
           <View style={styles.cardHeaderRate}>
-
-
-            <Text   style={[
+            <Text
+              style={[
                 { marginRight: 5, fontSize: 15 },
                 !theme && tema.darkText,
-              ]}>
+              ]}
+            >
               {reviews.prom ? reviews.prom : hotel.rating}
-
             </Text>
             <Icon
               name={(reviews.prom && "star") || "star-o"}

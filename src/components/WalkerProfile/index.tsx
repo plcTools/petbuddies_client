@@ -18,11 +18,13 @@ import { Rating } from "react-native-ratings";
 import axios from "axios";
 import InfoModal from "../InfoModal";
 import { tema } from "../../Theme/theme";
+import { getWalkers } from "../../redux/walker/actions";
 import { useSelector } from "react-redux";
 const { width, height } = Dimensions.get("screen");
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
-import {RootState} from '../../redux/store'
+import { RootState, useAppDispatch } from '../../redux/store'
+import { useFocusEffect } from "@react-navigation/native";
 
 const WalkerProfile = ({
   navigation,
@@ -30,12 +32,36 @@ const WalkerProfile = ({
 }: RouteStackParamList<"WalkerProfile">) => {
   const [state, setState] = React.useState<any>("");
   const theme = useSelector((state: RootState) => state.user.theme);
+  
+  const dispatch = useAppDispatch ();
 
   React.useEffect(() => {
     axios
       .get(`/walkers/${route.params.id}`)
       .then((result) => setState(result.data));
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchUser = async () => {
+        try {
+          await dispatch(getWalkers());
+          const paseadores = useSelector(
+            (state: RootState) => state.paseadores.walkers
+          );
+          setState(paseadores);
+        } catch (err) {
+          console.log (err);
+        }
+      };
+
+      fetchUser();
+
+      return () => {};
+    }, [])
+  ); 
+
+
   const [modalVisible, setModalVisible] = React.useState(false);
 
   const modalStatusChange = () => {
@@ -136,12 +162,12 @@ const WalkerProfile = ({
                     <Rating
                       readonly
                       type="custom"
-                      startingValue={state.rating}
+                      startingValue={route.params.mainData.rating}
                       imageSize={30}
                     />
 
                     <Text style={styles.ratingText}>
-                      {state.reveiewsReceived} califications
+                      {route.params.mainData.reviewsReceived.length} califications
                     </Text>
                   </View>
                 </TouchableOpacity>

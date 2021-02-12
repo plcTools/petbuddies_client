@@ -1,5 +1,6 @@
 import "react-native-gesture-handler";
 import React from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -8,6 +9,7 @@ import {
   Modal,
   TouchableOpacity,
   Image,
+  Alert
 } from "react-native";
 import { Icon, Divider } from "react-native-elements";
 import { styles } from "../WalkerScreen/styles";
@@ -43,6 +45,7 @@ const HotelScreen = () => {
   const theme = useSelector((state) => state.user.theme);
   const hotels = useSelector((state: RootState) => state.hotels.hotels);
   const [id, setId] = React.useState<string>("");
+  
 
   const handleList = (hotels: Hotel[]) => {
     const arr: string[] = hotels.map((item) => item.zone);
@@ -79,7 +82,40 @@ const HotelScreen = () => {
     dispatch(getOwnerFavHotels(id));
     handleList(hotels);
     setState(hotels);
+    const fetchUser = async () => {
+      try {
+        await dispatch(getHotels());
+        const hotel = useSelector(
+          (state: RootState) => state.hotels.hotels
+        );
+        setState(hotel);
+      } catch (err) {
+        console.log (err);
+      }
+    };
+
+    fetchUser();
   }, [dispatch, hotels]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchUser = async () => {
+        try {
+          await dispatch(getHotels());
+          const hotel = useSelector(
+            (state: RootState) => state.hotels.hotels
+          );
+          setState(hotel);
+        } catch (err) {
+          console.log (err);
+        }
+      };
+
+      fetchUser();
+
+      return () => {};
+    }, [])
+  );
 
   const handleInput = (name: string) => {
     setInput({
@@ -126,6 +162,7 @@ const HotelScreen = () => {
       </View>
     );
   }
+
   return (
     <View style={[!theme ? tema.darkCard : tema.lightContainer]}>
       <Divider />

@@ -21,13 +21,11 @@ import InfoModal from "../../InfoModal";
 import { tema } from "../../../Theme/theme";
 
 function SpaCard(props: any) {
-
   const theme = useSelector((state: RootState) => state.user.theme);
 
   const [checked, setChecked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [reviews, setReviews] = useState<any>([]);
-
 
   const userFavGroomers = useSelector(
     (state: RootState) => state.user.userFavGroomers
@@ -53,27 +51,25 @@ function SpaCard(props: any) {
 
   const dispatch = useAppDispatch();
 
-
   /* Para Mostrar las reviews, Get a reviews
     y posteriormente se pasan por props a los childs */
 
-    React.useEffect(() => {
-      axios
-        .get(`/reviews/DogGroomer/${props.peluqueria._id}`)
-        .then((reviewsData) => {
-          const sum = reviewsData.data
-            .map((e: any) => e.rating)
-            .reduce((a: any, c: any) => a + c, 0);
-          const prom = Number (String (sum / reviewsData.data.length).slice (0,3));
-          setReviews({ review: reviewsData.data, prom })
-        })
-        .catch((err) => alert(err));
-    }, []);
-   
+  React.useEffect(() => {
+    axios
+      .get(`/reviews/DogGroomer/${props.peluqueria._id}`)
+      .then((reviewsData) => {
+        const sum = reviewsData.data
+          .map((e: any) => e.rating)
+          .reduce((a: any, c: any) => a + c, 0);
+        const prom = Number(String(sum / reviewsData.data.length).slice(0, 3));
+        setReviews({ review: reviewsData.data, prom });
+      })
+      .catch((err) => alert(err));
+  }, []);
 
+  // console.log("----",props.peluqueria,"---");
 
   return (
-
     <Card
       containerStyle={[
         styles.container,
@@ -83,9 +79,13 @@ function SpaCard(props: any) {
     >
       <TouchableOpacity
         style={styles.cardContainer}
-        onPress={() => navigation.navigate("SpaProfile", { id: props.id })}
+        onPress={() =>
+          navigation.navigate("SpaProfile", {
+            id: props.id,
+            mainData: props.peluqueria,
+          })
+        }
       >
-
         <View style={styles.cardHeader}>
           <Image
             style={{
@@ -96,8 +96,13 @@ function SpaCard(props: any) {
               marginTop: 3,
               marginBottom: 7,
             }}
-            source={props.peluqueria?.logo ? props.peluqueria.logo[0] === 'h' ? { uri: `${props.peluqueria.logo}` } : { uri: `data:image/jpeg;base64,${props.peluqueria.logo}` } : require("../../../images/logo.png")}
-
+            source={
+              props.peluqueria?.logo
+                ? props.peluqueria.logo[0] === "h"
+                  ? { uri: `${props.peluqueria.logo}` }
+                  : { uri: `data:image/jpeg;base64,${props.peluqueria.logo}` }
+                : require("../../../images/logo.png")
+            }
           />
           <View style={styles.headerContainer}>
             <Text style={[styles.headerTitle, !theme && tema.darkText]}>
@@ -138,7 +143,6 @@ function SpaCard(props: any) {
           </View>
         </View>
         <View style={styles.cardHeaderRate}>
-
           <Text
             style={[{ marginRight: 5, fontSize: 15 }, !theme && tema.darkText]}
           >
@@ -188,7 +192,6 @@ function SpaCard(props: any) {
             }
           }}
         />
-  
       </View>
     </Card>
   );

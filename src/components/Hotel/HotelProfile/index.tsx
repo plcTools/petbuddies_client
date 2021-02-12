@@ -59,6 +59,9 @@ const HotelProfile = ({
       </View>
     );
   }
+
+  console.log("---",route,"---");
+  
   return (
     <ScrollView style={[styles.scroll, !theme && tema.darkCard]}>
       <View style={styles.container}>
@@ -107,11 +110,11 @@ const HotelProfile = ({
                   <Rating
                     readonly
                     type="custom"
-                    startingValue={reviews?.prom ? reviews.prom : 0}
+                    startingValue={route.params.mainData.rating ? route.params.mainData.rating : 0}
                     imageSize={30}
                   />
                   <Text style={[styles.ratingText, !theme && tema.darkText]}>
-                    {reviews?.review.length} califications
+                    {route.params.mainData.reviewsReceived && route.params.mainData.reviewsReceived.length} califications
                   </Text>
                 </View>
               </TouchableOpacity>

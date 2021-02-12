@@ -26,7 +26,7 @@ interface Props {
 
 const WalkerCard: React.FC<Props> = ({
   walker,
-  userFavorites,
+  userFavorites
 }): JSX.Element => {
   const [checked, setChecked] = React.useState<boolean>(false);
   const [id, setId] = useState<string>("");
@@ -68,7 +68,7 @@ const WalkerCard: React.FC<Props> = ({
     >
       <TouchableOpacity
         style={styles.cardContainer}
-        onPress={() => navigation.navigate("WalkerProfile", { id: walker._id })}
+        onPress={() => navigation.navigate("WalkerProfile", { id: walker._id, mainData: walker })}
       >
         <View style={styles.cardHeader}>
           <Image
