@@ -15,25 +15,32 @@ import ModalUserFormScreen from "../ModalUserFormScreen/ModalUserFormScreen";
 import firebase from "firebase";
 import * as Google from "expo-google-app-auth";
 import axios from "axios";
+import {getThemeRedux, changeTheme} from '../../redux/owner/actions'
 import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from "@env";
-import { storeData, getData } from "../../AsyncStorage/index";
+import { storeData, getTheme, getData } from "../../AsyncStorage/index";
+import { useDispatch } from 'react-redux';
 
 interface state {
   [key: string]: any;
 }
 
 const LoginScreen = ({ navigation }: RouteStackParamList<"LoginScreen">) => {
+
+  const dispatch= useDispatch();
   const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
-
-
   const retrieveStorage = async () => {
     const id: string = await getData();
+    const themeStorage = await getTheme();
+    if(themeStorage === false) {
+      dispatch(changeTheme());
+    }
+    dispatch(getThemeRedux(themeStorage === undefined ? true : themeStorage))
     if (id) navigation.navigate("Tab");
   };
-
+  
   React.useEffect(() => {
     retrieveStorage();
   }, []);
@@ -76,6 +83,8 @@ const LoginScreen = ({ navigation }: RouteStackParamList<"LoginScreen">) => {
         await firebase.auth().signInWithEmailAndPassword(email, password);
         const id = await axios.get(`/owners/email/${email}`);
         await storeData(id.data);
+        const themeStorage = await getTheme();
+        dispatch(getThemeRedux(themeStorage))
         navigation.navigate("Tab");
       } catch (error) {
         console.log(error.message);

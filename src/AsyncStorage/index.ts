@@ -10,6 +10,25 @@ export const storeData = async (value: string) => {
     console.log(error);
   }
 };
+export const changeThemeStorage = async (value: boolean = true) => {
+  try {
+    const jsonParser = JSON.stringify(value);
+    await AsyncStorage.setItem("@theme", jsonParser);
+  } catch (error) {
+    // saving error
+    console.log(error);
+  }
+};
+
+export const getTheme = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem("@theme");
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    // error reading value
+    console.log(e);
+  }
+};
 
 export const getData = async () => {
   try {

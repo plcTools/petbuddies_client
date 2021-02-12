@@ -54,6 +54,7 @@ export const GET_OWNER: string = "GET_OWNER";
 export const GET_OWNER_FAV_HOTELS: string = "GET_OWNER_FAV_HOTELS";
 export const GET_USER_FAV_GROOMERS: string = "GET_USER_FAV_GROOMERS";
 export const THEME: string = "THEME";
+export const GET_THEME: string = 'GET_THEME';
 
 interface GetOwnerFavHotels {
   type: typeof GET_OWNER_FAV_HOTELS;
@@ -79,11 +80,16 @@ interface ChangeTheme {
   type: typeof THEME;
   // payload: boolean;
 }
+interface GetTheme {
+  type: typeof GET_THEME;
+  payload: boolean
+}
 
 export type OwnerActionsTypes =
   | GetOwnerFavorites
   | GetOwner
   | GetOwnerFavHotels
   | GetUserFavGroomers
-  | ChangeTheme;
+  | ChangeTheme
+  | GetTheme
 // export type OwnerAction = GetOwner;

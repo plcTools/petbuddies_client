@@ -75,7 +75,7 @@ function reviewsScreen({ route }: any) {
           Share your experience and help other users get a clearer idea about
           the place.
         </Text>
-        <View style={styles.imageView}>
+        <View style={[styles.imageView, !theme && tema.darkView]}>
           <Image
             style={{
               marginTop: 10,
@@ -92,12 +92,21 @@ function reviewsScreen({ route }: any) {
                 : require("../../images/logo.png")
             }
           />
+         <View style={!theme && {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        backgroundColor: "#fff",
+        padding: 5,
+        borderRadius: 15,
+      }}>
+
           <Rating
             onFinishRating={(e) => finishRating(e)}
             type="custom"
             startingValue={5}
             imageSize={30}
-          />
+            />
+          </View>
         </View>
       </View>
       <Divider style={styles.divider} />
@@ -116,6 +125,18 @@ function reviewsScreen({ route }: any) {
           modalStatusChange();
         }}
       >
+        <View
+        style={[
+          {
+            height: "100%",
+          },
+          {
+            backgroundColor: !theme
+              ? "rgba(0,0,0, 0.7)"
+              : "rgba(0,0,0,0.2)",
+          },
+        ]}
+        >
         <PostReview
           service={route.params.service}
           getReviews={getReviews}
@@ -123,7 +144,8 @@ function reviewsScreen({ route }: any) {
           user={user}
           companyName={route.params}
           modalStatusChange={modalStatusChange}
-        />
+          />
+          </View>
       </Modal>
     </SafeAreaView>
   );

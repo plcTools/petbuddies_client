@@ -13,6 +13,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { tema } from "../../Theme/theme";
 import {RootState} from '../../redux/store'
 import { getOwner } from "../../redux/owner/actions";
+import {changeThemeStorage, getTheme} from '../../AsyncStorage'
 
 
 const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
@@ -24,9 +25,11 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
 
   const toggleSwitch = async () => {
     /* const id = await getData(); */
+    await changeThemeStorage(!theme)
     dispatch(changeTheme());
     // setEnabled((enabled) => !enabled);
   };
+  
 
   const retrieveStorage = async () => {
     const id = await getData();
@@ -39,7 +42,9 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
 
   useEffect(() => {
     LogBox.ignoreLogs(["Animated: `useNativeDriver`"]); // Para quitar un error de log que salia en la pantalla
-    if(!state) retrieveStorage();
+    if(!state) {
+      retrieveStorage();
+    }
   }, [owners]);
 
   const logout = async () => {

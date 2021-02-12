@@ -32,7 +32,7 @@ const WalkerCard: React.FC<Props> = ({
   const [id, setId] = useState<string>("");
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const theme = useSelector((state) => state.user.theme);
+  const theme = useSelector((state: RootState) => state.user.theme);
   const retrieveStorage = async () => {
     const user: string = await getData();
     setId(user);
@@ -149,6 +149,7 @@ const WalkerCard: React.FC<Props> = ({
             <Icon
               name="star-o"
               type="font-awesome"
+              solid={true}
               size={18}
               color="green"
               underlayColor="red"

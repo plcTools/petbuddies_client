@@ -40,7 +40,7 @@ const HotelScreen = () => {
   const [input, setInput] = React.useState<ModalChecks>({});
   const [icon, setIcon] = React.useState<ModalChecks>({ hotels: true });
   const [list, setList] = React.useState<string[]>([]);
-  const theme = useSelector((state) => state.user.theme);
+  const theme = useSelector((state: RootState) => state.user.theme);
   const hotels = useSelector((state: RootState) => state.hotels.hotels);
   const [id, setId] = React.useState<string>("");
 

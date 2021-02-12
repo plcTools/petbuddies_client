@@ -9,14 +9,14 @@ const dimensions = {
 
 export const styles = StyleSheet.create({
   containerAll: {
-    marginVertical: "40%",
+    marginVertical: "27%",
     marginHorizontal: 19,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
     maxHeight: "100%",
-    borderRadius: 10,
-    padding: 10,
+    borderRadius: 20,
+    padding: 20,
     position: "relative",
   },
   headersContainer: {
@@ -32,8 +32,8 @@ export const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-around",
     alignItems: "center",
-    marginTop: -15,
-    marginBottom: 10,
+    marginTop: 3,
+    marginBottom: 13,
   },
   textTitle: {
     fontSize: 25,
@@ -46,8 +46,8 @@ export const styles = StyleSheet.create({
     width: 15,
     height: 15,
     position: "absolute",
-    right: 2,
-    top: 2,
+    right: 10,
+    top: 10,
   },
   button: {
     backgroundColor: "#c75643",

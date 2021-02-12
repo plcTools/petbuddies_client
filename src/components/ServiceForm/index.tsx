@@ -41,6 +41,7 @@ interface State {
   longitude?: number;
   latitude?: number;
   serviceType?: string;
+  extras:string[];
 }
 
 const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) => {
@@ -48,7 +49,7 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
   const [data, setData] = useState<any>({});
   const [id, setId] = useState<string>("");
   const [image, setImage] = useState<string | undefined>(undefined);
-  const [pics, setPics] = useState<string[] | undefined>([]);
+  const [pics, setPics] = useState<string[]>([]);
   const [check, setCheck] = useState<boolean>(false);
   const [service, setService] = useState<string>("hotels");
   const [servicio, setServicio] = useState<State>()
@@ -101,13 +102,13 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
     }
     setData({})
     setPics([])
-    navigation.navigate("Tab");
     dispatch(getOwner(id));
     dispatch(getWalkers());
+    navigation.push("Tab");
   };
 
   const pickImage = async (type: string, index: number) => { 
-      let result = await ImagePicker.launchImageLibraryAsync({
+      let result:any = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
@@ -133,7 +134,7 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
               });
             } 
             } else {
-              setPics([...pics, result.base64]);
+              setPics(oldpics => [...oldpics, result.base64]);
             }
         }
       }

@@ -5,6 +5,7 @@ import {
   OwnerActionsTypes,
   GET_OWNER_FAV_HOTELS,
   THEME,
+  GET_THEME
 } from "./types";
 import axios from "axios";
 
@@ -52,18 +53,18 @@ export const getOwnerFavGroomers = (userId: string): any => async (
 //   return dispatch({ type: THEME, payload: data });
 // };
 
-export const changeTheme = () => {
-  return {
+export const changeTheme = () => async(dispatch:DispatchType) => {
+  return dispatch({
     type: THEME,
-  };
+  });
 };
 
-// export const getTheme = (payload: boolean) => {
-//   return {
-//     type: THEME,
-//     payload,
-//   };
-// };
+export const getThemeRedux = (payload: boolean) => async(dispatch:DispatchType) => {
+  return dispatch({
+    type: GET_THEME,
+    payload,
+  });
+};
 
 export const getOwner = (id: string): any => async (dispatch: DispatchType) => {
   if (id) {

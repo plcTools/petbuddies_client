@@ -243,13 +243,13 @@ const WalkerProfile = ({
                 <Icon
                   name="phone"
                   type="font-awesome-5"
-                  color="blue"
+                  color="#11698e"
                   onPress={() => Linking.openURL(`tel:${state?.phone}`)}
                 />
                 <Icon
                   name="whatsapp"
                   type="font-awesome-5"
-                  color="green"
+                  color="#16c79a"
                   onPress={() =>
                     Linking.openURL(
                       `https://wa.me/${state?.phone}?text=Quiero mas Información`
@@ -259,7 +259,7 @@ const WalkerProfile = ({
                 <Icon
                   name="envelope"
                   type="font-awesome-5"
-                  color="#ef4f4f"
+                  color="#f05454"
                   onPress={() => Linking.openURL(`mailto:${state?.email}`)}
                 />
               </View>
