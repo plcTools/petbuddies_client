@@ -16,11 +16,10 @@ import { RouteStackParamList } from "../../../NavigationConfig/types";
 import { Icon, Divider } from "react-native-elements";
 import { useSelector } from "react-redux";
 import { tema } from "../../../Theme/theme";
-import { getHairdressers } from "../../../redux/Hairdressers/actions";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
 import InfoModal from "../../InfoModal";
-import { useAppDispatch, RootState } from "../../../redux/store";
+import { RootState } from "../../../redux/store";
 const { width } = Dimensions.get("screen");
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
@@ -32,31 +31,17 @@ const SpaProfile = ({
   const theme = useSelector((state: RootState) => state.user.theme);
   const [state, setState] = React.useState<any>("");
   const [modalVisible, setModalVisible] = React.useState(false);
-  const pelus = useSelector(
-    (state: RootState) => state.peluqueros.peluquerias
-  );
   const modalStatusChange = () => {
     setModalVisible(!modalVisible);
-  };
+  };;
 
-  const dispatch = useAppDispatch();
-
-  React.useEffect(() => {
-    axios.get(`/groomer/${route.params.id}`).then((result) => {
-      setState(result.data);
-    });
-
-    /* const fetchUser = async () => {
-      try {
-        await dispatch(getHairdressers());
-        setState(pelus);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    fetchUser(); */
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      axios.get(`/groomer/${route.params.id}`).then((result) => {
+        setState(result.data);
+      });
+    }, [])
+  );
   if (!state) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -123,8 +108,8 @@ const SpaProfile = ({
                     imageSize={30}
                   />
                   <Text style={[styles.ratingText, !theme && tema.darkText]}>
-                    {route.params.mainData.reviewsReceived &&
-                      route.params.mainData.reviewsReceived.length}{" "}
+                    {state.reviewsReceived &&
+                      state.reviewsReceived.length}{" "}
                     califications
                   </Text>
                 </View>
@@ -280,7 +265,7 @@ const SpaProfile = ({
                     : "rgba(0,0,0,0.2)",
                 },
               ]}
-              // onPress={modalStatusChange}
+            // onPress={modalStatusChange}
             >
               <InfoModal modalStatusChange={modalStatusChange} data={state} />
             </View>

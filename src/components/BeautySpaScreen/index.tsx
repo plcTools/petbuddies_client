@@ -63,35 +63,21 @@ function BeautySpaScreen() {
   };
   const handleInput = (name: string) => {
     setInput({
-      // ...input, -> esta comentado para q solo renderice por una sola zona
       [name]: input[name] ? false : true,
     });
   };
-
-  React.useEffect(() => {
-    retrieveStorage();
-    if (Object.keys(peluquerias).length === 0) {
-      dispatch(getHairdressers());
-    }
-    dispatch(getOwnerFavGroomers(id));
-    handleList(peluquerias);
-    setState(peluquerias);
-  }, [dispatch, peluquerias]);
-
- /*  useFocusEffect(
+  useFocusEffect(
     React.useCallback(() => {
-      const fetchUser = async () => {
-        try {
-          await dispatch(getHairdressers());
-          setState(peluquerias);
-        } catch (err) {
-          console.log (err);
-        }
-      };
-
-      fetchUser();
-    }, [])
-  ); */
+      retrieveStorage();
+      handleList(peluquerias);
+      if (Object.keys(peluquerias).length > 0) {
+        setState(peluquerias);
+        dispatch(getOwnerFavGroomers(id));
+      } else {
+        dispatch(getHairdressers());
+      }
+    }, [dispatch, peluquerias])
+  );
 
   const renderComponent = (arr: any) => {
     return (

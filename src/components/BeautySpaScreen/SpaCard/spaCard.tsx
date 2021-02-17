@@ -21,12 +21,11 @@ import InfoModal from "../../InfoModal";
 import { tema } from "../../../Theme/theme";
 
 function SpaCard(props: any) {
+
   const theme = useSelector((state: RootState) => state.user.theme);
-
+  const dispatch = useAppDispatch();
+  const navigation = useNavigation();
   const [checked, setChecked] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
- /*  const [reviews, setReviews] = useState<any>([]); */
-
   const userFavGroomers = useSelector(
     (state: RootState) => state.user.userFavGroomers
   );
@@ -38,8 +37,6 @@ function SpaCard(props: any) {
     if (found) setChecked(true);
   }, []);
 
-  const navigation = useNavigation();
-
   let [fonts] = useFonts({
     NunitoSans_400Regular,
     NunitoSans_900Black_Italic,
@@ -48,25 +45,6 @@ function SpaCard(props: any) {
     NunitoSans_300Light_Italic,
     NunitoSans_300Light,
   });
-
-  const dispatch = useAppDispatch();
-
-  /* Para Mostrar las reviews, Get a reviews
-    y posteriormente se pasan por props a los childs */
-
-/*   React.useEffect(() => {
-    axios
-      .get(`/reviews/DogGroomer/${props.peluqueria._id}`)
-      .then((reviewsData) => {
-        const sum = reviewsData.data
-          .map((e: any) => e.rating)
-          .reduce((a: any, c: any) => a + c, 0);
-        const prom = Number(String(sum / reviewsData.data.length).slice(0, 3));
-        setReviews({ review: reviewsData.data, prom });
-      })
-      .catch((err) => alert(err));
-  }, []); */
-
 
   return (
     <Card

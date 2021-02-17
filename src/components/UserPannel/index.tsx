@@ -24,17 +24,14 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
   const dispatch = useDispatch();
 
   const toggleSwitch = async () => {
-    /* const id = await getData(); */
     await changeThemeStorage(!theme)
     dispatch(changeTheme());
-    // setEnabled((enabled) => !enabled);
   };
   
 
   const retrieveStorage = async () => {
     const id = await getData();
     axios.get(`/walkers/${id}`).then((result) => setState(result.data));
-    /* dispatch(getWalkers()); */
   };
   useEffect(() => {
     setEnabled(theme);
@@ -50,7 +47,6 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
   const logout = async () => {
     try {
       await AsyncStorage.removeItem("@id");
-      // dispatch(getOwner(""))
       navigation.push("LoginScreen");
     } catch (e) {
       alert(e);
@@ -65,7 +61,6 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
-          // shared with activity type of result.activityType
         } else {
           // shared
         }
@@ -80,7 +75,7 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
   return (
     <View style={!theme && tema.darkCard}>
       <View style={styles.boxHeader}>
-        <Avatar /* onPress debería poder modificar la foto de perfil*/
+        <Avatar 
           rounded
           size="large"
           containerStyle={{ borderColor: "black", borderWidth: 1 }}
@@ -153,13 +148,6 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
           Invite a friend
         </Text>
       </TouchableOpacity>
-
-      {/* <Divider />
-      <TouchableOpacity style={[styles.box, !theme && tema.darkContainer]}>
-        <Icon raised name="cog" type="font-awesome" size={20} />
-        <Text style={[styles.text, !theme && tema.darkText]}>Settings</Text>
-      </TouchableOpacity> */}
-
       <Divider />
       <TouchableOpacity
         style={[styles.box, !theme && tema.darkContainer]}

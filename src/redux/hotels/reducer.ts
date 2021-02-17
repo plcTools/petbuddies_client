@@ -27,6 +27,7 @@ export function hotelReducer(
           const sum = totalReviews.reduce((sum: number, acc: number) => sum + acc)
           const prom = sum / totalReviews.length
           hotel.rating = parseInt(prom.toFixed(2));
+          console.log(hotel)
           return hotel;
         } else return hotel;
       });

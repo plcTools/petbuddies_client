@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -7,23 +7,17 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
-  Modal,
   SafeAreaView,
   Linking,
 } from "react-native";
 import { RouteStackParamList } from "../../NavigationConfig/types";
 import { styles } from "./styles";
-import { Icon, Divider, Overlay } from "react-native-elements";
+import { Icon, Divider } from "react-native-elements";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
-import InfoModal from "../InfoModal";
 import { tema } from "../../Theme/theme";
-import { getWalkers } from "../../redux/walker/actions";
 import { useSelector } from "react-redux";
-const { width, height } = Dimensions.get("screen");
-const imageW = width * 0.9;
-const imageH = imageW * 1.7;
-import { RootState, useAppDispatch } from '../../redux/store'
+import { RootState } from '../../redux/store'
 import { useFocusEffect } from "@react-navigation/native";
 
 const WalkerProfile = ({
@@ -33,11 +27,13 @@ const WalkerProfile = ({
   const [state, setState] = React.useState<any>("");
   const theme = useSelector((state: RootState) => state.user.theme);
 
-  React.useEffect(() => {
-    axios
-      .get(`/walkers/${route.params.id}`)
-      .then((result) => setState(result.data));
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      axios
+        .get(`/walkers/${route.params.id}`)
+        .then((result) => setState(result.data));
+    }, [])
+  );
 
   if (!state) {
     return (
@@ -105,12 +101,12 @@ const WalkerProfile = ({
                     <Rating
                       readonly
                       type="custom"
-                      startingValue={route.params.mainData.rating}
+                      startingValue={state.rating}
                       imageSize={30}
                     />
 
                     <Text style={styles.ratingText}>
-                      {route.params.mainData.reviewsReceived.length} califications
+                      {state.reviewsReceived.length} califications
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -184,7 +180,7 @@ const WalkerProfile = ({
                   style={styles.overlay}
                 > */}
             </View>
-          {/* </View>
+            {/* </View>
           <Overlay
             isVisible={modalVisible}
             onBackdropPress={modalStatusChange}

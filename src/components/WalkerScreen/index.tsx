@@ -1,6 +1,5 @@
 import "react-native-gesture-handler";
 import React from "react";
-import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -8,11 +7,9 @@ import {
   SafeAreaView,
   Modal,
   TouchableOpacity,
-  StyleSheet,
-  ImageBackground,
   Image,
 } from "react-native";
-import { Icon, Divider, CheckBox } from "react-native-elements";
+import { Icon, Divider } from "react-native-elements";
 import { styles } from "./styles";
 import WalkerCard from "../WalkerCard/index";
 import { useSelector } from "react-redux";
@@ -22,7 +19,7 @@ import { getHairdressers } from "../../redux/Hairdressers/actions";
 import { getHotels } from "../../redux/hotels/actions";
 import { getUserFavorites } from "../../redux/owner/actions";
 import { Walker } from "../../redux/walker/types";
-import { RouteStackParamList } from "../../NavigationConfig/types";
+
 import {
   useFonts,
   NunitoSans_400Regular,
@@ -46,7 +43,6 @@ const WalkerScreen = () => {
   const [input, setInput] = React.useState<ModalChecks>({});
   const [icon, setIcon] = React.useState<ModalChecks>({ walkers: true });
   const [list, setList] = React.useState<string[]>([]);
-  /*  const navigation = useNavigation(); */
   const walkers = useSelector((state: RootState) => state.paseadores.walkers);
   const userFavorites = useSelector(
     (state: RootState) => state.user.userFavorites
@@ -70,32 +66,16 @@ const WalkerScreen = () => {
 
   React.useEffect(() => {
     retrieveStorage();
-    dispatch(getUserFavorites(id));
     handleList(walkers);
     if (Object.keys(walkers).length > 0) {
       setState(walkers);
-      dispatch(getHotels());
-      dispatch(getHairdressers());
-    } else {
       dispatch(getUserFavorites(id));
+    } else {
       dispatch(getWalkers());
+      /* dispatch(getHotels()); */
+      /* dispatch(getHairdressers()); */
     }
   }, [dispatch, walkers]);
-/* 
-  useFocusEffect(
-    React.useCallback(() => {
-      const fetchUser = async () => {
-        try {
-          await dispatch(getWalkers());
-          setState(walkers);
-        } catch (err) {
-          console.log (err);
-        }
-      };
-
-      fetchUser();
-    }, [])
-  ); */
 
   const handleInput = (name: string) => {
     setInput({
@@ -111,7 +91,7 @@ const WalkerScreen = () => {
 
   const handleList = (array: Walker[]) => {
     const arr = array.flatMap((item) => item.workZone);
-    let uniques = Array.from(new Set(arr)); // pidan explicacion a eze
+    let uniques = Array.from(new Set(arr));
     return setList(uniques);
   };
 
@@ -136,7 +116,6 @@ const WalkerScreen = () => {
       </SafeAreaView>
     );
   };
-  // if (!fonts) return <Icon name='spinner' reverse type='font-awesome-5' style={{ position: 'relative', top: '50%', left: '50%'}} />
   if (!fonts) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -196,12 +175,6 @@ const WalkerScreen = () => {
             handleIcon("house");
           }}
         />
-        {/* <Icon
-                    name='globe'
-                    type='font-awesome-5'
-                    color='#51c2d5'
-                    onPress={() => alert('all')}
-                /> */}
       </View>
       <Divider />
       {checked ? (

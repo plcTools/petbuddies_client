@@ -105,29 +105,29 @@ const HotelScreen = () => {
     );
   };
 
-  React.useEffect(() => {
-    retrieveStorage();
-    if (Object.keys(hotels).length === 0) {
-      dispatch(getHotels());
-    }
-    dispatch(getOwnerFavHotels(id));
-    handleList(hotels);
-    setState(hotels);
-  }, [dispatch, hotels]);
+  /*   React.useEffect(() => {
+      retrieveStorage();
+      if (Object.keys(hotels).length === 0) {
+        dispatch(getHotels());
+      }
+      dispatch(getOwnerFavHotels(id));
+      handleList(hotels);
+      setState(hotels);
+    }, [dispatch, hotels]); */
 
- /*  useFocusEffect(
+
+  useFocusEffect(
     React.useCallback(() => {
-      const fetchUser = async () => {
-        try {
-          await dispatch(getHotels());
-          setState(hotels);
-        } catch (err) {
-          console.log(err);
-        }
-      };
-      fetchUser();
-    }, [])
-  ); */
+      retrieveStorage();
+      handleList(hotels);
+      if (Object.keys(hotels).length > 0) {
+        setState(hotels);
+        dispatch(getOwnerFavHotels(id));
+      } else {
+        dispatch(getHotels());
+      }
+    }, [dispatch, hotels])
+  );
 
   if (!fonts) {
     return (
