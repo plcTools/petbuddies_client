@@ -16,6 +16,7 @@ import { RouteStackParamList } from "../../NavigationConfig/types";
 import { getOwner } from "../../redux/owner/actions";
 import { getWalkers } from "../../redux/walker/actions";
 import * as ImagePicker from "expo-image-picker";
+
 interface State {
   name?: string;
   lastname?: string;
@@ -41,7 +42,7 @@ interface State {
   longitude?: number;
   latitude?: number;
   serviceType?: string;
-  extras:string[];
+  extras: string[];
 }
 
 const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) => {
@@ -79,26 +80,26 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
     })();
   }, []);
 
-  useEffect(()=>{
-      setData(user)
-      if(route.params.service){
-        axios.get(`/${route.params.service}/${user?.service}`)
+  useEffect(() => {
+    setData(user)
+    if (route.params.service) {
+      axios.get(`/${route.params.service}/${user?.service}`)
         .then(result => {
           setServicio(result.data)
           setPics(oldpics => result.data.adsPics)
         })
-      }
-  },[user])
+    }
+  }, [user])
 
   const handleSubmit = async () => {
-    const results:any = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${data.address},${data.zone},${data.provincia},${data.pais},+CA&key=AIzaSyCe-UKS_dF_ixRKNh28jFypTZXcpMyVeFQ`)
+    const results: any = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${data.address},${data.zone},${data.provincia},${data.pais},+CA&key=AIzaSyCe-UKS_dF_ixRKNh28jFypTZXcpMyVeFQ`)
     const { lng, lat } = results.data.results[0].geometry.location
     if (user.service) {
-      axios.put(`/${route.params.service}/${user.service}`, { ...data, adsPics: pics, logo: image, latitude: lat, longitude: lng});
-      await axios.put(`/walkers/${id}`, {photo: image});
+      axios.put(`/${route.params.service}/${user.service}`, { ...data, adsPics: pics, logo: image, latitude: lat, longitude: lng });
+      await axios.put(`/walkers/${id}`, { photo: image });
     } else {
       const response = await axios.post(`/${service}`, { ...data, adsPics: pics, logo: image, latitude: lat, longitude: lng });
-      await axios.put(`/walkers/${id}`, {photo: image, service: response.data._id, serviceType: service});
+      await axios.put(`/walkers/${id}`, { photo: image, service: response.data._id, serviceType: service });
     }
     setData({})
     setPics([])
@@ -106,41 +107,48 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
     dispatch(getWalkers());
     navigation.push("Tab");
   };
-
-  const pickImage = async (type: string, index: number) => { 
-      let result:any = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-        base64: true,
-      });
-      if (!result.cancelled) {
-        if (type === "profile") {
-          setImage(result.base64);
+  const handleUpload = async (image:any, type: string, index: number) => {
+    const data = new FormData();
+    data.append('file', image);
+    data.append('upload_preset', 'PetBuddies')
+    data.append('cloud_name', 'dsw2d7pli')
+    if (type === "profile") {
+      const result = await axios.post('https://api.cloudinary.com/v1_1/dsw2d7pli/image/upload', data)
+      setImage(result.data.url);
+    } else {
+      const result = await axios.post('https://api.cloudinary.com/v1_1/dsw2d7pli/image/upload', data)
+      if (route.params.service) {
+        if (!pics[index]) {
+          setPics(oldpics => [...oldpics, result.data.url])
         } else {
-          if(route.params.service){
-            if(!pics[index]) {
-              setPics(oldpics => [...oldpics, result.base64])
-            } else {
-              setPics(oldpics => {
-                return oldpics?.map((item,i) => {
-                  if(index === i ){
-                    return result.base64
-                  } else {
-                    return item
-                  }
-                })
-              });
-            } 
-            } else {
-              setPics(oldpics => [...oldpics, result.base64]);
-            }
+          setPics(oldpics => {
+            return oldpics?.map((item, i) => {
+              if (index === i) {
+                return result.data.url
+              } else {
+                return item
+              }
+            })
+          });
         }
+      } else {
+        setPics(oldpics => [...oldpics, result.data.url]);
       }
+    }
+  }
+
+  const pickImage = async (type: string, index: number) => {
+    let result: any = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.cancelled) {
+      let newFile = { uri: result.uri, type: `test/${result.uri.split('.')[1]}`, name: `test.${result.uri.split('.')[1]}` }
+      handleUpload(newFile, type, index)
     };
-
-
+  }
   return (
     <ScrollView style={styles.container}>
       <View style={styles.formGroup}>
@@ -152,24 +160,24 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
               size="large"
               source={
                 image !== undefined
-                  ? { uri: `data:image/jpeg;base64,${image}` }
+                  ? { uri: image }
                   : user?.photo
-                  ? { uri: `data:image/jpeg;base64,${user.photo}` }
-                  : require("../../images/logo.png")
+                    ? { uri: `data:image/jpeg;base64,${user.photo}` }
+                    : require("../../images/logo.png")
               }
               overlayContainerStyle={{ backgroundColor: "white" }}
               onPress={() => pickImage("profile", 0)}
             />
           </View>
         </View>
-        { !route.params.service ? (<View
+        {!route.params.service ? (<View
           style={{
             flex: 1,
             marginTop: 20,
             flexDirection: "row",
             justifyContent: "space-between",
           }}
-          >
+        >
           <CheckBox
             center
             title="Hotel"
@@ -195,7 +203,7 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
         </View>) : null}
         <Text style={styles.label}>Name</Text>
         <TextInput
-          defaultValue={ servicio?.name || ""}
+          defaultValue={servicio?.name || ""}
           onChangeText={(value) => handleChange("name", value)}
           style={styles.input}
           maxLength={50}
@@ -228,7 +236,7 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
       <View>
         <Text style={styles.label}>Country</Text>
         <TextInput
-          defaultValue={servicio?.pais|| ""}
+          defaultValue={servicio?.pais || ""}
           onChangeText={(value) => handleChange("pais", value)}
           style={styles.input}
           maxLength={50}
@@ -298,7 +306,7 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
           placeholder="E.g. : Monday to Friday"
         />
       </View>
-      { (pics?.length === 0 && service === 'hotels') ||  route.params.service === "hotels"  ? 
+      { (pics?.length === 0 && service === 'hotels') || route.params.service === "hotels" ?
         <View>
           <Text style={styles.label}>Allowed Pets</Text>
           <TextInput
@@ -316,38 +324,38 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
         : null
       }
 
-    { (pics?.length === 0 && service === 'hotels') || route.params.service === "hotels" ? 
-      <View>
-        <Text style={styles.label}>Requirements</Text>
-        <TextInput
-          defaultValue={servicio?.requirement || ""}
-          style={styles.input}
-          onChangeText={(value) => handleChange("requirement", value)}
-          maxLength={50}
-          autoCapitalize="none"
-          placeholder="E.g. : Vaccines..."
-        />
-      </View>
-      : null
-    }
+      { (pics?.length === 0 && service === 'hotels') || route.params.service === "hotels" ?
+        <View>
+          <Text style={styles.label}>Requirements</Text>
+          <TextInput
+            defaultValue={servicio?.requirement || ""}
+            style={styles.input}
+            onChangeText={(value) => handleChange("requirement", value)}
+            maxLength={50}
+            autoCapitalize="none"
+            placeholder="E.g. : Vaccines..."
+          />
+        </View>
+        : null
+      }
 
-    { (pics?.length === 0 && service === 'hotels') || route.params.service === "hotels" ? 
-      <View>
-        <Text style={styles.label}>Extras</Text> 
-        <TextInput
-          defaultValue={servicio && String(servicio?.extras) || ""} //ARRAY
-          style={styles.input}
-          onChangeText={(value) => {
-            let result = value.toLowerCase().trim().split(", ");
-            return setData({ ...data, extras: result });
-          }}
-          maxLength={50}
-          autoCapitalize="none"
-          placeholder="E.g. : Spa, training..."
-        />
-      </View>
-      : null
-    }
+      { (pics?.length === 0 && service === 'hotels') || route.params.service === "hotels" ?
+        <View>
+          <Text style={styles.label}>Extras</Text>
+          <TextInput
+            defaultValue={servicio && String(servicio?.extras) || ""} //ARRAY
+            style={styles.input}
+            onChangeText={(value) => {
+              let result = value.toLowerCase().trim().split(", ");
+              return setData({ ...data, extras: result });
+            }}
+            maxLength={50}
+            autoCapitalize="none"
+            placeholder="E.g. : Spa, training..."
+          />
+        </View>
+        : null
+      }
       <Text style={styles.label}>Business photos</Text>
       <View
         style={{
@@ -357,33 +365,33 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
           justifyContent: "space-between",
         }}
       >
-          <TouchableOpacity onPress={() => pickImage("pic", 0)}>
-            <Image
-              style={{ width: 90, height: 90, borderRadius: 4 }}
-              source={
-                pics && pics[0]
-                  ? { uri: `data:image/jpeg;base64,${pics[0]}` } : (servicio?.adsPics[0] ? { uri: `data:image/jpeg;base64,${servicio?.adsPics[0]}` } : require("../../images/placeholder.jpg") ) 
-              }
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => pickImage("pic", 1)}>
-            <Image
-              style={{ width: 90, height: 90, borderRadius: 4 }}
-              source={
-                pics && pics[1]
-                  ? { uri: `data:image/jpeg;base64,${pics[1]}` } : (servicio?.adsPics[1] ? { uri: `data:image/jpeg;base64,${servicio?.adsPics[1]}` } : require("../../images/placeholder.jpg") )
-              }
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => pickImage("pic", 2)}>
-            <Image
-              style={{ width: 90, height: 90, borderRadius: 4 }}
-              source={
-                pics && pics[2]
-                  ? { uri: `data:image/jpeg;base64,${pics[2]}` } : (servicio?.adsPics[2] ? { uri: `data:image/jpeg;base64,${servicio?.adsPics[2]}` } : require("../../images/placeholder.jpg") )
-              }
-            />
-          </TouchableOpacity>
+        <TouchableOpacity onPress={() => pickImage("pic", 0)}>
+          <Image
+            style={{ width: 90, height: 90, borderRadius: 4 }}
+            source={
+              pics && pics[0]
+                ? { uri: pics[0] } : (servicio?.adsPics[0] ? { uri: servicio?.adsPics[0] } : require("../../images/placeholder.jpg"))
+            }
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => pickImage("pic", 1)}>
+          <Image
+            style={{ width: 90, height: 90, borderRadius: 4 }}
+            source={
+              pics && pics[1]
+                ? { uri: pics[1] } : (servicio?.adsPics[1] ? { uri: servicio?.adsPics[1] } : require("../../images/placeholder.jpg"))
+            }
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => pickImage("pic", 2)}>
+          <Image
+            style={{ width: 90, height: 90, borderRadius: 4 }}
+            source={
+              pics && pics[2]
+                ? { uri: pics[2] } : (servicio?.adsPics[2] ? { uri: servicio?.adsPics[2] } : require("../../images/placeholder.jpg"))
+            }
+          />
+        </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={handleSubmit} style={styles.button}>
         <Text style={styles.text}>Save</Text>

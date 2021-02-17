@@ -18,6 +18,7 @@ import { tema } from "../../../Theme/theme";
 import { useSelector } from "react-redux";
 import InfoModal from "../../InfoModal";
 import { styles } from "./styles";
+import { RootState } from "../../../redux/store";
 const { width } = Dimensions.get("screen");
 const imageW = width * 0.9;
 const imageH = imageW * 1.7;
@@ -26,16 +27,10 @@ const HotelProfile = ({
   navigation,
   route,
 }: RouteStackParamList<"HotelProfile">) => {
-  const theme = useSelector((state) => state.user.theme);
+  const theme = useSelector((state: RootState) => state.user.theme);
   const [state, setState] = React.useState<any>("");
-  const [thisRegion, setThisRegion] = React.useState<any>({
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005,
-    latitude: 0,
-    longitude: 0,
-  });
-
-  const [reviews, setReviews] = useState();
+/* 
+  const [reviews, setReviews] = useState(); */
 
   const [modalVisible, setModalVisible] = React.useState(false);
 
@@ -58,10 +53,7 @@ const HotelProfile = ({
         />
       </View>
     );
-  }
-
-  console.log("---",route,"---");
-  
+  }  
   return (
     <ScrollView style={[styles.scroll, !theme && tema.darkCard]}>
       <View style={styles.container}>
@@ -101,7 +93,7 @@ const HotelProfile = ({
                   navigation.navigate("ReviewsScreen", {
                     hotelId: state._id,
                     photo: state.logo,
-                    reviews: reviews,
+                   /*  reviews: reviews, */
                     service: "Hotel",
                   })
                 }

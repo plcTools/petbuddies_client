@@ -7,7 +7,7 @@ export interface Peluqueria {
     description: string;
     adPics?: string[];
     fee: number;
-    reviewsReceived?: number;
+    reviewsReceived: number[];
     rating: number;
     phone: string;
     email: string;
@@ -24,10 +24,15 @@ export interface HairdressersState {
 }
 
 export const GET_HAIRDRESSERS = 'GET_HAIRDRESSERS';
+export const MODIFY_HAIRDRESSER = 'MODIFY_HAIRDRESSER'
 
 interface GetHairdressersAction {
     type: typeof GET_HAIRDRESSERS,
     payload: Peluqueria[]
 }
+interface ModifyHairdresser {
+    type: typeof MODIFY_HAIRDRESSER,
+    payload: any;
+}
 
-export type HairdessersActionsTypes = GetHairdressersAction;
+export type HairdessersActionsTypes = GetHairdressersAction | ModifyHairdresser;

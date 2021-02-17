@@ -17,6 +17,7 @@ export interface Walker {
   fee?: number;
   countDogs: number;
   rating: number;
+  reviewsReceived: number[];
 }
 
 export interface WalkerState {
@@ -24,10 +25,15 @@ export interface WalkerState {
 }
 
 export const GET_WALKERS = 'GET_WALKERS';
+export const MODIFY_WALKERS = 'MODIFY_WALKERS'
 
 interface GetWalkersAction {
   type: typeof GET_WALKERS;
   payload: Walker[]
 }
+interface ModifyWalkerAction {
+  type: typeof MODIFY_WALKERS;
+  payload: any;
+}
 
-export type WalkerActionsTypes = GetWalkersAction;
+export type WalkerActionsTypes = GetWalkersAction | ModifyWalkerAction;

@@ -12,9 +12,9 @@ import styles from "./styles";
 import axios from "axios";
 import { Rating } from "react-native-ratings";
 import { RootState, useAppDispatch } from "../../../redux/store";
-import { getWalkers } from "../../../redux/walker/actions";
-import { getHairdressers } from "../../../redux/Hairdressers/actions";
-import { getHotels } from "../../../redux/hotels/actions";
+import { getWalkers, modifyWalkers } from "../../../redux/walker/actions";
+import { getHairdressers, modifyHairdresser } from "../../../redux/Hairdressers/actions";
+import { getHotels, modifyHotel } from "../../../redux/hotels/actions";
 import { useSelector } from "react-redux";
 import { tema } from "../../../Theme/theme";
 import { useNavigation } from "@react-navigation/native";
@@ -66,9 +66,18 @@ function PostReview({
       .then((res) => {
         getReviews();
         modalStatusChange();
-        if (service === "Hotel") navigation.navigate("Hotel");
-        else if (service === "DogGroomer") navigation.navigate ("BeautySpaScreen")
-        else if (service === "Walker") navigation.navigate("Home");
+        if (service === "Hotel") {
+          dispatch(modifyHotel(body))
+          navigation.navigate("Hotel")
+        }
+        else if (service === "DogGroomer"){
+          dispatch(modifyHairdresser(body))
+          navigation.navigate ("BeautySpaScreen")
+        } 
+        else if (service === "Walker"){ 
+          dispatch(modifyWalkers(body))
+          navigation.navigate("Home");
+        }
       })
       .catch((err) => alert(err));
   }

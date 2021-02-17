@@ -57,8 +57,8 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
   /* Para Mostrar las reviews, Get a reviews
     y posteriormente se pasan por props a los childs */
 
-  const [reviews, setReviews] = useState<any>({});
-  React.useEffect(() => {
+/*   const [reviews, setReviews] = useState<any>({}); */
+/*   React.useEffect(() => {
     axios
       .get(`/reviews/Hotel/${hotel._id}`)
       .then((reviewsData) => {
@@ -69,7 +69,7 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
         setReviews({ review: reviewsData.data, prom });
       })
       .catch((err) => alert(err));
-  }, []);
+  }, []); */
 
   return (
     <Card
@@ -84,7 +84,6 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
         onPress={() =>
           navigation.navigate("HotelProfile", {
             id: hotel._id,
-            reviews,
             mainData: hotel,
           })
         }
@@ -167,10 +166,10 @@ const HotelCard: React.FC<Props> = ({ hotel, userFavHotels }): JSX.Element => {
                 !theme && tema.darkText,
               ]}
             >
-              {reviews.prom ? reviews.prom : hotel.rating}
+             {/*  {reviews.prom ? reviews.prom : */} {hotel.rating}{/* } */}
             </Text>
             <Icon
-              name={(reviews.prom && "star") || "star-o"}
+              name={(hotel.rating && "star") || "star-o"}
               type="font-awesome"
               size={18}
               color="green"

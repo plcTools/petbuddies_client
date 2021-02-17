@@ -25,7 +25,7 @@ function SpaCard(props: any) {
 
   const [checked, setChecked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [reviews, setReviews] = useState<any>([]);
+ /*  const [reviews, setReviews] = useState<any>([]); */
 
   const userFavGroomers = useSelector(
     (state: RootState) => state.user.userFavGroomers
@@ -54,7 +54,7 @@ function SpaCard(props: any) {
   /* Para Mostrar las reviews, Get a reviews
     y posteriormente se pasan por props a los childs */
 
-  React.useEffect(() => {
+/*   React.useEffect(() => {
     axios
       .get(`/reviews/DogGroomer/${props.peluqueria._id}`)
       .then((reviewsData) => {
@@ -65,9 +65,8 @@ function SpaCard(props: any) {
         setReviews({ review: reviewsData.data, prom });
       })
       .catch((err) => alert(err));
-  }, []);
+  }, []); */
 
-  // console.log("----",props.peluqueria,"---");
 
   return (
     <Card

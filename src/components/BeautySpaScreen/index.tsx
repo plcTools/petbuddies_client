@@ -78,7 +78,7 @@ function BeautySpaScreen() {
     setState(peluquerias);
   }, [dispatch, peluquerias]);
 
-  useFocusEffect(
+ /*  useFocusEffect(
     React.useCallback(() => {
       const fetchUser = async () => {
         try {
@@ -91,7 +91,7 @@ function BeautySpaScreen() {
 
       fetchUser();
     }, [])
-  );
+  ); */
 
   const renderComponent = (arr: any) => {
     return (

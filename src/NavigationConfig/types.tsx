@@ -71,7 +71,7 @@ export type hotel = {
   description?:string;
   adPics: string[];
   fee:number;
-  reviewsReceived?:number;
+  reviewsReceived:number[];
   rating:number;
   phone:string;
   email:string;

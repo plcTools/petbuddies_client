@@ -81,7 +81,7 @@ const WalkerScreen = () => {
       dispatch(getWalkers());
     }
   }, [dispatch, walkers]);
-
+/* 
   useFocusEffect(
     React.useCallback(() => {
       const fetchUser = async () => {
@@ -95,11 +95,10 @@ const WalkerScreen = () => {
 
       fetchUser();
     }, [])
-  );
+  ); */
 
   const handleInput = (name: string) => {
     setInput({
-      // ...input,
       [name]: input[name] ? false : true,
     });
   };

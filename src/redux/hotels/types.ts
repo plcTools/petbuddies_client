@@ -7,7 +7,7 @@ export interface Hotel {
   description?:string;
   adPics: string[];
   fee:number;
-  reviewsReceived?:number;
+  reviewsReceived:number[];
   rating:number;
   phone:string;
   email:string;
@@ -31,10 +31,15 @@ export interface HotelState {
 }
 
 export const GET_HOTELS = "GET_HOTELS";
+export const MODIFY_HOTEL = "MODIFY_HOTEL"
 
 interface GetHotels {
   type: typeof GET_HOTELS;
   payload: Hotel[];
 }
+interface ModifyHotel {
+  type: typeof MODIFY_HOTEL;
+  payload: any;
+}
 
-export type HotelActionsTypes = GetHotels ;
+export type HotelActionsTypes = GetHotels | ModifyHotel;

@@ -115,7 +115,7 @@ const HotelScreen = () => {
     setState(hotels);
   }, [dispatch, hotels]);
 
-  useFocusEffect(
+ /*  useFocusEffect(
     React.useCallback(() => {
       const fetchUser = async () => {
         try {
@@ -127,7 +127,7 @@ const HotelScreen = () => {
       };
       fetchUser();
     }, [])
-  );
+  ); */
 
   if (!fonts) {
     return (
