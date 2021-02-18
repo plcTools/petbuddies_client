@@ -306,7 +306,21 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
           placeholder="E.g. : Monday to Friday"
         />
       </View>
-      { (pics?.length === 0 && service === 'hotels') || route.params.service === "hotels" ?
+        <View>
+          <Text style={styles.label}>Extras</Text>
+          <TextInput
+            defaultValue={servicio && String(servicio?.extras) || ""} //ARRAY
+            style={styles.input}
+            onChangeText={(value) => {
+              let result = value.toLowerCase().trim().split(", ");
+              return setData({ ...data, extras: result });
+            }}
+            maxLength={50}
+            autoCapitalize="none"
+            placeholder="E.g. : Spa, training..."
+          />
+        </View>
+      { (service === 'hotels') || route.params.service === "hotels" ?
         <View>
           <Text style={styles.label}>Allowed Pets</Text>
           <TextInput
@@ -324,7 +338,7 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
         : null
       }
 
-      { (pics?.length === 0 && service === 'hotels') || route.params.service === "hotels" ?
+      { (service === 'hotels') || route.params.service === "hotels" ?
         <View>
           <Text style={styles.label}>Requirements</Text>
           <TextInput
@@ -338,24 +352,7 @@ const ServiceForm = ({ navigation, route }: RouteStackParamList<"ServiceForm">) 
         </View>
         : null
       }
-
-      { (pics?.length === 0 && service === 'hotels') || route.params.service === "hotels" ?
-        <View>
-          <Text style={styles.label}>Extras</Text>
-          <TextInput
-            defaultValue={servicio && String(servicio?.extras) || ""} //ARRAY
-            style={styles.input}
-            onChangeText={(value) => {
-              let result = value.toLowerCase().trim().split(", ");
-              return setData({ ...data, extras: result });
-            }}
-            maxLength={50}
-            autoCapitalize="none"
-            placeholder="E.g. : Spa, training..."
-          />
-        </View>
-        : null
-      }
+        
       <Text style={styles.label}>Business photos</Text>
       <View
         style={{
