@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { View, StyleSheet, Linking, Share, Text, LogBox } from "react-native";
+import { View, StyleSheet, Linking, Share, Text, /* LogBox  */} from "react-native";
 import { Avatar, Divider, Icon } from "react-native-elements";
 import { RouteStackParamList } from "../../NavigationConfig/types";
 import { getData } from "../../AsyncStorage/index";
@@ -37,12 +37,12 @@ const UserPannel = ({ navigation }: RouteStackParamList<"UserPannel">) => {
     setEnabled(theme);
   }, [theme]);
 
-  useEffect(() => {
+/*   useEffect(() => {
     LogBox.ignoreLogs(["Animated: `useNativeDriver`"]); // Para quitar un error de log que salia en la pantalla
     if(!state) {
       retrieveStorage();
     }
-  }, [owners]);
+  }, [owners]); */
 
   const logout = async () => {
     try {

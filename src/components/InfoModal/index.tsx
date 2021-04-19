@@ -9,7 +9,7 @@ import {
   Platform,
 } from "react-native";
 import { styles } from "./styles";
-import MapView from "react-native-maps";
+/* import MapView from "react-native-maps"; */
 import { Marker } from "react-native-maps";
 import { tema } from "../../Theme/theme";
 import { useSelector } from "react-redux";
@@ -142,7 +142,7 @@ function InfoModal(props: any) {
             openGps(data.address, data.zone, data.provincia, data.pais)
           }
         >
-          <MapView
+      {/*     <MapView
             region={region}
             style={{ width: "100%", height: "100%" }}
             // onPress={() =>
@@ -155,7 +155,7 @@ function InfoModal(props: any) {
                 longitude: region.longitude,
               }}
             />
-          </MapView>
+          </MapView> */}
         </TouchableOpacity>
       </View>
       <Divider />

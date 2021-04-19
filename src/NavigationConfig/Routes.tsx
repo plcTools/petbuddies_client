@@ -120,20 +120,20 @@ export const Routes: React.FC = () => {
           ),
         })}
       >
-        <Screen
+{/*         <Screen
           name="LoginScreen"
           component={LoginScreen}
           options={{ headerShown: false }}
-        />
-        <Screen
+        /> */}
+    {/*     <Screen
           name="SelectRol"
           component={SelectRol}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Screen
           name="Tab"
           component={TabNavigation}
-          options={{ headerLeft: null }}
+          options={{ headerLeft:undefined }}
         />
         <Screen name="WalkerCard" component={WalkerCard} />
         <Screen
